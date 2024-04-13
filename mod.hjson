@@ -1,0 +1,21 @@
+displayName: "Hardustry Extended"
+
+# the internal name of the mod
+name: "hardustry-ex"
+
+author: "makizakao"
+
+# the fully qualified main class of the mod
+main "jp.makizakao.HardustryEx"
+
+# the mod description as seen in the mod dialog
+description: "Hardustry Extended is a mod that adds new content to the mod Hardustry."
+
+# the mod version
+version: 0.1
+
+# the minimum game build required to run this mod
+minGameVersion: 146
+
+# this is a java mod
+java: true
