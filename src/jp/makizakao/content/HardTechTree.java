@@ -13,5 +13,6 @@ public class HardTechTree {
                 node(HardItems.bronzeDust);
             });
         });
+        root.planet = Planets.serpulo;
     }
 }
