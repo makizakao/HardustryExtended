@@ -6,7 +6,7 @@ name: "hardustry-ex"
 author: "makizakao"
 
 # the fully qualified main class of the mod
-main "jp.makizakao.HardustryEx"
+main: "jp.makizakao.HardustryEx"
 
 # the mod description as seen in the mod dialog
 description: "Hardustry Extended is a mod that adds new content to the mod Hardustry."
