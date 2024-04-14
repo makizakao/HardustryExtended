@@ -1,6 +1,7 @@
 package jp.makizakao.world.blocks;
 
 import arc.graphics.g2d.TextureRegion;
+import jp.makizakao.type.SmeltStack;
 import mindustry.game.Team;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -9,14 +10,20 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
+import java.util.List;
+
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.with;
 
 public class HardCoreBlock extends CoreBlock {
+    private int smeltTime;
+    private List<SmeltStack> smeltList;
+
     // コンストラクタは非推奨
     private HardCoreBlock(String name) {
         super(name);
     }
+
     private HardCoreBlock(Builder builder) {
         super(builder.name);
         if(builder.buildVisibility) {
@@ -32,6 +39,8 @@ public class HardCoreBlock extends CoreBlock {
         itemCapacity = builder.itemCapacity;
         size = builder.size;
         unitCapModifier = builder.unitCapModifier;
+        smeltTime = builder.smeltTime;
+        smeltList = builder.smeltList;
     }
 
     // Builderを作成
@@ -59,6 +68,31 @@ public class HardCoreBlock extends CoreBlock {
         return new TextureRegion[]{region, teamRegions[Team.sharded.id]};
     }
 
+    public class HardCoreBuild extends CoreBuild {
+        private int timeSmelted = 0;
+        @Override
+        public void updateTile() {
+            super.updateTile();
+            // copperDustを所持している場合、copperIngotを生成
+            if(smeltList != null && !smeltList.isEmpty()) {
+                smelt();
+            }
+        }
+
+        private void smelt() {
+            for(SmeltStack stack : smeltList) {
+                if(items.has(stack.material().item, stack.material().amount)) {
+                    if(timeSmelted >= smeltTime) {
+                        timeSmelted = 0;
+                        items.remove(stack.material().item, stack.material().amount);
+                        items.add(stack.product().item, stack.product().amount);
+                    }
+                    timeSmelted++;
+                }
+            }
+        }
+    }
+
     public static class Builder {
         private final String name;
         private final int health;
@@ -70,6 +104,8 @@ public class HardCoreBlock extends CoreBlock {
         private boolean isFirstTier = false;
         private UnitType unitType;
         private int unitCapModifier = 1;
+        private int smeltTime = 300;
+        private List<SmeltStack> smeltList;
 
         private Builder(String name, int health, int itemCapacity, int size) {
             this.name = name;
@@ -105,6 +141,16 @@ public class HardCoreBlock extends CoreBlock {
 
         public Builder unitCapModifier(int unitCapModifier) {
             this.unitCapModifier = unitCapModifier;
+            return this;
+        }
+
+        public Builder smeltTime(int refineTime) {
+            this.smeltTime = refineTime;
+            return this;
+        }
+
+        public Builder smeltList(List<SmeltStack> smeltList) {
+            this.smeltList = smeltList;
             return this;
         }
 

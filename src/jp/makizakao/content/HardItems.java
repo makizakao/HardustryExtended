@@ -6,6 +6,7 @@ import mindustry.type.Item;
 public class HardItems {
     private static final Color BRONZE_COLOR = Color.valueOf("ff52000");
     private static final Color DEFAULT_COLOR = Color.valueOf("ef6832");
+
     public static Item
             // battery
             chargedPortableBattery, portableBattery,
@@ -54,16 +55,16 @@ public class HardItems {
         primitiveBlastFurnaceController = createMaterialItem("primitive-blast-furnace-controller",
                 38f, DEFAULT_COLOR);
         // dust
-        brassDust = new Item("brass-dust", DEFAULT_COLOR);
-        bronzeDust = new Item("bronze-dust", BRONZE_COLOR);
+        brassDust = createMaterialItem("brass-dust", 1f, DEFAULT_COLOR);
+        bronzeDust = createMaterialItem("bronze-dust", 1f, BRONZE_COLOR);
         coalDust = new Item("coal-dust", DEFAULT_COLOR);
-        copperDust = new Item("copper-dust", DEFAULT_COLOR);
-        glassDust = new Item("glass-dust", DEFAULT_COLOR);
-        leadDust = new Item("lead-dust", DEFAULT_COLOR);
-        tealliteDust = new Item("teallite-dust", DEFAULT_COLOR);
-        tinDust = new Item("tin-dust", DEFAULT_COLOR);
+        copperDust = createMaterialItem("copper-dust", 0.5f, DEFAULT_COLOR);
+        glassDust = createMaterialItem("glass-dust", 1f, DEFAULT_COLOR);
+        leadDust = createMaterialItem("lead-dust", 0.5f, DEFAULT_COLOR);
+        tealliteDust = createMaterialItem("teallite-dust", 0.7f, DEFAULT_COLOR);
+        tinDust = createMaterialItem("tin-dust", 0.7f, DEFAULT_COLOR);
         woodPulp = new Item("wood-pulp", DEFAULT_COLOR);
-        zincDust = new Item("zinc-dust", DEFAULT_COLOR);
+        zincDust = createMaterialItem("zinc-dust", 0.7f, DEFAULT_COLOR);
         // metal
         bronzeIngot = createMaterialItem("bronze-ingot", 1f, BRONZE_COLOR);
         copperIngot = createMaterialItem("copper-ingot", 1f, DEFAULT_COLOR);
