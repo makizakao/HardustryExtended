@@ -10,13 +10,13 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static mindustry.Vars.*;
 import static mindustry.type.ItemStack.with;
 
 public class HardCoreBlock extends CoreBlock {
-    private int smeltTime;
     private List<SmeltStack> smeltList;
 
     // コンストラクタは非推奨
@@ -39,7 +39,6 @@ public class HardCoreBlock extends CoreBlock {
         itemCapacity = builder.itemCapacity;
         size = builder.size;
         unitCapModifier = builder.unitCapModifier;
-        smeltTime = builder.smeltTime;
         smeltList = builder.smeltList;
     }
 
@@ -69,12 +68,12 @@ public class HardCoreBlock extends CoreBlock {
     }
 
     public class HardCoreBuild extends CoreBuild {
-        private int timeSmelted = 0;
+        private final List<SmeltStack> smeltList = new ArrayList<>(HardCoreBlock.this.smeltList);
         @Override
         public void updateTile() {
             super.updateTile();
             // copperDustを所持している場合、copperIngotを生成
-            if(smeltList != null && !smeltList.isEmpty()) {
+            if(!smeltList.isEmpty()) {
                 smelt();
             }
         }
@@ -82,12 +81,10 @@ public class HardCoreBlock extends CoreBlock {
         private void smelt() {
             for(SmeltStack stack : smeltList) {
                 if(items.has(stack.material().item, stack.material().amount)) {
-                    if(timeSmelted >= smeltTime) {
-                        timeSmelted = 0;
+                    if(stack.smelted()) {
                         items.remove(stack.material().item, stack.material().amount);
                         items.add(stack.product().item, stack.product().amount);
                     }
-                    timeSmelted++;
                 }
             }
         }
@@ -104,7 +101,6 @@ public class HardCoreBlock extends CoreBlock {
         private boolean isFirstTier = false;
         private UnitType unitType;
         private int unitCapModifier = 1;
-        private int smeltTime = 300;
         private List<SmeltStack> smeltList;
 
         private Builder(String name, int health, int itemCapacity, int size) {
@@ -141,11 +137,6 @@ public class HardCoreBlock extends CoreBlock {
 
         public Builder unitCapModifier(int unitCapModifier) {
             this.unitCapModifier = unitCapModifier;
-            return this;
-        }
-
-        public Builder smeltTime(int refineTime) {
-            this.smeltTime = refineTime;
             return this;
         }
 

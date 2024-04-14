@@ -68,6 +68,10 @@ public class HardItems {
         // metal
         bronzeIngot = createMaterialItem("bronze-ingot", 1f, BRONZE_COLOR);
         copperIngot = createMaterialItem("copper-ingot", 1f, DEFAULT_COLOR);
+        goldIngot = createMaterialItem("gold-ingot", 1f, DEFAULT_COLOR);
+        IronIngot = createMaterialItem("iron-ingot", 1f, DEFAULT_COLOR);
+        leadIngot = createMaterialItem("lead-ingot", 1f, DEFAULT_COLOR);
+        silverIngot = createMaterialItem("silver-ingot", 1f, DEFAULT_COLOR);
     }
 
     // costのみ指定のItemを生成する
