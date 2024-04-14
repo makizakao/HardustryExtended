@@ -2,6 +2,7 @@ package jp.makizakao;
 
 import arc.Events;
 import arc.util.Log;
+import jp.makizakao.content.HardBlocks;
 import jp.makizakao.content.HardItems;
 import jp.makizakao.content.HardTechTree;
 import mindustry.game.EventType;
@@ -18,5 +19,6 @@ public class HardustryEx extends Mod {
         Log.info("Loading content.");
         HardItems.load();
         HardTechTree.load();
+        HardBlocks.load();
     }
 }
