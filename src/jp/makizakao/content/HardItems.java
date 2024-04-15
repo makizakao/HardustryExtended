@@ -36,7 +36,7 @@ public class HardItems {
             // tin part
             tinBolt, tinRing, tinRod, tinRotor, tinScrew,
             // wire
-            copperWire, fineCopperWire, tinWire, bundledWire;
+            copperWire, fineCopperWire, tinWire, bundledTinWire;
 
     public static void load() {
         // battery
@@ -102,7 +102,41 @@ public class HardItems {
         teallite = createOreItem("teallite", 2, DEFAULT_COLOR);
         tetrahedrite = createOreItem("tetrahedrite", 2, DEFAULT_COLOR);
         // other
-
+        coke = new Item("coke", DEFAULT_COLOR);
+        cokeOvenBrick = new Item("coke-oven-brick", DEFAULT_COLOR);
+        crops = new Item("crops", DEFAULT_COLOR);
+        fireBrick = new Item("fire-brick", DEFAULT_COLOR);
+        wood = new Item("wood", DEFAULT_COLOR);
+        // plate
+        aluminumPlate = createMaterialItem("aluminum-plate", 1.25f, DEFAULT_COLOR);
+        brassPlate = createMaterialItem("brass-plate", 0.9f, DEFAULT_COLOR);
+        bronzePlate = createMaterialItem("bronze-plate", 0.9f, BRONZE_COLOR);
+        compressedAluminumPlate = createMaterialItem("compressed-aluminum-plate", 1.5f, DEFAULT_COLOR);
+        compressedBronzePlate = createMaterialItem("compressed-bronze-plate", 1.15f, BRONZE_COLOR);
+        compressedSteelPlate = createMaterialItem("compressed-steel-plate", 1.4f, DEFAULT_COLOR);
+        goldPlate = createMaterialItem("gold-plate", 0.5f, DEFAULT_COLOR);
+        ironPlate = createMaterialItem("iron-plate", 1.0f, DEFAULT_COLOR);
+        steelPlate = createMaterialItem("steel-plate", 1.15f, DEFAULT_COLOR);
+        tinPlate = createMaterialItem("tin-plate", 0.9f, DEFAULT_COLOR);
+        // steel part
+        lowElectricMotor = createMaterialItem("low-electric-motor", 3.5f, DEFAULT_COLOR);
+        lowElectricPiston = createMaterialItem("low-electric-piston", 9.65f, DEFAULT_COLOR);
+        lowElectricMachineFrame = new Item("low-electric-machine-frame", DEFAULT_COLOR);
+        lowElectricMachineHull = createMaterialItem("low-electric-machine-hull", 98f, DEFAULT_COLOR);
+        smallSteelGear = createMaterialItem("small-steel-gear", 1.15f, DEFAULT_COLOR);
+        steelDrillHead = createMaterialItem("steel-drill-head", 135f, DEFAULT_COLOR);
+        steelRod = new Item("steel-rod", DEFAULT_COLOR);
+        // tin part
+        tinBolt = new Item("tin-bolt", DEFAULT_COLOR);
+        tinRing = new Item("tin-ring", DEFAULT_COLOR);
+        tinRod = new Item("tin-rod", DEFAULT_COLOR);
+        tinRotor = createMaterialItem("tin-rotor", 46f, DEFAULT_COLOR);
+        tinScrew = new Item("tin-screw", DEFAULT_COLOR);
+        // wire
+        copperWire = new Item("copper-wire", DEFAULT_COLOR);
+        fineCopperWire = new Item("fine-copper-wire", DEFAULT_COLOR);
+        tinWire = new Item("tin-wire", DEFAULT_COLOR);
+        bundledTinWire = new Item("bundled-tin-wire", DEFAULT_COLOR);
     }
 
     // costのみ指定のItemを生成する
