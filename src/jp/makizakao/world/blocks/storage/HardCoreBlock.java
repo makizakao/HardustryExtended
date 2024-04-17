@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks;
+package jp.makizakao.world.blocks.storage;
 
 import arc.graphics.g2d.TextureRegion;
 import jp.makizakao.type.SmeltStack;
@@ -24,12 +24,13 @@ public class HardCoreBlock extends CoreBlock {
         super(name);
     }
 
+    // Builder用のコンストラクタ
     private HardCoreBlock(Builder builder) {
         super(builder.name);
         if(builder.buildVisibility) {
             requirements(Category.effect, BuildVisibility.editorOnly, builder.stacks);
         } else {
-            requirements(Category.effect, with());
+            requirements(Category.effect, builder.stacks);
         }
 
         alwaysUnlocked = builder.alwaysUnlocked;
@@ -81,7 +82,7 @@ public class HardCoreBlock extends CoreBlock {
         private void smelt() {
             for(SmeltStack stack : smeltList) {
                 if(items.has(stack.material().item, stack.material().amount)) {
-                    if(stack.smelted()) {
+                    if(stack.smelted(delta())) {
                         items.remove(stack.material().item, stack.material().amount);
                         items.add(stack.product().item, stack.product().amount);
                     }
@@ -110,8 +111,8 @@ public class HardCoreBlock extends CoreBlock {
             this.size = size;
         }
 
-        public Builder isEditorOnlyVisible(boolean editorOnlyVisible) {
-            this.buildVisibility = editorOnlyVisible;
+        public Builder editorOnlyVisible(boolean visible) {
+            this.buildVisibility = visible;
             return this;
         }
 
@@ -146,9 +147,9 @@ public class HardCoreBlock extends CoreBlock {
         }
 
         public HardCoreBlock build() {
-            if(name == null) throw new IllegalStateException("Name is required");
-            if(stacks == null) throw new IllegalStateException("ItemStack is required");
-            if(unitType == null) throw new IllegalStateException("UnitType is required");
+            if(name == null) throw new IllegalStateException("name must be set");
+            if(stacks == null) throw new IllegalStateException("requirements must be set");
+            if(unitType == null) throw new IllegalStateException("unitType must be set");
             return new HardCoreBlock(this);
         }
     }

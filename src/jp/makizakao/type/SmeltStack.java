@@ -1,5 +1,6 @@
 package jp.makizakao.type;
 
+import arc.util.Time;
 import jp.makizakao.content.HardItems;
 import mindustry.type.ItemStack;
 
@@ -9,10 +10,10 @@ import java.util.List;
 public class SmeltStack {
     private final ItemStack material;
     private final ItemStack product;
-    private final int smeltTime;
-    private int timeSmelted = 0;
+    private final float smeltTime;
+    private float timeSmelted = 0;
 
-    public SmeltStack(ItemStack material, ItemStack product, int smeltTime) {
+    public SmeltStack(ItemStack material, ItemStack product, float smeltTime) {
         this.material = material;
         this.product = product;
         this.smeltTime = smeltTime;
@@ -26,24 +27,24 @@ public class SmeltStack {
         return product;
     }
 
-    public boolean smelted() {
+    public boolean smelted(float delta) {
         if(timeSmelted >= smeltTime) {
             timeSmelted = 0;
             return true;
         }
-        timeSmelted++;
+        timeSmelted += delta;
         return false;
     }
 
 
     public static final List<SmeltStack> SMELT_TIER_1 = Arrays.asList(
             new SmeltStack(new ItemStack(HardItems.copperDust, 1),
-                    new ItemStack(HardItems.copperIngot, 1), 60 * 3),
+                    new ItemStack(HardItems.copperIngot, 1), Time.toSeconds * 3),
             new SmeltStack(new ItemStack(HardItems.leadDust, 1),
-                    new ItemStack(HardItems.leadIngot, 1), 60 * 3));
+                    new ItemStack(HardItems.leadIngot, 1), Time.toSeconds * 3));
     public static final List<SmeltStack> SMELT_TIER_2 = Arrays.asList(
             new SmeltStack(new ItemStack(HardItems.copperDust, 1),
-                    new ItemStack(HardItems.copperIngot, 1), 60),
+                    new ItemStack(HardItems.copperIngot, 1), Time.toSeconds),
             new SmeltStack(new ItemStack(HardItems.leadDust, 1),
-                    new ItemStack(HardItems.leadIngot, 1), 60));
+                    new ItemStack(HardItems.leadIngot, 1), Time.toSeconds));
 }
