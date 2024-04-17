@@ -3,7 +3,7 @@ package jp.makizakao.world.blocks.power;
 import arc.graphics.g2d.TextureRegion;
 import mindustry.world.blocks.power.PowerGenerator;
 
-import static jp.makizakao.HardustryEx.regionBuilder;
+import static jp.makizakao.HardustryEx.regionGetter;
 
 public abstract class RotateGenerator extends PowerGenerator {
     protected float rotateSpeed = 1f;
@@ -16,7 +16,7 @@ public abstract class RotateGenerator extends PowerGenerator {
     @Override
     public void load() {
         super.load();
-        rotatorRegion = regionBuilder.apply(this.name, "rotator");
+        rotatorRegion = regionGetter.apply(this.name, "rotator");
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.function.BiFunction;
 
 public class HardustryEx extends Mod {
     public static final String MOD_NAME = "hardustry-ex";
-    public static final BiFunction<String, String, TextureRegion> regionBuilder =
+    public static final BiFunction<String, String, TextureRegion> regionGetter =
             (name, symbol) -> Core.atlas.find(name + "-" + symbol);
 
     public HardustryEx(){
