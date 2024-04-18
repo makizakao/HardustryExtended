@@ -4,8 +4,6 @@ import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.math.Rand;
 import arc.util.Time;
-import mindustry.graphics.Drawf;
-import mindustry.graphics.Layer;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 
@@ -96,7 +94,7 @@ public class WindGenerator extends RotateGenerator {
             return this;
         }
 
-        public Builder with(Object... stacks) {
+        public Builder requirements(Object... stacks) {
             this.stacks = ItemStack.with(stacks);
             return this;
         }

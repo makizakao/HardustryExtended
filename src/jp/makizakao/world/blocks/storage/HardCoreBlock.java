@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static mindustry.Vars.*;
-import static mindustry.type.ItemStack.with;
 
 public class HardCoreBlock extends CoreBlock {
     private List<SmeltStack> smeltList;
@@ -116,7 +115,7 @@ public class HardCoreBlock extends CoreBlock {
             return this;
         }
 
-        public Builder with(Object... stacks) {
+        public Builder requirements(Object... stacks) {
             this.stacks = ItemStack.with(stacks);
             return this;
         }
