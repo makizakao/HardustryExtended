@@ -1,10 +1,14 @@
 package jp.makizakao.world.blocks.production;
 
+import arc.math.Mathf;
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.production.Drill;
 
 public class TierDrill extends Drill {
+    protected float hardnessDrillMultiplier = 1.5f;
+
     private TierDrill(String name) {
         super(name);
     }
@@ -23,6 +27,11 @@ public class TierDrill extends Drill {
 
     public static Builder create(String name, int health, int size, int tier) {
         return new Builder(name, health, size, tier);
+    }
+
+    @Override
+    public float getDrillTime(Item item) {
+        return (drillTime * Mathf.pow(hardnessDrillMultiplier, item.hardness)) / drillMultipliers.get(item, 1f);
     }
 
     public static class Builder {
