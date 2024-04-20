@@ -1,21 +1,64 @@
 package jp.makizakao.content;
 
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
+import mindustry.world.blocks.environment.OreBlock;
 import mindustry.world.blocks.power.PowerNode;
 
 import java.util.Objects;
 
 public class DefaultBlockBuilders {
+    public static class OreBlockBuilder {
+        private final String name;
+        private final Item dropItem;
+        private boolean oreDefault = false;
+        private float oreThreshold = 0f;
+        private float oreScale = 0f;
+
+        private OreBlockBuilder(String name, Item dropItem) {
+            this.name = name;
+            this.dropItem = dropItem;
+        }
+
+        public static OreBlockBuilder create(String name, Item dropItem) {
+            return new OreBlockBuilder(name, dropItem);
+        }
+
+        public OreBlockBuilder oreDefault() {
+            this.oreDefault = true;
+            return this;
+        }
+
+        public OreBlockBuilder oreThreshold(float oreThreshold) {
+            this.oreThreshold = oreThreshold;
+            return this;
+        }
+
+        public OreBlockBuilder oreScale(float oreScale) {
+            this.oreScale = oreScale;
+            return this;
+        }
+
+        public OreBlock build() {
+            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
+            return new OreBlock(name, dropItem) {{
+                oreDefault = OreBlockBuilder.this.oreDefault;
+                oreThreshold = OreBlockBuilder.this.oreThreshold;
+                oreScale = OreBlockBuilder.this.oreScale;
+            }};
+        }
+    }
+
     public static class PowerNodeBuilder {
-        public final String name;
-        public final int health;
-        public final int size;
-        public ItemStack[] requirements;
-        public float laserRange = 10f;
-        public int maxNodes = 4;
-        public float powerConsumption = 0f;
-        public boolean isConsumePower = false;
+        private final String name;
+        private final int health;
+        private final int size;
+        private ItemStack[] requirements;
+        private float laserRange = 10f;
+        private int maxNodes = 4;
+        private float powerConsumption = 0f;
+        private boolean isConsumePower = false;
 
         private PowerNodeBuilder(String name, int health, int size) {
             this.name = name;

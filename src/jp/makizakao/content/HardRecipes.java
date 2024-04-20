@@ -9,6 +9,43 @@ import multicraft.Recipe;
 import java.util.Objects;
 
 public class HardRecipes {
+    // crusher
+    public static final Seq<Recipe> CRUSHER_TIER_1 = Seq.with(
+            new Builder()
+                    .inputItems(HardItems.nativeCopper, 1)
+                    .inputPower(0.4f)
+                    .outputItems(HardItems.copperDust, 2)
+                    .craftTime(60f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.galena, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.galenaDust, 2)
+                    .craftTime(60f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.teallite, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.tealliteDust, 1)
+                    .craftTime(60f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tinIngot, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.tinDust, 1)
+                    .craftTime(60f)
+                    .build()
+    );
+    // dust mixer
+    public static final Seq<Recipe> DUST_MIXER_TIER_1 = Seq.with(
+            new Builder()
+                    .inputItems(HardItems.copperDust, 3, HardItems.tinDust, 1)
+                    .inputPower(0.2f)
+                    .outputItems(HardItems.bronzeDust, 4)
+                    .craftTime(150f)
+                    .build()
+    );
+    // furnace
     public static final Seq<Recipe> FURNACE_TIER_1 = Seq.with(
             new Builder()
                     .inputItems(HardItems.copperDust, 2)
@@ -21,7 +58,32 @@ public class HardRecipes {
                     .outputItems(HardItems.leadIngot, 1)
                     .inputHeat(2f)
                     .craftTime(60)
-                    .build());
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.galenaDust, 2)
+                    .outputItems(HardItems.leadIngot, 1)
+                    .inputHeat(3f)
+                    .craftTime(60)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tealliteDust, 2)
+                    .outputItems(HardItems.tinIngot, 1)
+                    .inputHeat(3f)
+                    .craftTime(90)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tinDust, 2)
+                    .outputItems(HardItems.tinIngot, 1)
+                    .inputHeat(4f)
+                    .craftTime(90)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.bronzeDust, 2)
+                    .outputItems(HardItems.bronzeIngot, 1)
+                    .inputHeat(4f)
+                    .craftTime(90)
+                    .build()
+    );
 
     private static class Builder {
         private Seq<ItemStack> inputItems;

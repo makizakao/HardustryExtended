@@ -15,16 +15,17 @@ public class HardItems {
             // building material
             cokeOvenBlock, cokeOvenController, primitiveBlastFurnaceBlock, primitiveBlastFurnaceController,
             // dust
-            brassDust, bronzeDust, coalDust, copperDust, glassDust, leadDust, tealliteDust, tinDust, woodPulp, zincDust,
+            brassDust, bronzeDust, coalDust, copperDust, galenaDust, glassDust, leadDust, tealliteDust, tinDust, woodPulp, zincDust,
             // integrated logic circuit
             coatedCircuitBoard, glassTube, integratedLogicCircuit, resistor, vacuumTube, woodPlank,
             // iron part
             ironBolt, ironRod, ironSawBlade, ironScrew, magneticIronRod,
             // metal
-            aluminumIngot, brassIngot, bronzeIngot, copperIngot, goldIngot, IronIngot, leadIngot, silverIngot,
+            aluminumIngot, brassIngot, bronzeIngot, copperIngot, goldIngot, ironIngot, leadIngot, silverIngot,
             steelIngot, tinIngot, zincIngot,
             // ore
-            aurostibite, bauxite, clay, diamond, galena, hematite, magnetite, sphalerite, teallite, tetrahedrite,
+            aurostibite, bauxite, clay, diamond, galena, hematite, magnetite, nativeCopper, sphalerite, teallite,
+            tetrahedrite,
             // other
             coke, cokeOvenBrick, crops, fireBrick, wood,
             // plate
@@ -58,7 +59,8 @@ public class HardItems {
         brassDust = createMaterialItem("brass-dust", 1f, DEFAULT_COLOR);
         bronzeDust = createMaterialItem("bronze-dust", 1f, BRONZE_COLOR);
         coalDust = new Item("coal-dust", DEFAULT_COLOR);
-        copperDust = createMaterialItem("copper-dust", 0.5f, DEFAULT_COLOR);
+        copperDust = Builder.create("copper-dust", DEFAULT_COLOR).cost(0.5f).hardness(1).build();
+        galenaDust = Builder.create("galena-dust", DEFAULT_COLOR).build();
         glassDust = createMaterialItem("glass-dust", 1f, DEFAULT_COLOR);
         leadDust = createMaterialItem("lead-dust", 0.5f, DEFAULT_COLOR);
         tealliteDust = createMaterialItem("teallite-dust", 0.7f, DEFAULT_COLOR);
@@ -84,7 +86,7 @@ public class HardItems {
         bronzeIngot = createMaterialItem("bronze-ingot", 0.7f, BRONZE_COLOR);
         copperIngot = createMaterialItem("copper-ingot", 0.5f, DEFAULT_COLOR);
         goldIngot = createMaterialItem("gold-ingot", 0.5f, DEFAULT_COLOR);
-        IronIngot = createMaterialItem("iron-ingot", 0.8f, DEFAULT_COLOR);
+        ironIngot = createMaterialItem("iron-ingot", 0.8f, DEFAULT_COLOR);
         leadIngot = createMaterialItem("lead-ingot", 0.5f, DEFAULT_COLOR);
         silverIngot = createMaterialItem("silver-ingot", 1f, DEFAULT_COLOR);
         steelIngot = createMaterialItem("steel-ingot", 1.2f, DEFAULT_COLOR);
@@ -98,6 +100,7 @@ public class HardItems {
         galena = createOreItem("galena", 4, DEFAULT_COLOR);
         hematite = createOreItem("hematite", 3, DEFAULT_COLOR);
         magnetite = createOreItem("magnetite", 3, DEFAULT_COLOR);
+        nativeCopper = createOreItem("native-copper", 2, DEFAULT_COLOR);
         sphalerite = createOreItem("sphalerite", 3, DEFAULT_COLOR);
         teallite = createOreItem("teallite", 2, DEFAULT_COLOR);
         tetrahedrite = createOreItem("tetrahedrite", 2, DEFAULT_COLOR);
@@ -147,5 +150,38 @@ public class HardItems {
     // hardnessのみ指定のItemを生成する
     private static Item createOreItem(String pName, int pHardness, Color pColor) {
         return new Item(pName, pColor) {{ hardness = pHardness; }};
+    }
+
+    private static class Builder {
+        private final String name;
+        private final Color color;
+        private float cost = 1f;
+        private int hardness = 0;
+
+        public static Builder create(String name, Color color) {
+            return new Builder(name, color);
+        }
+
+        private Builder(String name, Color color) {
+            this.name = name;
+            this.color = color;
+        }
+
+        public Builder cost(float pCost) {
+            cost = pCost;
+            return this;
+        }
+
+        public Builder hardness(int pHardness) {
+            hardness = pHardness;
+            return this;
+        }
+
+        public Item build() {
+            return new Item(name, color) {{
+                cost = Builder.this.cost;
+                hardness = Builder.this.hardness;
+            }};
+        }
     }
 }

@@ -1,18 +1,20 @@
 package jp.makizakao.content;
 
 import arc.util.Time;
+import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
 import jp.makizakao.world.blocks.power.HardBattery;
 import jp.makizakao.world.blocks.power.HardPowerNode;
 import jp.makizakao.world.blocks.power.WindGenerator;
 import jp.makizakao.world.blocks.production.HardMultiCrafter;
+import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
 import mindustry.content.UnitTypes;
 import mindustry.gen.Sounds;
 import mindustry.world.Block;
 
 import static jp.makizakao.content.HardDrawMultis.SMELT_FLAME;
-import static jp.makizakao.content.HardRecipes.FURNACE_TIER_1;
+import static jp.makizakao.content.HardRecipes.*;
 
 public class HardBlocks {
     public static Block
@@ -24,8 +26,14 @@ public class HardBlocks {
     advancedWindTurbine, windTurbine,
     // power - node
     basicNode,
-    // crafter - furnace
-    copperFurnace;
+    // production - crafter - crusher
+    copperCrusher,
+    // production - crafter - dustMixer
+    copperDustMixer,
+    // production - crafter - furnace
+    copperFurnace,
+    // ore
+    galenaOre, tinyCopperOre, tinyLeadOre;
 
     public static void load() {
         // effect
@@ -72,7 +80,23 @@ public class HardBlocks {
                 .maxNodes(4)
                 .consumePower(0.04f)
                 .build();
-        // crafter - furnace
+        // production - crafter - crusher
+        copperCrusher = RotateAnimatedCrafter.create("copper-crusher", 100, 2)
+                .rotateSpeed(1f)
+                .rotateAngle(0f, 360f)
+                .requirements(HardItems.copperIngot, 60, HardItems.leadIngot, 30)
+                .resolveRecipes(CRUSHER_TIER_1)
+                .itemCapacity(10)
+                .build();
+        // production - crafter - dustMixer
+        copperDustMixer = RotateAnimatedCrafter.create("copper-dust-mixer", 100, 2)
+                .rotateSpeed(1f)
+                .rotateAngle(0f, 360f)
+                .requirements(HardItems.copperIngot, 30, HardItems.leadIngot, 10)
+                .resolveRecipes(DUST_MIXER_TIER_1)
+                .itemCapacity(10)
+                .build();
+        // production - crafter - furnace
         copperFurnace = HardMultiCrafter.create("copper-furnace", 100, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
                 .resolveRecipes(FURNACE_TIER_1)
@@ -80,5 +104,9 @@ public class HardBlocks {
                 .ambientSound(Sounds.smelter, 0.7f)
                 .drawer(SMELT_FLAME)
                 .build();
+        // ore
+        tinyCopperOre = OreBlockBuilder.create("tiny-copper-ore", HardItems.copperDust).build();
+        tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
+        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
     }
 }
