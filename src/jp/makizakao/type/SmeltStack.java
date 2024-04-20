@@ -38,13 +38,13 @@ public class SmeltStack {
 
 
     public static final List<SmeltStack> SMELT_TIER_1 = Arrays.asList(
-            new SmeltStack(new ItemStack(HardItems.copperDust, 1),
+            new SmeltStack(new ItemStack(HardItems.copperDust, 2),
                     new ItemStack(HardItems.copperIngot, 1), Time.toSeconds * 3),
             new SmeltStack(new ItemStack(HardItems.leadDust, 1),
-                    new ItemStack(HardItems.leadIngot, 1), Time.toSeconds * 3));
+                    new ItemStack(HardItems.leadIngot, 2), Time.toSeconds * 3));
     public static final List<SmeltStack> SMELT_TIER_2 = Arrays.asList(
-            new SmeltStack(new ItemStack(HardItems.copperDust, 1),
-                    new ItemStack(HardItems.copperIngot, 1), Time.toSeconds),
+            new SmeltStack(new ItemStack(HardItems.copperDust, 2),
+                    new ItemStack(HardItems.copperIngot, 2), Time.toSeconds),
             new SmeltStack(new ItemStack(HardItems.leadDust, 1),
                     new ItemStack(HardItems.leadIngot, 1), Time.toSeconds));
 }

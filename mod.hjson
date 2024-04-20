@@ -19,3 +19,5 @@ minGameVersion: 146
 
 # this is a java mod
 java: true
+
+dependencies: ["multi-crafter"]

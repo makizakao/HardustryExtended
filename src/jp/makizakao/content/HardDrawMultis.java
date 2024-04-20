@@ -1,0 +1,10 @@
+package jp.makizakao.content;
+
+import arc.graphics.Color;
+import mindustry.world.draw.DrawDefault;
+import mindustry.world.draw.DrawFlame;
+import mindustry.world.draw.DrawMulti;
+
+public class HardDrawMultis {
+    public static final DrawMulti SMELT_FLAME = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffc099")));
+}

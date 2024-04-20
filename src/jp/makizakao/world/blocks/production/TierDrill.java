@@ -15,7 +15,7 @@ public class TierDrill extends Drill {
 
     private TierDrill(Builder builder) {
         super(builder.name);
-        requirements(Category.production, builder.stacks);
+        requirements(Category.production, builder.requirements);
         health = builder.health;
         size = builder.size;
         tier = builder.tier;
@@ -39,7 +39,7 @@ public class TierDrill extends Drill {
         private final int health;
         private final int size;
         private final int tier;
-        private ItemStack[] stacks;
+        private ItemStack[] requirements;
         private int drillTime = 3600;
         private int itemCapacity = 10;
         private boolean hasPower = false;
@@ -68,14 +68,14 @@ public class TierDrill extends Drill {
             return this;
         }
 
-        public Builder requirements(ItemStack[] stacks) {
-            this.stacks = stacks;
+        public Builder requirements(Object... stacks) {
+            this.requirements = ItemStack.with(stacks);
             return this;
         }
 
         public Drill build() {
-            if(name == null) throw new IllegalArgumentException("name must be set.");
-            if(stacks == null) throw new IllegalArgumentException("requirements must be set.");
+            if(name == null) throw new IllegalArgumentException("Name must be set.");
+            if(requirements == null) throw new IllegalArgumentException("Requirements must be set.");
             return new TierDrill(this);
         }
     }

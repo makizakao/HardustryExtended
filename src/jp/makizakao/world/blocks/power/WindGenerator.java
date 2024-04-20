@@ -2,7 +2,6 @@ package jp.makizakao.world.blocks.power;
 
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
-import arc.math.Rand;
 import arc.util.Time;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -21,7 +20,7 @@ public class WindGenerator extends RotateGenerator {
     // Builder用のコンストラクタ
     private WindGenerator(Builder builder) {
         super(builder.name);
-        requirements(Category.power, builder.stacks);
+        requirements(Category.power, builder.requirements);
         health = builder.health;
         size = builder.size;
         powerProduction = builder.powerProduction;
@@ -44,13 +43,12 @@ public class WindGenerator extends RotateGenerator {
 
     public class WindGeneratorBuild extends RotateGeneratorBuild {
         private float powerDuration = -1f;
-        private final Rand rand = new Rand();
 
         @Override
         public void updateTile() {
             if(powerDuration < 0) {
-                powerDuration = Mathf.lerp(minPowerDuration, maxPowerDuration, rand.nextFloat());
-                productionEfficiency = Mathf.lerp(minEfficiency, maxEfficiency, rand.nextFloat());
+                powerDuration = Mathf.lerp(minPowerDuration, maxPowerDuration, Mathf.random());
+                productionEfficiency = Mathf.lerp(minEfficiency, maxEfficiency, Mathf.random());
             }
             powerDuration -= delta();
             progress = progress % 360 + rotateSpeed * delta();
@@ -75,7 +73,7 @@ public class WindGenerator extends RotateGenerator {
         private float minPowerDuration = Time.toMinutes;
         private float maxPowerDuration = Time.toMinutes * 5;
         private float rotateSpeed = 1f;
-        private ItemStack[] stacks;
+        private ItemStack[] requirements;
 
         private Builder(String name, int health, int size) {
             this.name = name;
@@ -95,7 +93,7 @@ public class WindGenerator extends RotateGenerator {
         }
 
         public Builder requirements(Object... stacks) {
-            this.stacks = ItemStack.with(stacks);
+            this.requirements = ItemStack.with(stacks);
             return this;
         }
 
@@ -111,8 +109,8 @@ public class WindGenerator extends RotateGenerator {
         }
 
         public WindGenerator build() {
-            if(name == null) throw new IllegalStateException("name must be set");
-            if(stacks == null) throw new IllegalStateException("requirements must be set");
+            if(name == null) throw new IllegalStateException("Name must be set");
+            if(requirements == null) throw new IllegalStateException("Requirements must be set");
             return new WindGenerator(this);
         }
     }

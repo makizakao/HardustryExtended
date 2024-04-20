@@ -27,9 +27,9 @@ public class HardCoreBlock extends CoreBlock {
     private HardCoreBlock(Builder builder) {
         super(builder.name);
         if(builder.buildVisibility) {
-            requirements(Category.effect, BuildVisibility.editorOnly, builder.stacks);
+            requirements(Category.effect, BuildVisibility.editorOnly, builder.requirements);
         } else {
-            requirements(Category.effect, builder.stacks);
+            requirements(Category.effect, builder.requirements);
         }
 
         alwaysUnlocked = builder.alwaysUnlocked;
@@ -96,7 +96,7 @@ public class HardCoreBlock extends CoreBlock {
         private final int itemCapacity;
         private final int size;
         private boolean buildVisibility = false;
-        private ItemStack[] stacks;
+        private ItemStack[] requirements;
         private boolean alwaysUnlocked = false;
         private boolean isFirstTier = false;
         private UnitType unitType;
@@ -116,7 +116,7 @@ public class HardCoreBlock extends CoreBlock {
         }
 
         public Builder requirements(Object... stacks) {
-            this.stacks = ItemStack.with(stacks);
+            this.requirements = ItemStack.with(stacks);
             return this;
         }
 
@@ -146,9 +146,9 @@ public class HardCoreBlock extends CoreBlock {
         }
 
         public HardCoreBlock build() {
-            if(name == null) throw new IllegalStateException("name must be set");
-            if(stacks == null) throw new IllegalStateException("requirements must be set");
-            if(unitType == null) throw new IllegalStateException("unitType must be set");
+            if(name == null) throw new IllegalStateException("Name must be set");
+            if(requirements == null) throw new IllegalStateException("Requirements must be set");
+            if(unitType == null) throw new IllegalStateException("UnitType must be set");
             return new HardCoreBlock(this);
         }
     }
