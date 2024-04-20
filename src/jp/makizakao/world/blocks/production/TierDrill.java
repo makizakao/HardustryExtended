@@ -6,6 +6,8 @@ import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.production.Drill;
 
+import java.util.Objects;
+
 public class TierDrill extends Drill {
     protected float hardnessDrillMultiplier = 1.5f;
 
@@ -74,8 +76,8 @@ public class TierDrill extends Drill {
         }
 
         public Drill build() {
-            if(name == null) throw new IllegalArgumentException("Name must be set.");
-            if(requirements == null) throw new IllegalArgumentException("Requirements must be set.");
+            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set.");
+            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set.");
             return new TierDrill(this);
         }
     }

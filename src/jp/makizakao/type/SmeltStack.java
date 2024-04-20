@@ -1,11 +1,12 @@
 package jp.makizakao.type;
 
+import arc.struct.Seq;
 import arc.util.Time;
 import jp.makizakao.content.HardItems;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.Objects;
 
 public class SmeltStack {
     private final ItemStack material;
@@ -13,7 +14,7 @@ public class SmeltStack {
     private final float smeltTime;
     private float timeSmelted = 0;
 
-    public SmeltStack(ItemStack material, ItemStack product, float smeltTime) {
+    private SmeltStack(ItemStack material, ItemStack product, float smeltTime) {
         this.material = material;
         this.product = product;
         this.smeltTime = smeltTime;
@@ -37,14 +38,50 @@ public class SmeltStack {
     }
 
 
-    public static final List<SmeltStack> SMELT_TIER_1 = Arrays.asList(
-            new SmeltStack(new ItemStack(HardItems.copperDust, 2),
-                    new ItemStack(HardItems.copperIngot, 1), Time.toSeconds * 3),
-            new SmeltStack(new ItemStack(HardItems.leadDust, 1),
-                    new ItemStack(HardItems.leadIngot, 2), Time.toSeconds * 3));
-    public static final List<SmeltStack> SMELT_TIER_2 = Arrays.asList(
-            new SmeltStack(new ItemStack(HardItems.copperDust, 2),
-                    new ItemStack(HardItems.copperIngot, 2), Time.toSeconds),
-            new SmeltStack(new ItemStack(HardItems.leadDust, 1),
-                    new ItemStack(HardItems.leadIngot, 1), Time.toSeconds));
+    public static final Seq<SmeltStack> SMELT_TIER_1 = Seq.with(
+            new Builder().material(HardItems.copperDust, 2)
+                    .product(HardItems.copperIngot, 1)
+                    .smeltTime(Time.toSeconds * 3)
+                    .build(),
+            new Builder().material(HardItems.leadDust, 2)
+                    .product(HardItems.leadIngot, 1)
+                    .smeltTime(Time.toSeconds * 3)
+                    .build());
+    public static final Seq<SmeltStack> SMELT_TIER_2 = Seq.with(
+            new Builder().material(HardItems.copperDust, 2)
+                    .product(HardItems.copperIngot, 1)
+                    .smeltTime(Time.toSeconds)
+                    .build(),
+            new Builder().material(HardItems.leadDust, 2)
+                    .product(HardItems.leadIngot, 1)
+                    .smeltTime(Time.toSeconds)
+                    .build());
+
+    private static class Builder {
+        private ItemStack material;
+        private ItemStack product;
+        private float smeltTime = 0;
+
+        public Builder material(Item item, int amount) {
+            this.material = new ItemStack(item, amount);
+            return this;
+        }
+
+        public Builder product(Item item, int amount) {
+            this.product = new ItemStack(item, amount);
+            return this;
+        }
+
+        public Builder smeltTime(float smeltTime) {
+            this.smeltTime = smeltTime;
+            return this;
+        }
+
+        public SmeltStack build() {
+            if(Objects.isNull(material)) throw new IllegalStateException("Material must be set.");
+            if(Objects.isNull(product)) throw new IllegalStateException("Product must be set.");
+            if(smeltTime <= 0) throw new IllegalStateException("Smelt time must be greater than 0.");
+            return new SmeltStack(material, product, smeltTime);
+        }
+    }
 }

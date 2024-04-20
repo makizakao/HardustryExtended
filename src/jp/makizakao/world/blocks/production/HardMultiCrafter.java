@@ -9,12 +9,14 @@ import mindustry.world.draw.DrawMulti;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
 
+import java.util.Objects;
+
 public class HardMultiCrafter extends MultiCrafter {
-    private HardMultiCrafter(String name) {
+    protected HardMultiCrafter(String name) {
         super(name);
     }
 
-    private HardMultiCrafter(Builder builder) {
+    protected HardMultiCrafter(Builder builder) {
         super(builder.name);
         requirements(Category.crafting, builder.requirements);
         this.health = builder.health;
@@ -55,8 +57,8 @@ public class HardMultiCrafter extends MultiCrafter {
 
     public static class Builder {
         private final String name;
-        private final int health;
         private final int size;
+        private final int health;
         private ItemStack[] requirements;
         private Seq<Recipe> recipes;
         private DrawMulti drawer;
@@ -64,7 +66,7 @@ public class HardMultiCrafter extends MultiCrafter {
         private float ambientSoundVolume = 0f;
         private int itemCapacity = 10;
 
-        private Builder(String name, int health, int size) {
+        protected Builder(String name, int health, int size) {
             this.name = name;
             this.health = health;
             this.size = size;
@@ -97,9 +99,9 @@ public class HardMultiCrafter extends MultiCrafter {
         }
 
         public HardMultiCrafter build() {
-            if(name == null) throw new IllegalArgumentException("Name must be set");
-            if(requirements == null) throw new IllegalArgumentException("Requirements must be set");
-            if(recipes == null) throw new IllegalArgumentException("Recipes must be set");
+            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
+            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set");
+            if(Objects.isNull(recipes)) throw new IllegalArgumentException("Recipes must be set");
             return new HardMultiCrafter(this);
         }
     }

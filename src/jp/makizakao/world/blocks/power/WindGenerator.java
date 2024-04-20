@@ -6,6 +6,8 @@ import arc.util.Time;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 
+import java.util.Objects;
+
 public class WindGenerator extends RotateGenerator {
     private float minEfficiency = 1f;
     private float maxEfficiency = 1f;
@@ -51,7 +53,7 @@ public class WindGenerator extends RotateGenerator {
                 productionEfficiency = Mathf.lerp(minEfficiency, maxEfficiency, Mathf.random());
             }
             powerDuration -= delta();
-            progress = progress % 360 + rotateSpeed * delta();
+            progress = (progress + rotateSpeed * productionEfficiency * delta()) % 360;
         }
 
 
@@ -109,8 +111,8 @@ public class WindGenerator extends RotateGenerator {
         }
 
         public WindGenerator build() {
-            if(name == null) throw new IllegalStateException("Name must be set");
-            if(requirements == null) throw new IllegalStateException("Requirements must be set");
+            if(Objects.isNull(name)) throw new IllegalStateException("Name must be set");
+            if(Objects.isNull(requirements)) throw new IllegalStateException("Requirements must be set");
             return new WindGenerator(this);
         }
     }

@@ -1,6 +1,7 @@
 package jp.makizakao.world.blocks.storage;
 
 import arc.graphics.g2d.TextureRegion;
+import arc.struct.Seq;
 import jp.makizakao.type.SmeltStack;
 import mindustry.game.Team;
 import mindustry.type.Category;
@@ -12,11 +13,12 @@ import mindustry.world.meta.BuildVisibility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static mindustry.Vars.*;
 
 public class HardCoreBlock extends CoreBlock {
-    private List<SmeltStack> smeltList;
+    private Seq<SmeltStack> smeltList;
 
     // コンストラクタは非推奨
     private HardCoreBlock(String name) {
@@ -68,7 +70,7 @@ public class HardCoreBlock extends CoreBlock {
     }
 
     public class HardCoreBuild extends CoreBuild {
-        private final List<SmeltStack> smeltList = new ArrayList<>(HardCoreBlock.this.smeltList);
+        private final Seq<SmeltStack> smeltList = new Seq<>(HardCoreBlock.this.smeltList);
         @Override
         public void updateTile() {
             super.updateTile();
@@ -101,7 +103,7 @@ public class HardCoreBlock extends CoreBlock {
         private boolean isFirstTier = false;
         private UnitType unitType;
         private int unitCapModifier = 1;
-        private List<SmeltStack> smeltList;
+        private Seq<SmeltStack> smeltList;
 
         private Builder(String name, int health, int itemCapacity, int size) {
             this.name = name;
@@ -140,15 +142,15 @@ public class HardCoreBlock extends CoreBlock {
             return this;
         }
 
-        public Builder smeltList(List<SmeltStack> smeltList) {
+        public Builder smeltList(Seq<SmeltStack> smeltList) {
             this.smeltList = smeltList;
             return this;
         }
 
         public HardCoreBlock build() {
-            if(name == null) throw new IllegalStateException("Name must be set");
-            if(requirements == null) throw new IllegalStateException("Requirements must be set");
-            if(unitType == null) throw new IllegalStateException("UnitType must be set");
+            if(Objects.isNull(name)) throw new IllegalStateException("Name must be set");
+            if(Objects.isNull(requirements)) throw new IllegalStateException("Requirements must be set");
+            if(Objects.isNull(unitType)) throw new IllegalStateException("UnitType must be set");
             return new HardCoreBlock(this);
         }
     }
