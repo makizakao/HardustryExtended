@@ -1,8 +1,10 @@
 package jp.makizakao.world.blocks.power;
 
+import arc.func.Floatf;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.power.PowerNode;
+import mindustry.world.modules.PowerModule;
 
 import java.util.Objects;
 
@@ -20,34 +22,25 @@ public class HardPowerNode extends PowerNode {
         size = builder.size;
         laserRange = builder.laserRange;
         maxNodes = builder.maxNodes;
-        consumesPower = builder.isConsumePower;
-        if(builder.isConsumePower) powerConsumeMultiplier = builder.powerConsumeMultiplier;
+        consumesPower = builder.powerConsumeMultiplier > 0f;
+        if(consumesPower) {
+            powerConsumeMultiplier = builder.powerConsumeMultiplier;
+            consumePowerDynamic(build -> build.power().graph.getPowerProduced() * powerConsumeMultiplier);
+        }
     }
 
     public static Builder create(String name, int health, int size) {
         return new Builder(name, health, size);
     }
 
-    public class HardPowerNodeBuild extends PowerNodeBuild {
-        @Override
-        public void updateTile() {
-            super.updateTile();
-            if(consumesPower) {
-                this.block.consumePower(power.graph.getPowerBalance() * powerConsumeMultiplier);
-                consume();
-            }
-        }
-    }
-
     public static class Builder {
-        public final String name;
-        public final int health;
-        public final int size;
-        public ItemStack[] requirements;
-        public float laserRange = 10f;
-        public int maxNodes = 4;
-        public float powerConsumeMultiplier = 0f;
-        public boolean isConsumePower = false;
+        private final String name;
+        private final int health;
+        private final int size;
+        private ItemStack[] requirements;
+        private float laserRange = 10f;
+        private int maxNodes = 4;
+        private float powerConsumeMultiplier = -1f;
 
         private Builder(String name, int health, int size) {
             this.name = name;
@@ -71,7 +64,6 @@ public class HardPowerNode extends PowerNode {
         }
 
         public Builder consumePower(float powerConsumeMultiplier) {
-            this.isConsumePower = true;
             this.powerConsumeMultiplier = powerConsumeMultiplier;
             return this;
         }

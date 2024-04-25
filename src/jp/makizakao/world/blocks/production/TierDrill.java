@@ -75,6 +75,7 @@ public class TierDrill extends Drill {
             return this;
         }
 
+
         public Drill build() {
             if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set.");
             if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set.");

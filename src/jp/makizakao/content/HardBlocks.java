@@ -1,27 +1,36 @@
 package jp.makizakao.content;
 
+import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
+import jp.makizakao.world.blocks.distribution.HardConveyor;
 import jp.makizakao.world.blocks.power.HardBattery;
 import jp.makizakao.world.blocks.power.HardPowerNode;
 import jp.makizakao.world.blocks.power.WindGenerator;
 import jp.makizakao.world.blocks.production.HardMultiCrafter;
 import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
+import jp.makizakao.world.blocks.production.TierDrill;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
+import mindustry.content.Blocks;
 import mindustry.content.UnitTypes;
 import mindustry.gen.Sounds;
+import mindustry.type.Category;
 import mindustry.world.Block;
 
+import static jp.makizakao.content.HardDrawMultis.HEAT_OUTPUT;
 import static jp.makizakao.content.HardDrawMultis.SMELT_FLAME;
 import static jp.makizakao.content.HardRecipes.*;
+import static mindustry.type.ItemStack.with;
 
 public class HardBlocks {
     public static Block
+    // distribution
+    copperConveyor,
     // effect
     coreBasic, coreBronze,
     // power - battery
-    basicBattery,
+    basicBattery, lowStorageBattery,
     // power - generator
     advancedWindTurbine, windTurbine,
     // power - node
@@ -32,10 +41,20 @@ public class HardBlocks {
     copperDustMixer,
     // production - crafter - furnace
     copperFurnace,
+    // production - crafter - heater
+    basicElectricHeater,
+    // production - drill
+    quarry,
     // ore
-    galenaOre, tinyCopperOre, tinyLeadOre;
+    galenaOre, sphaleriteOre, tealliteOre, tetrahedriteOre, tinyCopperOre, tinyLeadOre;
 
     public static void load() {
+        // distribution
+        copperConveyor = HardConveyor.create("copper-conveyor", 30, 0.02f, 3f)
+                .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
+                .powerConsume(0.001f)
+                .buildCostMultiplier(2f)
+                .build();
         // effect
         coreBasic = HardCoreBlock.create("core-basic", 500, 1000, 3)
                 .editorOnlyVisible(true)
@@ -56,7 +75,10 @@ public class HardBlocks {
         basicBattery = HardBattery.create("basic-battery", 80, 1)
                 .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 30)
                 .capacity(1000f)
-                .consumePower(0.04f)
+                .build();
+        lowStorageBattery = HardBattery.create("low-storage-battery", 30, 1)
+                .requirements(HardItems.copperIngot, 3, HardItems.leadIngot, 3)
+                .capacity(1f)
                 .build();
         // power - generator
         advancedWindTurbine = WindGenerator.create("advanced-wind-turbine", 100, 2)
@@ -74,7 +96,7 @@ public class HardBlocks {
                 .rotateSpeed(2f)
                 .build();
         // power - node
-        basicNode = HardPowerNode.create("basic-node", 100, 1)
+        basicNode = HardPowerNode.create("basic-node", 30, 1)
                 .requirements(HardItems.copperIngot, 5, HardItems.leadIngot, 10)
                 .laserRange(4f)
                 .maxNodes(4)
@@ -100,13 +122,29 @@ public class HardBlocks {
         copperFurnace = HardMultiCrafter.create("copper-furnace", 100, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
                 .resolveRecipes(FURNACE_TIER_1)
-                .itemCapacity(10)
-                .ambientSound(Sounds.smelter, 0.7f)
+                .itemCapacity(12)
+                .ambientSound(Sounds.smelter, 0.4f)
                 .drawer(SMELT_FLAME)
                 .build();
+        // production - crafter - heater
+        basicElectricHeater = HardMultiCrafter.create("basic-electric-heater", 30, 1)
+                .requirements(HardItems.copperIngot, 40, HardItems.leadIngot, 60)
+                .resolveRecipes(ELECTRIC_HEATER_TIER_1)
+                .drawer(HEAT_OUTPUT)
+                .build();
+        // production - drill
+        quarry = TierDrill.create("quarry", 100, 2, 2)
+                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
+                .itemCapacity(10)
+                .drillTime(3600)
+                .consumePower(0.4f)
+                .build();
         // ore
+        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
+        sphaleriteOre = OreBlockBuilder.create("sphalerite-ore", HardItems.sphalerite).build();
+        tealliteOre = OreBlockBuilder.create("teallite-ore", HardItems.teallite).build();
+        tetrahedriteOre = OreBlockBuilder.create("tetrahedrite-ore", HardItems.tetrahedrite).build();
         tinyCopperOre = OreBlockBuilder.create("tiny-copper-ore", HardItems.copperDust).build();
         tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
-        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
     }
 }

@@ -97,10 +97,10 @@ public class HardItems {
         bauxite = createOreItem("bauxite", 4, DEFAULT_COLOR);
         clay = createOreItem("clay", 0, DEFAULT_COLOR);
         diamond = createOreItem("diamond", 4, DEFAULT_COLOR);
-        galena = createOreItem("galena", 4, DEFAULT_COLOR);
+        galena = createOreItem("galena", 2, DEFAULT_COLOR);
         hematite = createOreItem("hematite", 3, DEFAULT_COLOR);
         magnetite = createOreItem("magnetite", 3, DEFAULT_COLOR);
-        nativeCopper = createOreItem("native-copper", 2, DEFAULT_COLOR);
+        nativeCopper = createOreItem("native-copper", 3, DEFAULT_COLOR);
         sphalerite = createOreItem("sphalerite", 3, DEFAULT_COLOR);
         teallite = createOreItem("teallite", 2, DEFAULT_COLOR);
         tetrahedrite = createOreItem("tetrahedrite", 2, DEFAULT_COLOR);

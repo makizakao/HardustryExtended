@@ -11,8 +11,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import static mindustry.Vars.*;

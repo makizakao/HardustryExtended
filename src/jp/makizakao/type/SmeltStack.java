@@ -41,20 +41,20 @@ public class SmeltStack {
     public static final Seq<SmeltStack> SMELT_TIER_1 = Seq.with(
             new Builder().material(HardItems.copperDust, 2)
                     .product(HardItems.copperIngot, 1)
-                    .smeltTime(Time.toSeconds * 3)
+                    .smeltTime(Time.toSeconds * 1)
                     .build(),
             new Builder().material(HardItems.leadDust, 2)
                     .product(HardItems.leadIngot, 1)
-                    .smeltTime(Time.toSeconds * 3)
+                    .smeltTime(Time.toSeconds * 1)
                     .build());
     public static final Seq<SmeltStack> SMELT_TIER_2 = Seq.with(
             new Builder().material(HardItems.copperDust, 2)
                     .product(HardItems.copperIngot, 1)
-                    .smeltTime(Time.toSeconds)
+                    .smeltTime(Time.toSeconds / 2)
                     .build(),
             new Builder().material(HardItems.leadDust, 2)
                     .product(HardItems.leadIngot, 1)
-                    .smeltTime(Time.toSeconds)
+                    .smeltTime(Time.toSeconds / 2)
                     .build());
 
     private static class Builder {
