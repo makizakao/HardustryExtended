@@ -1,6 +1,7 @@
 package jp.makizakao.world.blocks.production;
 
 import arc.audio.Sound;
+import arc.math.Mathf;
 import arc.struct.Seq;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
@@ -38,9 +39,13 @@ public class HardMultiCrafter extends MultiCrafter {
         @Override
         public void updateTile() {
             Recipe cur = this.getCurRecipe();
-            if (cur.isConsumeHeat()) {
+            if(cur.isConsumeHeat()) {
                 this.heat = this.calculateHeat(this.sideHeat);
                 if(heat < cur.maxHeat() / 2) craftingTime = 0;
+            }
+            if(cur.isOutputHeat()) {
+                heat = Mathf.approachDelta(heat, cur.output.heat * efficiency
+                        + (isConsumeHeat ? this.calculateHeat(this.sideHeat) : 0), warmupRate * delta());
             }
             super.updateTile();
         }

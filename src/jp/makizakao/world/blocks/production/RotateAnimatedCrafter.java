@@ -2,8 +2,6 @@ package jp.makizakao.world.blocks.production;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import mindustry.gen.Sounds;
-import mindustry.type.Category;
 
 import static jp.makizakao.HardustryEx.regionGetter;
 

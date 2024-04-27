@@ -163,6 +163,7 @@ public class HardRecipes {
                     if(Objects.nonNull(inputFluids)) fluids = inputFluids;
                     if(isConsumePower) power = inputPower;
                     if(isConsumeHeat) heat = inputHeat;
+
                 }};
                 output = new IOEntry() {{
                     if(Objects.nonNull(outputItems)) items = outputItems;

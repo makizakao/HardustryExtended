@@ -1,6 +1,5 @@
 package jp.makizakao.content;
 
-import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
@@ -12,16 +11,13 @@ import jp.makizakao.world.blocks.production.HardMultiCrafter;
 import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
 import jp.makizakao.world.blocks.production.TierDrill;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
-import mindustry.content.Blocks;
 import mindustry.content.UnitTypes;
 import mindustry.gen.Sounds;
-import mindustry.type.Category;
 import mindustry.world.Block;
 
 import static jp.makizakao.content.HardDrawMultis.HEAT_OUTPUT;
 import static jp.makizakao.content.HardDrawMultis.SMELT_FLAME;
 import static jp.makizakao.content.HardRecipes.*;
-import static mindustry.type.ItemStack.with;
 
 public class HardBlocks {
     public static Block
@@ -30,7 +26,7 @@ public class HardBlocks {
     // effect
     coreBasic, coreBronze,
     // power - battery
-    basicBattery, lowStorageBattery,
+    basicBattery,
     // power - generator
     advancedWindTurbine, windTurbine,
     // power - node
@@ -75,10 +71,6 @@ public class HardBlocks {
         basicBattery = HardBattery.create("basic-battery", 80, 1)
                 .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 30)
                 .capacity(1000f)
-                .build();
-        lowStorageBattery = HardBattery.create("low-storage-battery", 30, 1)
-                .requirements(HardItems.copperIngot, 3, HardItems.leadIngot, 3)
-                .capacity(1f)
                 .build();
         // power - generator
         advancedWindTurbine = WindGenerator.create("advanced-wind-turbine", 100, 2)
