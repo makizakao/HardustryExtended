@@ -9,23 +9,20 @@ import mindustry.type.ItemStack;
 import java.util.Objects;
 
 public class SmeltStack {
-    private final ItemStack material;
-    private final ItemStack product;
-    private final float smeltTime;
+    public static final SmeltStack[] empty = {};
+    public ItemStack[] material;
+    public ItemStack[] product;
+    public float smeltTime;
     private float timeSmelted = 0;
 
-    private SmeltStack(ItemStack material, ItemStack product, float smeltTime) {
+    public SmeltStack(ItemStack[] material, ItemStack[] product, float smeltTime) {
         this.material = material;
         this.product = product;
         this.smeltTime = smeltTime;
     }
 
-    public ItemStack material() {
-        return material;
-    }
-
-    public ItemStack product() {
-        return product;
+    public SmeltStack copy() {
+        return new SmeltStack(material, product, smeltTime);
     }
 
     public boolean smelted(float delta) {
@@ -58,17 +55,23 @@ public class SmeltStack {
                     .build());
 
     private static class Builder {
-        private ItemStack material;
-        private ItemStack product;
+        private ItemStack[] material;
+        private ItemStack[] product;
         private float smeltTime = 0;
 
-        public Builder material(Item item, int amount) {
-            this.material = new ItemStack(item, amount);
+        public Builder material(Object... items) {
+            material = new ItemStack[items.length / 2];
+            for(int i = 0; i < items.length; i += 2){
+                material[i / 2] = new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue());
+            }
             return this;
         }
 
-        public Builder product(Item item, int amount) {
-            this.product = new ItemStack(item, amount);
+        public Builder product(Object... items) {
+            product = new ItemStack[items.length / 2];
+            for(int i = 0; i < items.length; i += 2){
+                product[i / 2] = new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue());
+            }
             return this;
         }
 

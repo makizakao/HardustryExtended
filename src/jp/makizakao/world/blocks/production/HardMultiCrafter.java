@@ -3,6 +3,7 @@ package jp.makizakao.world.blocks.production;
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
+import jp.makizakao.type.ResultRecipe;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -12,12 +13,13 @@ import multicraft.Recipe;
 
 import java.util.Objects;
 
-public class HardMultiCrafter extends MultiCrafter {
+public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
+    public Seq<T> resolvedRecipes;
     protected HardMultiCrafter(String name) {
         super(name);
     }
 
-    protected HardMultiCrafter(Builder builder) {
+    protected HardMultiCrafter(Builder<T> builder) {
         super(builder.name);
         requirements(Category.crafting, builder.requirements);
         this.health = builder.health;
@@ -51,6 +53,23 @@ public class HardMultiCrafter extends MultiCrafter {
         }
 
         @Override
+        public void craft() {
+            if(getCurRecipe() instanceof ResultRecipe cur) {
+                consume();
+                if (cur.isOutputItem()) {
+                    for (var output : cur.output.items) for (int i = 0; i < output.amount; i++) {
+                        if(output.dropChance <= Mathf.random(1f)) offload(output.item);
+                    }
+                }
+
+                if (wasVisible) createCraftEffect();
+                if (cur.craftTime > 0f) craftingTime %= cur.craftTime;
+                else craftingTime = 0f;
+            }
+            else super.craft();
+        }
+
+        @Override
         public float getProgressIncrease(float baseTime) {
             Recipe cur = this.getCurRecipe();
             if (cur.isConsumeHeat()) {
@@ -60,12 +79,12 @@ public class HardMultiCrafter extends MultiCrafter {
         }
     }
 
-    public static class Builder {
+    public static class Builder<T extends Recipe> {
         private final String name;
         private final int size;
         private final int health;
         private ItemStack[] requirements;
-        private Seq<Recipe> recipes;
+        private Seq<T> recipes;
         private DrawMulti drawer;
         private Sound ambientSound = Sounds.none;
         private float ambientSoundVolume = 0f;
@@ -77,28 +96,28 @@ public class HardMultiCrafter extends MultiCrafter {
             this.size = size;
         }
 
-        public Builder requirements(Object... stacks) {
+        public Builder<T> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder resolveRecipes(Seq<Recipe> recipes) {
+        public Builder<T> resolveRecipes(Seq<T> recipes) {
             this.recipes = recipes;
             return this;
         }
 
-        public Builder itemCapacity(int itemCapacity) {
+        public Builder<T> itemCapacity(int itemCapacity) {
             this.itemCapacity = itemCapacity;
             return this;
         }
 
-        public Builder ambientSound(Sound sound, float volume) {
+        public Builder<T> ambientSound(Sound sound, float volume) {
             this.ambientSound = sound;
             this.ambientSoundVolume = volume;
             return this;
         }
 
-        public Builder drawer(DrawMulti drawer) {
+        public Builder<T> drawer(DrawMulti drawer) {
             this.drawer = drawer;
             return this;
         }

@@ -1,6 +1,9 @@
 package jp.makizakao.content;
 
 import arc.struct.Seq;
+import jp.makizakao.type.ResultEntry;
+import jp.makizakao.type.ResultRecipe;
+import jp.makizakao.type.ResultStack;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
@@ -10,31 +13,37 @@ import java.util.Objects;
 
 public class HardRecipes {
     // crusher
-    public static final Seq<Recipe> CRUSHER_TIER_1 = Seq.with(
+    public static final Seq<ResultRecipe> CRUSHER_TIER_1 = Seq.with(
             new Builder()
                     .inputItems(HardItems.nativeCopper, 1)
                     .inputPower(0.6f)
-                    .outputItems(HardItems.copperDust, 2)
+                    .resultItems(HardItems.copperDust, 2, 1.0f)
                     .craftTime(60f)
-                    .build(),
+                    .buildResult(),
             new Builder()
                     .inputItems(HardItems.galena, 1)
                     .inputPower(0.4f)
-                    .outputItems(HardItems.galenaDust, 2)
+                    .resultItems(HardItems.galenaDust, 2, 1.0f)
                     .craftTime(60f)
-                    .build(),
+                    .buildResult(),
             new Builder()
                     .inputItems(HardItems.teallite, 1)
-                    .inputPower(0.4f)
-                    .outputItems(HardItems.tealliteDust, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.tealliteDust, 1, 1.0f)
                     .craftTime(60f)
-                    .build(),
+                    .buildResult(),
             new Builder()
                     .inputItems(HardItems.tinIngot, 1)
                     .inputPower(0.4f)
-                    .outputItems(HardItems.tinDust, 1)
+                    .outputItems(HardItems.tinDust, 1, 1.0f)
                     .craftTime(60f)
-                    .build()
+                    .buildResult(),
+            new Builder()
+                    .inputItems(HardItems.tetrahedrite, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.copperDust, 1, 1.0f, HardItems.zincDust, 1, 0.2f)
+                    .craftTime(60f)
+                    .buildResult()
     );
     // dust mixer
     public static final Seq<Recipe> DUST_MIXER_TIER_1 = Seq.with(
@@ -101,6 +110,7 @@ public class HardRecipes {
         private Seq<LiquidStack> outputFluids;
         private float outputPower;
         private float outputHeat;
+        private Seq<ResultStack> resultItems;
         private float time = 0;
         private boolean isConsumePower = false;
         private boolean isConsumeHeat = false;
@@ -131,6 +141,11 @@ public class HardRecipes {
 
         public Builder outputItems(Object... stacks) {
             this.outputItems = Seq.with(ItemStack.with(stacks));
+            return this;
+        }
+
+        public Builder resultItems(Object... stacks) {
+            this.resultItems = Seq.with(ResultStack.with(stacks));
             return this;
         }
 
@@ -167,6 +182,24 @@ public class HardRecipes {
                 }};
                 output = new IOEntry() {{
                     if(Objects.nonNull(outputItems)) items = outputItems;
+                    if(Objects.nonNull(outputFluids)) fluids = outputFluids;
+                    if(isOutputPower) power = outputPower;
+                    if(isOutputHeat) heat = outputHeat;
+                }};
+                craftTime = time;
+            }};
+        }
+
+        public ResultRecipe buildResult() {
+            return new ResultRecipe() {{
+                input = new IOEntry() {{
+                    if(Objects.nonNull(inputItems)) items = inputItems;
+                    if(Objects.nonNull(inputFluids)) fluids = inputFluids;
+                    if(isConsumePower) power = inputPower;
+                    if(isConsumeHeat) heat = inputHeat;
+                }};
+                output = new ResultEntry() {{
+                    if(Objects.nonNull(resultItems)) items = resultItems;
                     if(Objects.nonNull(outputFluids)) fluids = outputFluids;
                     if(isOutputPower) power = outputPower;
                     if(isOutputHeat) heat = outputHeat;
