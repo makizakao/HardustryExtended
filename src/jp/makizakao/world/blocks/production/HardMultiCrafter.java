@@ -34,7 +34,7 @@ public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
     }
 
     public static Builder create(String name, int health, int size) {
-        return new Builder(name, health, size);
+        return new Builder<>(name, health, size);
     }
 
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
@@ -122,11 +122,11 @@ public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
             return this;
         }
 
-        public HardMultiCrafter build() {
+        public HardMultiCrafter<T> build() {
             if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
             if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set");
             if(Objects.isNull(recipes)) throw new IllegalArgumentException("Recipes must be set");
-            return new HardMultiCrafter(this);
+            return new HardMultiCrafter<>(this);
         }
     }
 }
