@@ -1,10 +1,7 @@
 package jp.makizakao.content;
 
 import arc.struct.Seq;
-import arc.util.Log;
-import jp.makizakao.type.ResultEntry;
 import jp.makizakao.type.ResultRecipe;
-import jp.makizakao.type.ResultStack;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
@@ -14,35 +11,40 @@ import java.util.Objects;
 
 public class HardRecipes {
     // crusher
-    public static final Seq<ResultRecipe> CRUSHER_TIER_1 = Seq.with(
+    public static final Seq<Recipe> CRUSHER_TIER_1 = Seq.with(
             new ResultBuilder()
-                    .resultItems(HardItems.copperDust, 2, 1.0f)
                     .inputItems(HardItems.nativeCopper, 1)
                     .inputPower(0.6f)
+                    .resultItems(HardItems.copperDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
-                    .resultItems(HardItems.galenaDust, 2, 1.0f)
                     .inputItems(HardItems.galena, 1)
                     .inputPower(0.4f)
+                    .resultItems(HardItems.galenaDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
-                    .resultItems(HardItems.tealliteDust, 1, 1.0f)
                     .inputItems(HardItems.teallite, 1)
                     .inputPower(0.6f)
+                    .resultItems(HardItems.tealliteDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
-                    .resultItems(HardItems.tinDust, 1, 1.0f)
                     .inputItems(HardItems.tinIngot, 1)
                     .inputPower(0.4f)
+                    .resultItems(HardItems.tinDust, 1)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
-                    .resultItems(HardItems.copperDust, 1, 1.0f, HardItems.zincDust, 1, 0.2f)
                     .inputItems(HardItems.tetrahedrite, 1)
                     .inputPower(0.6f)
+                    .resultItems(HardItems.copperDust, 2, HardItems.zincDust, 1)
+                    .dropChances(1.0f, 0.2f)
                     .craftTime(60f)
                     .build()
     );
@@ -103,19 +105,19 @@ public class HardRecipes {
     );
 
     private static class Builder {
-        protected Seq<ItemStack> inputItems;
-        protected Seq<LiquidStack> inputFluids;
-        protected float inputPower;
-        protected float inputHeat;
-        protected Seq<ItemStack> outputItems;
-        protected Seq<LiquidStack> outputFluids;
-        protected float outputPower;
-        protected float outputHeat;
-        protected float time = 0;
-        protected boolean isConsumePower = false;
-        protected boolean isConsumeHeat = false;
-        protected boolean isOutputPower = false;
-        protected boolean isOutputHeat = false;
+        private Seq<ItemStack> inputItems;
+        private Seq<LiquidStack> inputFluids;
+        private float inputPower;
+        private float inputHeat;
+        private Seq<ItemStack> outputItems;
+        private Seq<LiquidStack> outputFluids;
+        private float outputPower;
+        private float outputHeat;
+        private float time = 0;
+        private boolean isConsumePower = false;
+        private boolean isConsumeHeat = false;
+        private boolean isOutputPower = false;
+        private boolean isOutputHeat = false;
 
         public Builder inputItems(Object... stacks) {
             this.inputItems = Seq.with(ItemStack.with(stacks));
@@ -186,68 +188,76 @@ public class HardRecipes {
         }
     }
 
-    private static class ResultBuilder extends Builder {
-        protected Seq<ResultStack> resultItems;
+    private static class ResultBuilder {
+        private Seq<ItemStack> inputItems;
+        private Seq<LiquidStack> inputFluids;
+        private float inputPower;
+        private float inputHeat;
+        private Seq<ItemStack> resultItems;
+        private float[] dropChances;
+        private Seq<LiquidStack> outputFluids;
+        private float outputPower;
+        private float outputHeat;
+        private float time = 0;
+        private boolean isConsumePower = false;
+        private boolean isConsumeHeat = false;
+        private boolean isOutputPower = false;
+        private boolean isOutputHeat = false;
+
+        public ResultBuilder inputItems(Object... stacks) {
+            this.inputItems = Seq.with(ItemStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder inputFluids(Object... stacks) {
+            this.inputFluids = Seq.with(LiquidStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder inputPower(float inputPower) {
+            this.isConsumePower = true;
+            this.inputPower = inputPower;
+            return this;
+        }
+
+        public ResultBuilder inputHeat(float inputHeat) {
+            this.isConsumeHeat = true;
+            this.inputHeat = inputHeat;
+            return this;
+        }
 
         public ResultBuilder resultItems(Object... stacks) {
-            resultItems = Seq.with(ResultStack.with(stacks));
+            this.resultItems = Seq.with(ItemStack.with(stacks));
             return this;
         }
 
-        @Override
-        public ResultBuilder craftTime(float craftTime) {
-            super.craftTime(craftTime);
+        public ResultBuilder dropChances(float... chances) {
+            this.dropChances = chances;
             return this;
         }
 
-        @Override
-        public ResultBuilder inputFluids(Object... stacks) {
-            super.inputFluids(stacks);
-            return this;
-        }
-
-        @Override
-        public ResultBuilder inputHeat(float inputHeat) {
-            super.inputHeat(inputHeat);
-            return this;
-        }
-
-        @Override
-        public ResultBuilder inputItems(Object... stacks) {
-            super.inputItems(stacks);
-            return this;
-        }
-
-        @Override
-        public ResultBuilder inputPower(float inputPower) {
-            super.inputPower(inputPower);
-            return this;
-        }
-
-        @Override
         public ResultBuilder outputFluids(Object... stacks) {
-            super.outputFluids(stacks);
+            this.outputFluids = Seq.with(LiquidStack.with(stacks));
             return this;
         }
 
-        @Override
-        public ResultBuilder outputHeat(float outputHeat) {
-            super.outputHeat(outputHeat);
-            return this;
-        }
-
-        @Override
-        public Builder outputItems(Object... stacks) {
-            return this;
-        }
-
-        @Override
         public ResultBuilder outputPower(float outputPower) {
-            super.outputPower(outputPower);
+            this.isOutputPower = true;
+            this.outputPower = outputPower;
             return this;
         }
 
-        @Override
+        public ResultBuilder outputHeat(float outputHeat) {
+            this.isOutputHeat = true;
+            this.outputHeat = outputHeat;
+            return this;
+        }
+
+        public ResultBuilder craftTime(float craftTime) {
+            this.time = craftTime;
+            return this;
+        }
+
         public ResultRecipe build() {
             return new ResultRecipe() {{
                 input = new IOEntry() {{
@@ -255,13 +265,15 @@ public class HardRecipes {
                     if(Objects.nonNull(inputFluids)) fluids = inputFluids;
                     if(isConsumePower) power = inputPower;
                     if(isConsumeHeat) heat = inputHeat;
+
                 }};
-                output = new ResultEntry() {{
+                output = new IOEntry() {{
                     if(Objects.nonNull(resultItems)) items = resultItems;
-                    if(Objects.nonNull(outputFluids)) fluids = inputFluids;
+                    if(Objects.nonNull(outputFluids)) fluids = outputFluids;
                     if(isOutputPower) power = outputPower;
                     if(isOutputHeat) heat = outputHeat;
                 }};
+                dropChances = ResultBuilder.this.dropChances;
                 craftTime = time;
             }};
         }

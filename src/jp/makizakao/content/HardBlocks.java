@@ -101,7 +101,7 @@ public class HardBlocks {
                 .rotateSpeed(1f)
                 .rotateAngle(0f, 360f)
                 .requirements(HardItems.copperIngot, 60, HardItems.leadIngot, 30)
-                .resolveRecipes(DUST_MIXER_TIER_1)
+                .resolveRecipes(CRUSHER_TIER_1)
                 .itemCapacity(10)
                 .build();
         // production - crafter - dustMixer
