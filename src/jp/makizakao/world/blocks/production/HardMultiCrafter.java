@@ -3,10 +3,15 @@ package jp.makizakao.world.blocks.production;
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
+import arc.util.Log;
+import arc.util.Nullable;
+import jp.makizakao.content.HardItems;
+import jp.makizakao.type.ResultRecipe;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.draw.DrawMulti;
+import multicraft.IOEntry;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
 
@@ -48,6 +53,23 @@ public class HardMultiCrafter extends MultiCrafter {
                         + (isConsumeHeat ? this.calculateHeat(this.sideHeat) : 0), warmupRate * delta());
             }
             super.updateTile();
+        }
+
+        @Override
+        public void craft() {
+            if(getCurRecipe() instanceof ResultRecipe cur) {
+                consume();
+                if (cur.isOutputItem()) {
+                    for (var output : cur.output.items) for (int i = 0; i < output.amount; i++) {
+                        if(output.dropChance <= Mathf.random(1f)) offload(output.item);
+                    }
+                }
+
+                if (wasVisible) createCraftEffect();
+                if (cur.craftTime > 0f) craftingTime %= cur.craftTime;
+                else craftingTime = 0f;
+            }
+            else super.craft();
         }
 
         @Override

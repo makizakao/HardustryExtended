@@ -1,6 +1,9 @@
 package jp.makizakao.content;
 
 import arc.struct.Seq;
+import jp.makizakao.type.ResultEntry;
+import jp.makizakao.type.ResultRecipe;
+import jp.makizakao.type.ResultStack;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
@@ -167,6 +170,90 @@ public class HardRecipes {
                 }};
                 output = new IOEntry() {{
                     if(Objects.nonNull(outputItems)) items = outputItems;
+                    if(Objects.nonNull(outputFluids)) fluids = outputFluids;
+                    if(isOutputPower) power = outputPower;
+                    if(isOutputHeat) heat = outputHeat;
+                }};
+                craftTime = time;
+            }};
+        }
+    }
+
+    private static class ResultBuilder {
+        private Seq<ItemStack> inputItems;
+        private Seq<LiquidStack> inputFluids;
+        private float inputPower;
+        private float inputHeat;
+        private Seq<ResultStack> resultItems;
+        private Seq<LiquidStack> outputFluids;
+        private float outputPower;
+        private float outputHeat;
+        private float time = 0;
+        private boolean isConsumePower = false;
+        private boolean isConsumeHeat = false;
+        private boolean isOutputPower = false;
+        private boolean isOutputHeat = false;
+
+        public ResultBuilder inputItems(Object... stacks) {
+            this.inputItems = Seq.with(ItemStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder inputFluids(Object... stacks) {
+            this.inputFluids = Seq.with(LiquidStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder inputPower(float inputPower) {
+            this.isConsumePower = true;
+            this.inputPower = inputPower;
+            return this;
+        }
+
+        public ResultBuilder inputHeat(float inputHeat) {
+            this.isConsumeHeat = true;
+            this.inputHeat = inputHeat;
+            return this;
+        }
+
+        public ResultBuilder resultItems(Object... stacks) {
+            this.resultItems = Seq.with(ResultStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder outputFluids(Object... stacks) {
+            this.outputFluids = Seq.with(LiquidStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder outputPower(float outputPower) {
+            this.isOutputPower = true;
+            this.outputPower = outputPower;
+            return this;
+        }
+
+        public ResultBuilder outputHeat(float outputHeat) {
+            this.isOutputHeat = true;
+            this.outputHeat = outputHeat;
+            return this;
+        }
+
+        public ResultBuilder craftTime(float craftTime) {
+            this.time = craftTime;
+            return this;
+        }
+
+        public ResultRecipe build() {
+            return new ResultRecipe() {{
+                input = new IOEntry() {{
+                    if(Objects.nonNull(inputItems)) items = inputItems;
+                    if(Objects.nonNull(inputFluids)) fluids = inputFluids;
+                    if(isConsumePower) power = inputPower;
+                    if(isConsumeHeat) heat = inputHeat;
+
+                }};
+                output = new ResultEntry() {{
+                    if(Objects.nonNull(resultItems)) items = resultItems;
                     if(Objects.nonNull(outputFluids)) fluids = outputFluids;
                     if(isOutputPower) power = outputPower;
                     if(isOutputHeat) heat = outputHeat;
