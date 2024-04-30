@@ -3,23 +3,18 @@ package jp.makizakao.world.blocks.production;
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
-import arc.util.Log;
-import arc.util.Nullable;
-import jp.makizakao.content.HardItems;
 import jp.makizakao.type.ResultRecipe;
+import mindustry.Vars;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.draw.DrawMulti;
-import multicraft.IOEntry;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
 
 import java.util.Objects;
 
 public class HardMultiCrafter extends MultiCrafter {
-    @Nullable
-    public Seq<? extends Recipe> resolvedRecipes;
     protected HardMultiCrafter(String name) {
         super(name);
     }
@@ -42,16 +37,6 @@ public class HardMultiCrafter extends MultiCrafter {
         return new Builder(name, health, size);
     }
 
-    @Override
-    public void init() {
-        super.init();
-    }
-
-    @Override
-    public void drawOverlay(float x, float y, int rotation) {
-        super.drawOverlay(x, y, rotation);
-    }
-
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
         @Override
         public void updateTile() {
@@ -71,9 +56,13 @@ public class HardMultiCrafter extends MultiCrafter {
         public void craft() {
             if(getCurRecipe() instanceof ResultRecipe cur) {
                 consume();
+                var items = cur.output.items;
                 if (cur.isOutputItem()) {
-                    for (var output : cur.output.items) for (int i = 0; i < output.amount; i++) {
-                        if(output.dropChance <= Mathf.random(1f)) offload(output.item);
+                    Vars.ui.hudfrag.showToast(String.valueOf(cur.dropChances[0]));
+                    for (int i = 0; i < items.size; i++) for (int j = 0; j < items.get(i).amount; j++) {
+                        if(Mathf.random() <= cur.dropChances[i]) {
+                            offload(items.get(i).item);
+                        }
                     }
                 }
 
