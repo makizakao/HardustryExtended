@@ -5,11 +5,13 @@ import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Log;
 import arc.util.Nullable;
+import jp.makizakao.content.HardItems;
 import jp.makizakao.type.ResultRecipe;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.draw.DrawMulti;
+import multicraft.IOEntry;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
 
@@ -97,7 +99,7 @@ public class HardMultiCrafter extends MultiCrafter {
         private final int size;
         private final int health;
         private ItemStack[] requirements;
-        private Seq<? extends Recipe> recipes;
+        private Seq<Recipe> recipes;
         private DrawMulti drawer;
         private Sound ambientSound = Sounds.none;
         private float ambientSoundVolume = 0f;
@@ -114,7 +116,7 @@ public class HardMultiCrafter extends MultiCrafter {
             return this;
         }
 
-        public Builder resolveRecipes(Seq<? extends Recipe> recipes) {
+        public Builder resolveRecipes(Seq<Recipe> recipes) {
             this.recipes = recipes;
             return this;
         }
