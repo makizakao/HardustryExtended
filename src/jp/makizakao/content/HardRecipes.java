@@ -1,9 +1,7 @@
 package jp.makizakao.content;
 
 import arc.struct.Seq;
-import jp.makizakao.type.ResultEntry;
 import jp.makizakao.type.ResultRecipe;
-import jp.makizakao.type.ResultStack;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
@@ -14,28 +12,39 @@ import java.util.Objects;
 public class HardRecipes {
     // crusher
     public static final Seq<Recipe> CRUSHER_TIER_1 = Seq.with(
-            new Builder()
+            new ResultBuilder()
                     .inputItems(HardItems.nativeCopper, 1)
                     .inputPower(0.6f)
-                    .outputItems(HardItems.copperDust, 2)
+                    .resultItems(HardItems.copperDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
-            new Builder()
+            new ResultBuilder()
                     .inputItems(HardItems.galena, 1)
                     .inputPower(0.4f)
-                    .outputItems(HardItems.galenaDust, 2)
+                    .resultItems(HardItems.galenaDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
-            new Builder()
+            new ResultBuilder()
                     .inputItems(HardItems.teallite, 1)
-                    .inputPower(0.4f)
-                    .outputItems(HardItems.tealliteDust, 1)
+                    .inputPower(0.6f)
+                    .resultItems(HardItems.tealliteDust, 2)
+                    .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
-            new Builder()
+            new ResultBuilder()
                     .inputItems(HardItems.tinIngot, 1)
                     .inputPower(0.4f)
-                    .outputItems(HardItems.tinDust, 1)
+                    .resultItems(HardItems.tinDust, 1)
+                    .dropChances(1.0f)
+                    .craftTime(60f)
+                    .build(),
+            new ResultBuilder()
+                    .inputItems(HardItems.tetrahedrite, 1)
+                    .inputPower(0.6f)
+                    .resultItems(HardItems.copperDust, 2, HardItems.zincDust, 1)
+                    .dropChances(1.0f, 0.2f)
                     .craftTime(60f)
                     .build()
     );
@@ -184,7 +193,8 @@ public class HardRecipes {
         private Seq<LiquidStack> inputFluids;
         private float inputPower;
         private float inputHeat;
-        private Seq<ResultStack> resultItems;
+        private Seq<ItemStack> resultItems;
+        private float[] dropChances;
         private Seq<LiquidStack> outputFluids;
         private float outputPower;
         private float outputHeat;
@@ -217,7 +227,12 @@ public class HardRecipes {
         }
 
         public ResultBuilder resultItems(Object... stacks) {
-            this.resultItems = Seq.with(ResultStack.with(stacks));
+            this.resultItems = Seq.with(ItemStack.with(stacks));
+            return this;
+        }
+
+        public ResultBuilder dropChances(float... chances) {
+            this.dropChances = chances;
             return this;
         }
 
@@ -252,12 +267,13 @@ public class HardRecipes {
                     if(isConsumeHeat) heat = inputHeat;
 
                 }};
-                output = new ResultEntry() {{
+                output = new IOEntry() {{
                     if(Objects.nonNull(resultItems)) items = resultItems;
                     if(Objects.nonNull(outputFluids)) fluids = outputFluids;
                     if(isOutputPower) power = outputPower;
                     if(isOutputHeat) heat = outputHeat;
                 }};
+                dropChances = ResultBuilder.this.dropChances;
                 craftTime = time;
             }};
         }
