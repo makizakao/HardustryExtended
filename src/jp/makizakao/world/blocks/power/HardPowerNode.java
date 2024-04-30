@@ -1,10 +1,8 @@
 package jp.makizakao.world.blocks.power;
 
-import arc.func.Floatf;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.power.PowerNode;
-import mindustry.world.modules.PowerModule;
 
 import java.util.Objects;
 
