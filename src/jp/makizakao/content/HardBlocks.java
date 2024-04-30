@@ -1,5 +1,6 @@
 package jp.makizakao.content;
 
+import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;

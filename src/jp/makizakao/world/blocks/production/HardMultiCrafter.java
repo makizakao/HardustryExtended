@@ -3,6 +3,8 @@ package jp.makizakao.world.blocks.production;
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
+import arc.util.Log;
+import arc.util.Nullable;
 import jp.makizakao.type.ResultRecipe;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
@@ -13,13 +15,14 @@ import multicraft.Recipe;
 
 import java.util.Objects;
 
-public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
-    public Seq<T> resolvedRecipes;
+public class HardMultiCrafter extends MultiCrafter {
+    @Nullable
+    public Seq<? extends Recipe> resolvedRecipes;
     protected HardMultiCrafter(String name) {
         super(name);
     }
 
-    protected HardMultiCrafter(Builder<T> builder) {
+    protected HardMultiCrafter(Builder builder) {
         super(builder.name);
         requirements(Category.crafting, builder.requirements);
         this.health = builder.health;
@@ -34,7 +37,17 @@ public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
     }
 
     public static Builder create(String name, int health, int size) {
-        return new Builder<>(name, health, size);
+        return new Builder(name, health, size);
+    }
+
+    @Override
+    public void init() {
+        super.init();
+    }
+
+    @Override
+    public void drawOverlay(float x, float y, int rotation) {
+        super.drawOverlay(x, y, rotation);
     }
 
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
@@ -79,12 +92,12 @@ public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
         }
     }
 
-    public static class Builder<T extends Recipe> {
+    public static class Builder {
         private final String name;
         private final int size;
         private final int health;
         private ItemStack[] requirements;
-        private Seq<T> recipes;
+        private Seq<? extends Recipe> recipes;
         private DrawMulti drawer;
         private Sound ambientSound = Sounds.none;
         private float ambientSoundVolume = 0f;
@@ -96,37 +109,37 @@ public class HardMultiCrafter<T extends Recipe> extends MultiCrafter {
             this.size = size;
         }
 
-        public Builder<T> requirements(Object... stacks) {
+        public Builder requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder<T> resolveRecipes(Seq<T> recipes) {
+        public Builder resolveRecipes(Seq<? extends Recipe> recipes) {
             this.recipes = recipes;
             return this;
         }
 
-        public Builder<T> itemCapacity(int itemCapacity) {
+        public Builder itemCapacity(int itemCapacity) {
             this.itemCapacity = itemCapacity;
             return this;
         }
 
-        public Builder<T> ambientSound(Sound sound, float volume) {
+        public Builder ambientSound(Sound sound, float volume) {
             this.ambientSound = sound;
             this.ambientSoundVolume = volume;
             return this;
         }
 
-        public Builder<T> drawer(DrawMulti drawer) {
+        public Builder drawer(DrawMulti drawer) {
             this.drawer = drawer;
             return this;
         }
 
-        public HardMultiCrafter<T> build() {
+        public HardMultiCrafter build() {
             if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
             if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set");
             if(Objects.isNull(recipes)) throw new IllegalArgumentException("Recipes must be set");
-            return new HardMultiCrafter<>(this);
+            return new HardMultiCrafter(this);
         }
     }
 }

@@ -80,7 +80,7 @@ public class HardCoreBlock extends CoreBlock {
         }
 
         private void smelt() {
-            for(SmeltStack stack : smeltList) {
+            for(var stack : smeltList) {
                 if(items.has(stack.material)) {
                     if(stack.smelted(delta())) {
                         items.remove(stack.material);
