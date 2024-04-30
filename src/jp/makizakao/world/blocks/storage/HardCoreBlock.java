@@ -11,6 +11,7 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static mindustry.Vars.*;
@@ -68,7 +69,7 @@ public class HardCoreBlock extends CoreBlock {
     }
 
     public class HardCoreBuild extends CoreBuild {
-        private final Seq<SmeltStack> smeltList = new Seq<>(HardCoreBlock.this.smeltList);
+        private final Seq<SmeltStack> smeltList = HardCoreBlock.this.smeltList.copy();
         @Override
         public void updateTile() {
             super.updateTile();
@@ -79,11 +80,12 @@ public class HardCoreBlock extends CoreBlock {
         }
 
         private void smelt() {
-            for(SmeltStack stack : smeltList) {
-                if(items.has(stack.material().item, stack.material().amount)) {
+            for(var stack : smeltList) {
+                if(items.has(stack.material)) {
                     if(stack.smelted(delta())) {
-                        items.remove(stack.material().item, stack.material().amount);
-                        items.add(stack.product().item, stack.product().amount);
+                        items.remove(stack.material);
+                        Arrays.stream(stack.product)
+                                .forEach(s -> items.add(s.item, s.amount));
                     }
                 }
             }

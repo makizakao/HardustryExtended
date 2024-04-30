@@ -32,7 +32,7 @@ public class DefaultBlocks {
         Blocks.underflowGate.consumesPower = true;
         Blocks.underflowGate.consumePower(0.04f);
         // unloader
-        Blocks.unloader.requirements(Category.effect, with(HardItems.copperIngot, 4, HardItems.leadIngot, 2));
+        Blocks.unloader.requirements(Category.effect, with(HardItems.copperIngot, 10, HardItems.leadIngot, 20));
         Blocks.unloader.consumesPower = true;
         Blocks.unloader.consumePower(0.1f);
     }
