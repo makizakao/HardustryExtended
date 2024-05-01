@@ -10,6 +10,7 @@ public class DefaultBlocks {
         // junction
         Blocks.junction.requirements(Category.distribution, with(HardItems.copperIngot, 2, HardItems.leadIngot, 2));
         Blocks.junction.consumesPower = true;
+        Blocks.junction.noUpdateDisabled = false;
         Blocks.junction.consumePower(0.04f);
         // router
         Blocks.router.requirements(Category.distribution, with(HardItems.copperIngot, 3, HardItems.leadIngot, 3));
@@ -31,9 +32,5 @@ public class DefaultBlocks {
         Blocks.underflowGate.requirements(Category.distribution, with(HardItems.copperIngot, 4, HardItems.leadIngot, 2));
         Blocks.underflowGate.consumesPower = true;
         Blocks.underflowGate.consumePower(0.04f);
-        // unloader
-        Blocks.unloader.requirements(Category.effect, with(HardItems.copperIngot, 10, HardItems.leadIngot, 20));
-        Blocks.unloader.consumesPower = true;
-        Blocks.unloader.consumePower(0.1f);
     }
 }

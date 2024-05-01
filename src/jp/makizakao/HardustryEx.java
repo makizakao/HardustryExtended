@@ -4,10 +4,7 @@ import arc.Core;
 import arc.Events;
 import arc.graphics.g2d.TextureRegion;
 import arc.util.Log;
-import jp.makizakao.content.DefaultBlocks;
-import jp.makizakao.content.HardBlocks;
-import jp.makizakao.content.HardItems;
-import jp.makizakao.content.HardTechTree;
+import jp.makizakao.content.*;
 import mindustry.game.EventType;
 import mindustry.mod.Mod;
 
@@ -30,5 +27,6 @@ public class HardustryEx extends Mod {
         HardTechTree.load();
         HardBlocks.load();
         DefaultBlocks.load();
+        TestBlocks.load();
     }
 }

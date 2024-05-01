@@ -1,11 +1,10 @@
 package jp.makizakao.content;
 
-import arc.struct.Seq;
-import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
 import jp.makizakao.world.blocks.distribution.HardConveyor;
+import jp.makizakao.world.blocks.distribution.HardJunction;
 import jp.makizakao.world.blocks.power.HardBattery;
 import jp.makizakao.world.blocks.power.HardPowerNode;
 import jp.makizakao.world.blocks.power.WindGenerator;
@@ -24,7 +23,7 @@ import static jp.makizakao.content.HardRecipes.*;
 public class HardBlocks {
     public static Block
     // distribution
-    copperConveyor,
+    copperConveyor, copperJunction,
     // effect
     coreBasic, coreBronze,
     // power - battery
@@ -53,6 +52,11 @@ public class HardBlocks {
                 .powerConsume(0.001f)
                 .buildCostMultiplier(2f)
                 .build();
+        copperJunction = HardJunction.create("copper-junction", 30, 1)
+                .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .build();
         // effect
         coreBasic = HardCoreBlock.create("core-basic", 500, 1000, 3)
                 .editorOnlyVisible(true)
@@ -71,27 +75,27 @@ public class HardBlocks {
                 .build();
         // power - battery
         basicBattery = HardBattery.create("basic-battery", 80, 1)
-                .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 20)
                 .capacity(1000f)
                 .build();
         // power - generator
         advancedWindTurbine = WindGenerator.create("advanced-wind-turbine", 100, 2)
-                .requirements(HardItems.bronzeIngot, 30, HardItems.copperIngot, 50, HardItems.leadIngot, 60)
-                .powerProduction(1.2f)
+                .requirements(HardItems.bronzeIngot, 30, HardItems.copperIngot, 20, HardItems.leadIngot, 60)
+                .powerProduction(2.4f)
                 .efficiency(0.3f, 1f)
                 .powerDuration(Time.toMinutes, Time.toMinutes * 5)
                 .rotateSpeed(3f)
                 .build();
         windTurbine = WindGenerator.create("wind-turbine", 100, 2)
-                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
-                .powerProduction(0.4f)
+                .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 20)
+                .powerProduction(0.8f)
                 .efficiency(0f, 1f)
                 .powerDuration(Time.toMinutes, Time.toMinutes * 5)
                 .rotateSpeed(2f)
                 .build();
         // power - node
         basicNode = HardPowerNode.create("basic-node", 30, 1)
-                .requirements(HardItems.copperIngot, 5, HardItems.leadIngot, 10)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 3)
                 .laserRange(4f)
                 .maxNodes(4)
                 .consumePower(0.04f)
@@ -100,7 +104,7 @@ public class HardBlocks {
         copperCrusher = RotateAnimatedCrafter.create("copper-crusher", 100, 2)
                 .rotateSpeed(1f)
                 .rotateAngle(0f, 360f)
-                .requirements(HardItems.copperIngot, 60, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
                 .resolveRecipes(CRUSHER_TIER_1)
                 .itemCapacity(10)
                 .build();
@@ -108,7 +112,7 @@ public class HardBlocks {
         copperDustMixer = RotateAnimatedCrafter.create("copper-dust-mixer", 100, 2)
                 .rotateSpeed(1f)
                 .rotateAngle(0f, 360f)
-                .requirements(HardItems.copperIngot, 30, HardItems.leadIngot, 10)
+                .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 10)
                 .resolveRecipes(DUST_MIXER_TIER_1)
                 .itemCapacity(10)
                 .build();
@@ -122,7 +126,7 @@ public class HardBlocks {
                 .build();
         // production - crafter - heater
         basicElectricHeater = HardMultiCrafter.create("basic-electric-heater", 30, 1)
-                .requirements(HardItems.copperIngot, 40, HardItems.leadIngot, 60)
+                .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 30)
                 .resolveRecipes(ELECTRIC_HEATER_TIER_1)
                 .drawer(HEAT_OUTPUT)
                 .build();
@@ -130,7 +134,7 @@ public class HardBlocks {
         quarry = TierDrill.create("quarry", 100, 2, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
                 .itemCapacity(10)
-                .drillTime(3600)
+                .drillTime(3000)
                 .consumePower(0.4f)
                 .build();
         // ore
