@@ -6,6 +6,8 @@ import mindustry.world.blocks.distribution.Junction;
 
 import java.util.Objects;
 
+import static jp.makizakao.world.BaseBuilder.*;
+
 public class HardJunction extends Junction {
     private HardJunction(String name) {
         super(name);
@@ -24,7 +26,7 @@ public class HardJunction extends Junction {
         }
     }
 
-    public static Builder create(String name, int health, int size) {
+    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(String name, int health, int size) {
         return new Builder(name, health, size);
     }
 
@@ -37,7 +39,8 @@ public class HardJunction extends Junction {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<IPowerConsumeBuilder<Builder>>,
+            IPowerConsumeBuilder<Builder>, IBuildCostMultiplierBuilder<Builder> {
         private final String name;
         private final int health;
         private final int size;
@@ -51,24 +54,26 @@ public class HardJunction extends Junction {
             this.size = size;
         }
 
-        public Builder requirements(Object... stacks) {
+        @Override
+        public IPowerConsumeBuilder<Builder> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder buildCostMultiplier(float buildCostMultiplier) {
-            this.buildCostMultiplier = buildCostMultiplier;
-            return this;
-        }
-
+        @Override
         public Builder powerConsume(float powerConsume) {
             this.powerConsume = powerConsume;
             return this;
         }
 
+        @Override
+        public Builder buildCostMultiplier(float buildCostMultiplier) {
+            this.buildCostMultiplier = buildCostMultiplier;
+            return this;
+        }
+
+
         public HardJunction build() {
-            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set.");
-            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set.");
             return new HardJunction(this);
         }
     }

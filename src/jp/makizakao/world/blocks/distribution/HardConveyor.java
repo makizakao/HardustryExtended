@@ -1,6 +1,7 @@
 package jp.makizakao.world.blocks.distribution;
 
 import arc.struct.Seq;
+import jp.makizakao.world.BaseBuilder.*;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.type.Category;
@@ -9,7 +10,6 @@ import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 public class HardConveyor extends Conveyor {
     private HardConveyor(String name) {
@@ -30,7 +30,8 @@ public class HardConveyor extends Conveyor {
         }
     }
 
-    public static Builder create(String name, int health, float speed, float displayedSpeed) {
+    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
+            String name, int health, float speed, float displayedSpeed) {
         return new Builder(name, health, speed, displayedSpeed);
     }
 
@@ -52,7 +53,8 @@ public class HardConveyor extends Conveyor {
                                     if (!var2.hasNext()) {
                                         for(int i = 0; i < this.power.links.size; ++i) {
                                             Tile link = Vars.world.tile(this.power.links.get(i));
-                                            if (link != null && link.build != null && link.build.power != null && link.build.team == this.team) {
+                                            if (link != null && link.build != null && link.build.power != null
+                                                    && link.build.team == this.team) {
                                                 out.add(link.build);
                                             }
                                         }
@@ -65,7 +67,8 @@ public class HardConveyor extends Conveyor {
                             } while(other.power == null);
                         } while(other.team != this.team);
                     } while(!(other.block instanceof HardConveyor));
-                    if (this.conductsTo(other) && other.conductsTo(this) && !this.power.links.contains(other.pos())) {
+                    if (this.conductsTo(other) && other.conductsTo(this)
+                            && !this.power.links.contains(other.pos())) {
                         out.add(other);
                     }
                 }
@@ -73,7 +76,8 @@ public class HardConveyor extends Conveyor {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<IPowerConsumeBuilder<Builder>>,
+            IPowerConsumeBuilder<Builder>, IBuildCostMultiplierBuilder<Builder> {
         private final String name;
         private final int health;
         private final float speed;
@@ -89,24 +93,25 @@ public class HardConveyor extends Conveyor {
             this.displayedSpeed = displayedSpeed;
         }
 
-        public Builder requirements(Object... stacks) {
+        @Override
+        public IPowerConsumeBuilder<Builder> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder buildCostMultiplier(float buildCostMultiplier) {
-            this.buildCostMultiplier = buildCostMultiplier;
-            return this;
-        }
-
+        @Override
         public Builder powerConsume(float powerConsume) {
             this.powerConsume = powerConsume;
             return this;
         }
 
+        @Override
+        public Builder buildCostMultiplier(float buildCostMultiplier) {
+            this.buildCostMultiplier = buildCostMultiplier;
+            return this;
+        }
+
         public HardConveyor build() {
-            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set.");
-            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set.");
             return new HardConveyor(this);
         }
     }
