@@ -1,0 +1,83 @@
+package jp.makizakao.world.blocks.distribution;
+
+import jp.makizakao.world.BaseBuilder.*;
+import mindustry.type.Category;
+import mindustry.type.ItemStack;
+import mindustry.world.blocks.distribution.OverflowGate;
+
+public class HardOverflowGate extends OverflowGate {
+    private HardOverflowGate(String name) { super(name); }
+
+    private HardOverflowGate(Builder builder) {
+        super(builder.name);
+        requirements(Category.distribution, builder.requirements);
+        this.invert = builder.invert;
+        health = builder.health;
+        size = builder.size;
+        buildCostMultiplier = builder.buildCostMultiplier;
+        consumesPower = builder.powerConsume > 0f;
+        if(consumesPower) {
+            consumePower(builder.powerConsume);
+            outputsPower = false;
+        }
+    }
+
+    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
+            String name, int health, int size) {
+        return new Builder(name, health, size);
+    }
+
+    public class HardOverflowBuild extends OverflowGateBuild {
+        @Override
+        public void updateTile() {
+            if(canConsume()) {
+                super.updateTile();
+            }
+        }
+    }
+
+    public static class Builder implements IRequirementsBuilder<IPowerConsumeBuilder<Builder>>,
+            IPowerConsumeBuilder<Builder>, IBuildCostMultiplierBuilder<Builder> {
+        private final String name;
+        private final int health;
+        private final int size;
+        private ItemStack[] requirements;
+        private boolean invert = false;
+        private float buildCostMultiplier = 1f;
+        private float powerConsume = -1f;
+
+        private Builder(String name, int health, int size) {
+            this.name = name;
+            this.health = health;
+            this.size = size;
+        }
+
+        @Override
+        public IPowerConsumeBuilder<Builder> requirements(Object... stacks) {
+            this.requirements = ItemStack.with(stacks);
+            return this;
+        }
+
+        @Override
+        public Builder powerConsume(float powerConsume) {
+            this.powerConsume = powerConsume;
+            return this;
+        }
+
+        @Override
+        public Builder buildCostMultiplier(float buildCostMultiplier) {
+            this.buildCostMultiplier = buildCostMultiplier;
+            return this;
+        }
+
+        public Builder invert() {
+            this.invert = true;
+            return this;
+        }
+
+
+        public HardOverflowGate build() {
+            return new HardOverflowGate(this);
+        }
+    }
+}

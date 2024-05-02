@@ -14,35 +14,35 @@ public class HardRecipes {
     public static final Seq<Recipe> CRUSHER_TIER_1 = Seq.with(
             new ResultBuilder()
                     .inputItems(HardItems.nativeCopper, 1)
-                    .inputPower(0.6f)
+                    .inputPower(0.3f)
                     .resultItems(HardItems.copperDust, 2)
                     .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
                     .inputItems(HardItems.galena, 1)
-                    .inputPower(0.4f)
+                    .inputPower(0.2f)
                     .resultItems(HardItems.galenaDust, 2)
                     .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
                     .inputItems(HardItems.teallite, 1)
-                    .inputPower(0.6f)
+                    .inputPower(0.3f)
                     .resultItems(HardItems.tealliteDust, 2)
                     .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
                     .inputItems(HardItems.tinIngot, 1)
-                    .inputPower(0.4f)
+                    .inputPower(0.2f)
                     .resultItems(HardItems.tinDust, 1)
                     .dropChances(1.0f)
                     .craftTime(60f)
                     .build(),
             new ResultBuilder()
                     .inputItems(HardItems.tetrahedrite, 1)
-                    .inputPower(0.6f)
+                    .inputPower(0.3f)
                     .resultItems(HardItems.copperDust, 2, HardItems.zincDust, 1)
                     .dropChances(1.0f, 0.2f)
                     .craftTime(60f)
@@ -52,7 +52,7 @@ public class HardRecipes {
     public static final Seq<Recipe> DUST_MIXER_TIER_1 = Seq.with(
             new Builder()
                     .inputItems(HardItems.copperDust, 3, HardItems.tinDust, 1)
-                    .inputPower(0.1f)
+                    .inputPower(0.05f)
                     .outputItems(HardItems.bronzeDust, 4)
                     .craftTime(150f)
                     .build()
@@ -99,7 +99,7 @@ public class HardRecipes {
     // heater
     public static final Seq<Recipe> ELECTRIC_HEATER_TIER_1 = Seq.with(
             new Builder()
-                    .inputPower(0.4f)
+                    .inputPower(0.2f)
                     .outputHeat(1f)
                     .build()
     );

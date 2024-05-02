@@ -3,8 +3,7 @@ package jp.makizakao.content;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
-import jp.makizakao.world.blocks.distribution.HardConveyor;
-import jp.makizakao.world.blocks.distribution.HardJunction;
+import jp.makizakao.world.blocks.distribution.*;
 import jp.makizakao.world.blocks.power.HardBattery;
 import jp.makizakao.world.blocks.power.HardPowerNode;
 import jp.makizakao.world.blocks.power.WindGenerator;
@@ -23,7 +22,8 @@ import static jp.makizakao.content.HardRecipes.*;
 public class HardBlocks {
     public static Block
     // distribution
-    copperConveyor, copperJunction,
+    copperConveyor, copperInvertedSorter, copperJunction, copperOverflowGate, copperRouter, copperSorter,
+    copperUnderflowGate,
     // effect
     coreBasic, coreBronze,
     // power - battery
@@ -49,13 +49,40 @@ public class HardBlocks {
         // distribution
         copperConveyor = HardConveyor.create("copper-conveyor", 30, 0.02f, 3f)
                 .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
-                .powerConsume(0.001f)
+                .powerConsume(0.0001f)
                 .buildCostMultiplier(2f)
+                .build();
+        copperInvertedSorter = HardSorter.create("copper-inverted-sorter", 30, 1)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .invert()
                 .build();
         copperJunction = HardJunction.create("copper-junction", 30, 1)
                 .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
                 .powerConsume(0.01f)
                 .buildCostMultiplier(2f)
+                .build();
+        copperOverflowGate = HardOverflowGate.create("copper-overflow-gate", 30, 1)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .build();
+        copperRouter = HardRouter.create("copper-router", 30, 1)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .build();
+        copperSorter = HardSorter.create("copper-sorter", 30, 1)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .build();
+        copperUnderflowGate = HardOverflowGate.create("copper-underflow-gate", 30, 1)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.01f)
+                .buildCostMultiplier(2f)
+                .invert()
                 .build();
         // effect
         coreBasic = HardCoreBlock.create("core-basic", 500, 1000, 3)
@@ -79,14 +106,14 @@ public class HardBlocks {
         // power - generator
         advancedWindTurbine = WindGenerator.create("advanced-wind-turbine", 100, 2)
                 .requirements(HardItems.bronzeIngot, 30, HardItems.copperIngot, 20, HardItems.leadIngot, 60)
-                .powerProduction(2.4f)
+                .powerProduction(1.2f)
                 .efficiencyLimits(0.3f, 1f)
                 .powerDuration(Time.toMinutes, Time.toMinutes * 5)
                 .rotateSpeed(3f)
                 .build();
         windTurbine = WindGenerator.create("wind-turbine", 100, 2)
                 .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 20)
-                .powerProduction(0.8f)
+                .powerProduction(0.4f)
                 .efficiencyLimits(0f, 1f)
                 .powerDuration(Time.toMinutes, Time.toMinutes * 5)
                 .rotateSpeed(2f)
@@ -96,7 +123,7 @@ public class HardBlocks {
                 .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 3)
                 .laserRange(4f)
                 .maxNodes(4)
-                .powerConsume(0.04f)
+                .powerConsume(0.02f)
                 .build();
         // production - crafter - crusher
         copperCrusher = RotateAnimatedCrafter.createRotate("copper-crusher", 100, 2)
