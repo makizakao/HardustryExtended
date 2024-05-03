@@ -49,7 +49,7 @@ public class HardBlocks {
         // distribution
         copperConveyor = HardConveyor.create("copper-conveyor", 30, 0.02f, 3f)
                 .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
-                .powerConsume(0.0001f)
+                .powerConsume(0.0004f)
                 .buildCostMultiplier(2f)
                 .build();
         copperInvertedSorter = HardSorter.create("copper-inverted-sorter", 30, 1)

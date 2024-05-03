@@ -1,7 +1,9 @@
 package jp.makizakao.world.blocks.distribution;
 
 import jp.makizakao.world.BaseBuilder.*;
+import mindustry.gen.Building;
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.distribution.Sorter;
 
@@ -18,6 +20,7 @@ public class HardSorter extends Sorter {
         size = builder.size;
         buildCostMultiplier = builder.buildCostMultiplier;
         consumesPower = builder.powerConsume > 0f;
+        update = true;
         if(consumesPower) {
             consumePower(builder.powerConsume);
             outputsPower = false;
@@ -31,10 +34,14 @@ public class HardSorter extends Sorter {
 
     public class HardSorterBuild extends SorterBuild {
         @Override
-        public void updateTile() {
-            if(canConsume()) {
-                super.updateTile();
-            }
+        public boolean acceptItem(Building source, Item item) {
+            return canConsume() && super.acceptItem(source, item);
+        }
+
+        @Override
+        public void handleItem(Building source, Item item) {
+            if(canConsume()) consume();
+            super.handleItem(source, item);
         }
     }
 

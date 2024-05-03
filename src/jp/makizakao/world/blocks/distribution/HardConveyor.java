@@ -1,13 +1,16 @@
 package jp.makizakao.world.blocks.distribution;
 
 import arc.struct.Seq;
+import jp.makizakao.content.HardBlocks;
 import jp.makizakao.world.BaseBuilder.*;
 import mindustry.Vars;
+import mindustry.content.Blocks;
 import mindustry.gen.Building;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
+import mindustry.world.blocks.distribution.ItemBridge;
 
 import java.util.Iterator;
 
@@ -33,6 +36,13 @@ public class HardConveyor extends Conveyor {
     public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
             String name, int health, float speed, float displayedSpeed) {
         return new Builder(name, health, speed, displayedSpeed);
+    }
+
+    @Override
+    public void init() {
+        super.init();
+        junctionReplacement = HardBlocks.copperJunction;
+        bridgeReplacement = null;
     }
 
     public class HardConveyorBuild extends ConveyorBuild {
