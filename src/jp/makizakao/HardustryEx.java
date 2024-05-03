@@ -7,7 +7,6 @@ import arc.util.Log;
 import jp.makizakao.content.*;
 import mindustry.game.EventType;
 import mindustry.mod.Mod;
-
 import java.util.function.BiFunction;
 
 public class HardustryEx extends Mod {

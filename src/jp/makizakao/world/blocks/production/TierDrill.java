@@ -1,7 +1,7 @@
 package jp.makizakao.world.blocks.production;
 
 import arc.math.Mathf;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;

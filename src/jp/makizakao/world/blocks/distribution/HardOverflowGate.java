@@ -1,6 +1,6 @@
 package jp.makizakao.world.blocks.distribution;
 
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.gen.Building;
 import mindustry.type.Category;
 import mindustry.type.Item;

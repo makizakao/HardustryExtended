@@ -4,9 +4,7 @@ import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.distribution.Junction;
 
-import java.util.Objects;
-
-import static jp.makizakao.world.BaseBuilder.*;
+import static jp.makizakao.world.builder.BaseBlockBuilder.*;
 
 public class HardJunction extends Junction {
     private HardJunction(String name) {

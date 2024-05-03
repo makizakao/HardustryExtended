@@ -2,7 +2,7 @@ package jp.makizakao.world.blocks.production;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 
 import static jp.makizakao.HardustryEx.regionGetter;
 

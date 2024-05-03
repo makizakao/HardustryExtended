@@ -1,7 +1,10 @@
 package jp.makizakao.content;
 
 import arc.graphics.Color;
+import mindustry.content.Items;
 import mindustry.type.Item;
+
+import java.util.Optional;
 
 public class HardItems {
     private static final Color BRONZE_COLOR = Color.valueOf("ff52000");
@@ -84,10 +87,16 @@ public class HardItems {
         aluminumIngot = createMaterialItem("aluminum-ingot", 1f, DEFAULT_COLOR);
         brassIngot = createMaterialItem("brass-ingot", 0.7f, DEFAULT_COLOR);
         bronzeIngot = createMaterialItem("bronze-ingot", 0.7f, BRONZE_COLOR);
-        copperIngot = createMaterialItem("copper-ingot", 0.5f, DEFAULT_COLOR);
+        copperIngot = create("copper-ingot", DEFAULT_COLOR)
+                .cost(0.5f)
+                .useTextureFromItem(Items.copper)
+                .build();
         goldIngot = createMaterialItem("gold-ingot", 0.5f, DEFAULT_COLOR);
         ironIngot = createMaterialItem("iron-ingot", 0.8f, DEFAULT_COLOR);
-        leadIngot = createMaterialItem("lead-ingot", 0.5f, DEFAULT_COLOR);
+        leadIngot = create("lead-ingot", DEFAULT_COLOR)
+                .cost(0.5f)
+                .useTextureFromItem(Items.lead)
+                .build();
         silverIngot = createMaterialItem("silver-ingot", 1f, DEFAULT_COLOR);
         steelIngot = createMaterialItem("steel-ingot", 1.2f, DEFAULT_COLOR);
         tinIngot = createMaterialItem("tin-ingot", 0.6f, DEFAULT_COLOR);
@@ -152,11 +161,16 @@ public class HardItems {
         return new Item(pName, pColor) {{ hardness = pHardness; }};
     }
 
+    private static Builder create(String name, Color color) {
+        return Builder.create(name, color);
+    }
+
     private static class Builder {
         private final String name;
         private final Color color;
         private float cost = 1f;
         private int hardness = 0;
+        private Item textureItem = null;
 
         public static Builder create(String name, Color color) {
             return new Builder(name, color);
@@ -177,11 +191,27 @@ public class HardItems {
             return this;
         }
 
+        public Builder useTextureFromItem(Item item) {
+            textureItem = item;
+            return this;
+        }
+
         public Item build() {
-            return new Item(name, color) {{
-                cost = Builder.this.cost;
-                hardness = Builder.this.hardness;
-            }};
+            return new Item(name, color) {
+                @Override
+                public void load() {
+                    super.load();
+                    Optional.ofNullable(textureItem).ifPresent(i -> {
+                        uiIcon = i.uiIcon;
+                        fullIcon = i.fullIcon;
+                    });
+                }
+
+                {
+                    cost = Builder.this.cost;
+                    hardness = Builder.this.hardness;
+                }
+            };
         }
     }
 }

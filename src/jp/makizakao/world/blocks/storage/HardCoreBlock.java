@@ -3,7 +3,7 @@ package jp.makizakao.world.blocks.storage;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
 import jp.makizakao.type.SmeltStack;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.game.Team;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -13,7 +13,6 @@ import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import static mindustry.Vars.*;
 

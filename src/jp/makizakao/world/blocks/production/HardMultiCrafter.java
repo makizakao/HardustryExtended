@@ -4,7 +4,7 @@ import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import jp.makizakao.type.ResultRecipe;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.Vars;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;

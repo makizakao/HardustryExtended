@@ -3,7 +3,7 @@ package jp.makizakao.world.blocks.power;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.util.Time;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 

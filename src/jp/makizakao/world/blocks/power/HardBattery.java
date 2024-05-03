@@ -1,6 +1,6 @@
 package jp.makizakao.world.blocks.power;
 
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.power.Battery;

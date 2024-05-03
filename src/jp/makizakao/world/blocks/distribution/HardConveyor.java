@@ -2,15 +2,13 @@ package jp.makizakao.world.blocks.distribution;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardBlocks;
-import jp.makizakao.world.BaseBuilder.*;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.Vars;
-import mindustry.content.Blocks;
 import mindustry.gen.Building;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.Tile;
 import mindustry.world.blocks.distribution.Conveyor;
-import mindustry.world.blocks.distribution.ItemBridge;
 
 import java.util.Iterator;
 

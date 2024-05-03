@@ -11,12 +11,17 @@ import jp.makizakao.world.blocks.production.HardMultiCrafter;
 import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
 import jp.makizakao.world.blocks.production.TierDrill;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
+import jp.makizakao.world.blocks.storage.HardUnloader;
+import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
+import mindustry.entities.part.RegionPart;
+import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
+import mindustry.world.draw.DrawTurret;
 
-import static jp.makizakao.content.HardDrawMultis.HEAT_OUTPUT;
-import static jp.makizakao.content.HardDrawMultis.SMELT_FLAME;
+import static jp.makizakao.content.HardDrawMultis.*;
 import static jp.makizakao.content.HardRecipes.*;
 
 public class HardBlocks {
@@ -25,7 +30,9 @@ public class HardBlocks {
     copperConveyor, copperInvertedSorter, copperJunction, copperOverflowGate, copperRouter, copperSorter,
     copperUnderflowGate,
     // effect
-    coreBasic, coreBronze,
+    coreBasic, coreBronze, copperUnloader,
+    // ore
+    galenaOre, sphaleriteOre, tealliteOre, tetrahedriteOre, tinyCopperOre, tinyLeadOre,
     // power - battery
     basicBattery,
     // power - generator
@@ -42,8 +49,8 @@ public class HardBlocks {
     basicElectricHeater,
     // production - drill
     quarry,
-    // ore
-    galenaOre, sphaleriteOre, tealliteOre, tetrahedriteOre, tinyCopperOre, tinyLeadOre;
+    // turret
+    catapult;
 
     public static void load() {
         // distribution
@@ -98,6 +105,18 @@ public class HardBlocks {
                 .unitCapModifier(3)
                 .smeltList(SmeltStack.SMELT_TIER_2)
                 .build();
+        copperUnloader = HardUnloader.create("copper-unloader", 30, 1, 3f)
+                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
+                .powerConsume(0.02f)
+                .buildCostMultiplier(2f)
+                .build();
+        // ore
+        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
+        sphaleriteOre = OreBlockBuilder.create("sphalerite-ore", HardItems.sphalerite).build();
+        tealliteOre = OreBlockBuilder.create("teallite-ore", HardItems.teallite).build();
+        tetrahedriteOre = OreBlockBuilder.create("tetrahedrite-ore", HardItems.tetrahedrite).build();
+        tinyCopperOre = OreBlockBuilder.create("tiny-copper-ore", HardItems.copperDust).build();
+        tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
         // power - battery
         basicBattery = HardBattery.create("basic-battery", 80, 1)
                 .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 20)
@@ -162,12 +181,30 @@ public class HardBlocks {
                 .drillTime(3000)
                 .powerConsume(0.4f)
                 .build();
-        // ore
-        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
-        sphaleriteOre = OreBlockBuilder.create("sphalerite-ore", HardItems.sphalerite).build();
-        tealliteOre = OreBlockBuilder.create("teallite-ore", HardItems.teallite).build();
-        tetrahedriteOre = OreBlockBuilder.create("tetrahedrite-ore", HardItems.tetrahedrite).build();
-        tinyCopperOre = OreBlockBuilder.create("tiny-copper-ore", HardItems.copperDust).build();
-        tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
+        // turret
+        catapult = ItemTurretBuilder.create("catapult", 300, 2)
+                .requirements(HardItems.copperIngot, 120, HardItems.leadIngot, 30)
+                .ammo(HardAmmoTypes.CATAPULT_TIER_1)
+                .shoot(new ShootAlternate(3.5f))
+                .ammoUseEffect(Fx.casing1)
+                .recoil(2, 0.5f)
+                .shootY(3f)
+                .reload(60f)
+                .range(200f)
+                .shootCone(15f)
+                .inaccuracy(5f)
+                .rotateSpeed(4f)
+                .consumeCoolant(0.1f)
+                .drawer(new DrawTurret(){{
+                    for(int i = 0; i < 2; i ++){
+                        int f = i;
+                        parts.add(new RegionPart("-barrel-" + (i == 0 ? "l" : "r")){{
+                            progress = PartProgress.recoil;
+                            recoilIndex = f;
+                            under = true;
+                            moveY = -1.5f;
+                        }});
+                    }}})
+                .build();
     }
 }

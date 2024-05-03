@@ -1,13 +1,15 @@
-package jp.makizakao.world;
+package jp.makizakao.world.builder;
 
 import arc.audio.Sound;
 import arc.struct.Seq;
 import jp.makizakao.type.SmeltStack;
+import mindustry.entities.Effect;
+import mindustry.entities.pattern.ShootPattern;
 import mindustry.type.UnitType;
 import mindustry.world.draw.DrawMulti;
 import multicraft.Recipe;
 
-public final class BaseBuilder {
+public final class BaseBlockBuilder {
     public interface IRequirementsBuilder<T> {
         T requirements(Object... stacks);
     }
@@ -82,5 +84,49 @@ public final class BaseBuilder {
 
     public interface IDrillTimeBuilder<T> {
         T drillTime(int drillTime);
+    }
+
+    public interface IAmmoBuilder<T> {
+        T ammo(Object... ammo);
+    }
+
+    public interface IShootBuilder<T> {
+        T shoot(ShootPattern shoot);
+    }
+
+    public interface IAmmoUseEffectBuilder<T> {
+        T ammoUseEffect(Effect effect);
+    }
+
+    public interface IRecoilBuilder<T> {
+        T recoil(int recoils, float recoil);
+    }
+
+    public interface IShootYBuilder<T> {
+        T shootY(float shootY);
+    }
+
+    public interface IReloadBuilder<T> {
+        T reload(float reload);
+    }
+
+    public interface IRangeBuilder<T> {
+        T range(float range);
+    }
+
+    public interface IShootConeBuilder<T> {
+        T shootCone(float shootCone);
+    }
+
+    public interface IInaccuracyBuilder<T> {
+        T inaccuracy(float inaccuracy);
+    }
+
+    public interface IConsumeCoolantBuilder<T> {
+        T consumeCoolant(float consumeCoolant);
+    }
+
+    public interface ILimitRangeBuilder<T> {
+        T limitRange();
     }
 }
