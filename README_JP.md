@@ -11,3 +11,7 @@ Hardustryは、 Mindustryのアイテムや建物の作成プロセスにいく�
 もしこのmodを使う場合は、バックアップを取ってください。以前のセーブデータが破損する可能性があります。
 
 ## 新しい要素
+
+## 依存関係
+
+- MultiCrafterLib: https://github.com/liplum/MultiCrafterLib
