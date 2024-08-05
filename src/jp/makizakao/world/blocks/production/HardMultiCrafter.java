@@ -4,6 +4,7 @@ import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import jp.makizakao.type.ResultRecipe;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.Vars;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
@@ -11,8 +12,6 @@ import mindustry.type.ItemStack;
 import mindustry.world.draw.DrawMulti;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
-
-import java.util.Objects;
 
 public class HardMultiCrafter extends MultiCrafter {
     protected HardMultiCrafter(String name) {
@@ -33,7 +32,8 @@ public class HardMultiCrafter extends MultiCrafter {
         if(builder.drawer != null) this.drawer = builder.drawer;
     }
 
-    public static Builder create(String name, int health, int size) {
+    public static IRequirementsBuilder<IResolveRecipesBuilder<Builder>> create(
+            String name, int health, int size) {
         return new Builder(name, health, size);
     }
 
@@ -83,7 +83,9 @@ public class HardMultiCrafter extends MultiCrafter {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<IResolveRecipesBuilder<Builder>>,
+            IResolveRecipesBuilder<Builder>, IItemCapacityBuilder<Builder>,
+            IDrawerBuilder<Builder>, IAmbientSoundBuilder<Builder> {
         private final String name;
         private final int size;
         private final int health;
@@ -100,36 +102,38 @@ public class HardMultiCrafter extends MultiCrafter {
             this.size = size;
         }
 
-        public Builder requirements(Object... stacks) {
+        @Override
+        public IResolveRecipesBuilder<Builder> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
+        @Override
         public Builder resolveRecipes(Seq<Recipe> recipes) {
             this.recipes = recipes;
             return this;
         }
 
+        @Override
         public Builder itemCapacity(int itemCapacity) {
             this.itemCapacity = itemCapacity;
             return this;
         }
 
+        @Override
         public Builder ambientSound(Sound sound, float volume) {
             this.ambientSound = sound;
             this.ambientSoundVolume = volume;
             return this;
         }
 
+        @Override
         public Builder drawer(DrawMulti drawer) {
             this.drawer = drawer;
             return this;
         }
 
         public HardMultiCrafter build() {
-            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
-            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set");
-            if(Objects.isNull(recipes)) throw new IllegalArgumentException("Recipes must be set");
             return new HardMultiCrafter(this);
         }
     }

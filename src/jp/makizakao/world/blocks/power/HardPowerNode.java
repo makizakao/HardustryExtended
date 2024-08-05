@@ -1,10 +1,9 @@
 package jp.makizakao.world.blocks.power;
 
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.power.PowerNode;
-
-import java.util.Objects;
 
 public class HardPowerNode extends PowerNode {
     private float powerConsumeMultiplier = 0f;
@@ -27,11 +26,14 @@ public class HardPowerNode extends PowerNode {
         }
     }
 
-    public static Builder create(String name, int health, int size) {
+    public static IRequirementsBuilder<ILaserRangeBuilder<IPowerConsumeBuilder<Builder>>> create(
+            String name, int health, int size) {
         return new Builder(name, health, size);
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<ILaserRangeBuilder<IPowerConsumeBuilder<Builder>>>,
+            ILaserRangeBuilder<IPowerConsumeBuilder<Builder>>, IMaxNodesBuilder<IPowerConsumeBuilder<Builder>>,
+            IPowerConsumeBuilder<Builder> {
         private final String name;
         private final int health;
         private final int size;
@@ -46,29 +48,31 @@ public class HardPowerNode extends PowerNode {
             this.size = size;
         }
 
-        public Builder requirements(Object... stacks) {
+        @Override
+        public ILaserRangeBuilder<IPowerConsumeBuilder<Builder>> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder laserRange(float laserRange) {
+        @Override
+        public IMaxNodesBuilder<IPowerConsumeBuilder<Builder>> laserRange(float laserRange) {
             this.laserRange = laserRange;
             return this;
         }
 
-        public Builder maxNodes(int maxNodes) {
+        @Override
+        public IPowerConsumeBuilder<Builder> maxNodes(int maxNodes) {
             this.maxNodes = maxNodes;
             return this;
         }
 
-        public Builder consumePower(float powerConsumeMultiplier) {
+        @Override
+        public Builder powerConsume(float powerConsumeMultiplier) {
             this.powerConsumeMultiplier = powerConsumeMultiplier;
             return this;
         }
 
         public HardPowerNode build() {
-            if(Objects.isNull(name)) throw new IllegalArgumentException("Name must be set");
-            if(Objects.isNull(requirements)) throw new IllegalArgumentException("Requirements must be set");
             return new HardPowerNode(this);
         }
     }

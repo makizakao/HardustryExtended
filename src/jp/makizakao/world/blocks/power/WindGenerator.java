@@ -3,10 +3,9 @@ package jp.makizakao.world.blocks.power;
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;
 import arc.util.Time;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
-
-import java.util.Objects;
 
 public class WindGenerator extends RotateGenerator {
     private float minEfficiency = 1f;
@@ -65,7 +64,12 @@ public class WindGenerator extends RotateGenerator {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<IPowerProductionBuilder<
+            IProductionEfficiencyLimitsBuilder<IPowerDurationBuilder<IRotateSpeedBuilder<Builder>>>>>,
+            IPowerProductionBuilder<IProductionEfficiencyLimitsBuilder<IPowerDurationBuilder<
+                    IRotateSpeedBuilder<Builder>>>>,
+            IProductionEfficiencyLimitsBuilder<IPowerDurationBuilder<IRotateSpeedBuilder<Builder>>>,
+            IPowerDurationBuilder<IRotateSpeedBuilder<Builder>>, IRotateSpeedBuilder<Builder> {
         private final String name;
         private final int health;
         private final int size;
@@ -83,36 +87,43 @@ public class WindGenerator extends RotateGenerator {
             this.size = size;
         }
 
-        public Builder powerProduction(float powerProduction) {
+        @Override
+        public IPowerProductionBuilder<IProductionEfficiencyLimitsBuilder<IPowerDurationBuilder<
+                        IRotateSpeedBuilder<Builder>>>> requirements(Object... stacks) {
+            this.requirements = ItemStack.with(stacks);
+            return this;
+        }
+
+        @Override
+        public IProductionEfficiencyLimitsBuilder<IPowerDurationBuilder<IRotateSpeedBuilder<Builder>>>
+        powerProduction(
+                float powerProduction) {
             this.powerProduction = powerProduction;
             return this;
         }
 
-        public Builder efficiency(float minEfficiency, float maxEfficiency) {
+        @Override
+        public IPowerDurationBuilder<IRotateSpeedBuilder<Builder>> efficiencyLimits(
+                float minEfficiency, float maxEfficiency) {
             this.minEfficiency = minEfficiency;
             this.maxEfficiency = maxEfficiency;
             return this;
         }
 
-        public Builder requirements(Object... stacks) {
-            this.requirements = ItemStack.with(stacks);
-            return this;
-        }
-
-        public Builder powerDuration(float minPowerDuration, float maxPowerDuration) {
+        @Override
+        public IRotateSpeedBuilder<Builder> powerDuration(float minPowerDuration, float maxPowerDuration) {
             this.minPowerDuration = minPowerDuration;
             this.maxPowerDuration = maxPowerDuration;
             return this;
         }
 
+        @Override
         public Builder rotateSpeed(float rotateSpeed) {
             this.rotateSpeed = rotateSpeed;
             return this;
         }
 
         public WindGenerator build() {
-            if(Objects.isNull(name)) throw new IllegalStateException("Name must be set");
-            if(Objects.isNull(requirements)) throw new IllegalStateException("Requirements must be set");
             return new WindGenerator(this);
         }
     }

@@ -3,6 +3,7 @@ package jp.makizakao.world.blocks.storage;
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
 import jp.makizakao.type.SmeltStack;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.game.Team;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -12,7 +13,6 @@ import mindustry.world.blocks.storage.CoreBlock;
 import mindustry.world.meta.BuildVisibility;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 import static mindustry.Vars.*;
 
@@ -44,7 +44,8 @@ public class HardCoreBlock extends CoreBlock {
     }
 
     // Builderを作成
-    public static Builder create(String name, int health, int itemCapacity, int size) {
+    public static IRequirementsBuilder<IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>> create(
+            String name, int health, int itemCapacity, int size) {
         return new Builder(name, health, itemCapacity, size);
     }
 
@@ -92,7 +93,10 @@ public class HardCoreBlock extends CoreBlock {
         }
     }
 
-    public static class Builder {
+    public static class Builder implements IRequirementsBuilder<
+            IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>>,
+            IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>,
+            IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>, ISmeltListBuilder<Builder> {
         private final String name;
         private final int health;
         private final int itemCapacity;
@@ -112,45 +116,48 @@ public class HardCoreBlock extends CoreBlock {
             this.size = size;
         }
 
-        public Builder editorOnlyVisible(boolean visible) {
-            this.buildVisibility = visible;
-            return this;
-        }
-
-        public Builder requirements(Object... stacks) {
+        @Override
+        public IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>> requirements(Object... stacks) {
             this.requirements = ItemStack.with(stacks);
             return this;
         }
 
-        public Builder alwaysUnlocked(boolean alwaysUnlocked) {
-            this.alwaysUnlocked = alwaysUnlocked;
-            return this;
-        }
-
-        public Builder isFirstTier(boolean isFirstTier) {
-            this.isFirstTier = isFirstTier;
-            return this;
-        }
-
-        public Builder unitType(UnitType unitType) {
+        @Override
+        public IUnitCapModifierBuilder<ISmeltListBuilder<Builder>> unitType(UnitType unitType) {
             this.unitType = unitType;
             return this;
         }
 
-        public Builder unitCapModifier(int unitCapModifier) {
+        @Override
+        public ISmeltListBuilder<Builder> unitCapModifier(int unitCapModifier) {
             this.unitCapModifier = unitCapModifier;
             return this;
         }
 
+        @Override
         public Builder smeltList(Seq<SmeltStack> smeltList) {
             this.smeltList = smeltList;
             return this;
         }
 
+        public Builder editorOnlyVisible() {
+            this.buildVisibility = true;
+            return this;
+        }
+
+        public Builder alwaysUnlocked() {
+            this.alwaysUnlocked = true;
+            return this;
+        }
+
+        public Builder firstTier() {
+            this.isFirstTier = true;
+            this.editorOnlyVisible();
+            this.alwaysUnlocked();
+            return this;
+        }
+
         public HardCoreBlock build() {
-            if(Objects.isNull(name)) throw new IllegalStateException("Name must be set");
-            if(Objects.isNull(requirements)) throw new IllegalStateException("Requirements must be set");
-            if(Objects.isNull(unitType)) throw new IllegalStateException("UnitType must be set");
             return new HardCoreBlock(this);
         }
     }

@@ -2,6 +2,7 @@ package jp.makizakao.world.blocks.production;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 
 import static jp.makizakao.HardustryEx.regionGetter;
 
@@ -22,7 +23,8 @@ public class RotateAnimatedCrafter extends HardMultiCrafter {
         this.startAngle = builder.startAngle;
     }
 
-    public static Builder create(String name, int health, int size) {
+    public static IRotateSpeedBuilder<IRotateAngleBuilder<IRequirementsBuilder<IResolveRecipesBuilder<
+            HardMultiCrafter.Builder>>>> createRotate(String name, int health, int size) {
         return new Builder(name, health, size);
     }
 
@@ -53,7 +55,9 @@ public class RotateAnimatedCrafter extends HardMultiCrafter {
         }
     }
 
-    public static class Builder extends HardMultiCrafter.Builder {
+    public static class Builder extends HardMultiCrafter.Builder implements IRotateSpeedBuilder<
+            IRotateAngleBuilder<IRequirementsBuilder<IResolveRecipesBuilder<HardMultiCrafter.Builder>>>>,
+            IRotateAngleBuilder<IRequirementsBuilder<IResolveRecipesBuilder<HardMultiCrafter.Builder>>> {
         private float rotateSpeed = 1f;
         private float rotateAngle = 0f;
         private float startAngle = 0f;
@@ -62,12 +66,13 @@ public class RotateAnimatedCrafter extends HardMultiCrafter {
             super(name, health, size);
         }
 
-        public Builder rotateSpeed(float rotateSpeed) {
+        public IRotateAngleBuilder<IRequirementsBuilder<IResolveRecipesBuilder<HardMultiCrafter.Builder>>>
+                rotateSpeed(float rotateSpeed) {
             this.rotateSpeed = rotateSpeed;
             return this;
         }
 
-        public Builder rotateAngle(float startAngle, float rotateAngle) {
+        public IRequirementsBuilder<IResolveRecipesBuilder<HardMultiCrafter.Builder>> rotateAngle(float startAngle, float rotateAngle) {
             this.startAngle = startAngle;
             this.rotateAngle = rotateAngle;
             return this;
