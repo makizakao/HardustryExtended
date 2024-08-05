@@ -9,3 +9,7 @@ This mod doesn't support iOS.
 ## Important
 
 If you play with this mod, please make a backup. It may corrupt your previous save data.
+
+## Dependencies
+
+- MultiCrafterLib: https://github.com/liplum/MultiCrafterLib
