@@ -12,14 +12,9 @@ import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
 import jp.makizakao.world.blocks.production.TierDrill;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
 import jp.makizakao.world.blocks.storage.HardUnloader;
-import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
-import mindustry.entities.part.RegionPart;
-import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.turrets.ItemTurret;
-import mindustry.world.draw.DrawTurret;
 
 import static jp.makizakao.content.HardDrawMultis.*;
 import static jp.makizakao.content.HardRecipes.*;
@@ -180,31 +175,6 @@ public class HardBlocks {
                 .itemCapacity(10)
                 .drillTime(3000)
                 .powerConsume(0.4f)
-                .build();
-        // turret
-        catapult = ItemTurretBuilder.create("catapult", 300, 2)
-                .requirements(HardItems.copperIngot, 120, HardItems.leadIngot, 30)
-                .ammo(HardAmmoTypes.CATAPULT_TIER_1)
-                .shoot(new ShootAlternate(3.5f))
-                .ammoUseEffect(Fx.casing1)
-                .recoil(2, 0.5f)
-                .shootY(3f)
-                .reload(60f)
-                .range(200f)
-                .shootCone(15f)
-                .inaccuracy(5f)
-                .rotateSpeed(4f)
-                .consumeCoolant(0.1f)
-                .drawer(new DrawTurret(){{
-                    for(int i = 0; i < 2; i ++){
-                        int f = i;
-                        parts.add(new RegionPart("-barrel-" + (i == 0 ? "l" : "r")){{
-                            progress = PartProgress.recoil;
-                            recoilIndex = f;
-                            under = true;
-                            moveY = -1.5f;
-                        }});
-                    }}})
                 .build();
     }
 }

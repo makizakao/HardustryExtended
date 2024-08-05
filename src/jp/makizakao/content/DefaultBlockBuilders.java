@@ -204,7 +204,7 @@ public class DefaultBlockBuilders {
 
         public ItemTurret build() {
             return new ItemTurret(name) {{
-                requirements(Category.turret, requirements);
+                requirements(Category.turret, ItemTurretBuilder.this.requirements);
                 health = ItemTurretBuilder.this.health;
                 size = ItemTurretBuilder.this.size;
                 ammo(ItemTurretBuilder.this.ammo);
