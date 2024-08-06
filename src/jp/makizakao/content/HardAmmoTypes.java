@@ -4,15 +4,15 @@ import jp.makizakao.world.builder.BaseBulletTypeBuilder.*;
 import mindustry.entities.bullet.BasicBulletType;
 
 public class HardAmmoTypes {
-    public static final Object[] CATAPULT_TIER_1 = new Object[] {
-            HardItems.copperIngot, BasicBulletTypeBuilder.create(1.5f, 12f)
+    public static final Object[] DUO_TIER_1 = new Object[] {
+            HardItems.copperIngot, BasicBulletTypeBuilder.create(1.5f, 6f)
                     .dimensions(7f, 9f)
-                    .lifetime(120f)
+                    .lifetime(100f)
                     .ammoMultiplier(2f)
                     .build(),
-            HardItems.tinIngot, BasicBulletTypeBuilder.create(2.4f, 21f)
+            HardItems.tinIngot, BasicBulletTypeBuilder.create(2.0f, 9f)
                     .dimensions(8f, 10f)
-                    .lifetime(120f)
+                    .lifetime(100f)
                     .ammoMultiplier(2f)
                     .build()
     };

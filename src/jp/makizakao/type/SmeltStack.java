@@ -8,6 +8,7 @@ import mindustry.type.ItemStack;
 
 import java.util.Objects;
 
+// SmeltStack class for smelting items.
 public class SmeltStack {
     public static final SmeltStack[] empty = {};
     public ItemStack[] material;
@@ -34,7 +35,7 @@ public class SmeltStack {
         return false;
     }
 
-
+    // SmeltStack List
     public static final Seq<SmeltStack> SMELT_TIER_1 = Seq.with(
             new Builder().material(HardItems.copperDust, 2)
                     .product(HardItems.copperIngot, 1)

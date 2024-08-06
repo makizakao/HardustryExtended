@@ -1,5 +1,6 @@
 package jp.makizakao.content;
 
+import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
 import jp.makizakao.type.SmeltStack;
@@ -12,12 +13,19 @@ import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
 import jp.makizakao.world.blocks.production.TierDrill;
 import jp.makizakao.world.blocks.storage.HardCoreBlock;
 import jp.makizakao.world.blocks.storage.HardUnloader;
+import mindustry.content.Blocks;
+import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
+import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.turrets.ItemTurret;
 
-import static jp.makizakao.content.HardDrawMultis.*;
+import java.util.Optional;
+
+import static jp.makizakao.content.drawer.HardDrawMultis.*;
 import static jp.makizakao.content.HardRecipes.*;
+import static jp.makizakao.content.drawer.HardDrawTurrets.DUO;
 
 public class HardBlocks {
     public static Block
@@ -45,7 +53,8 @@ public class HardBlocks {
     // production - drill
     quarry,
     // turret
-    catapult;
+    duo;
+
 
     public static void load() {
         // distribution
@@ -175,6 +184,22 @@ public class HardBlocks {
                 .itemCapacity(10)
                 .drillTime(3000)
                 .powerConsume(0.4f)
+                .build();
+        // turret
+        duo = ItemTurretBuilder.create("duo", 500, 1)
+                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
+                .ammo(HardAmmoTypes.DUO_TIER_1)
+                .shoot(new ShootAlternate(3.5f))
+                .ammoUseEffect(Fx.casing1)
+                .recoil(2, 0.5f)
+                .shootY(3f)
+                .reload(40f)
+                .range(100f)
+                .shootCone(15f)
+                .inaccuracy(4f)
+                .rotateSpeed(7.5f)
+                .consumeCoolant(0)
+                .drawer(DUO)
                 .build();
     }
 }

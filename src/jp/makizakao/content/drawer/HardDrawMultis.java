@@ -1,4 +1,4 @@
-package jp.makizakao.content;
+package jp.makizakao.content.drawer;
 
 import arc.graphics.Color;
 import mindustry.world.draw.DrawDefault;

@@ -1,5 +1,6 @@
 package jp.makizakao.content;
 
+import arc.graphics.g2d.TextureRegion;
 import arc.util.Log;
 import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.entities.Effect;
@@ -96,6 +97,7 @@ public class DefaultBlockBuilders {
         private float consumeCoolant;
         private boolean isLimitRange = false;
         private DrawBlock drawer;
+        private ItemTurret turret;
 
         private ItemTurretBuilder(String name, int health, int size) {
             this.name = name;
@@ -203,25 +205,32 @@ public class DefaultBlockBuilders {
         }
 
         public ItemTurret build() {
-            return new ItemTurret(name) {{
-                requirements(Category.turret, ItemTurretBuilder.this.requirements);
-                health = ItemTurretBuilder.this.health;
-                size = ItemTurretBuilder.this.size;
-                ammo(ItemTurretBuilder.this.ammo);
-                recoils = ItemTurretBuilder.this.recoils;
-                recoil = ItemTurretBuilder.this.recoil;
-                shootY = ItemTurretBuilder.this.shootY;
-                reload = ItemTurretBuilder.this.reload;
-                range = ItemTurretBuilder.this.range;
-                shootCone = ItemTurretBuilder.this.shootCone;
-                ammoUseEffect = ItemTurretBuilder.this.ammoUseEffect;
-                shoot = ItemTurretBuilder.this.shoot;
-                inaccuracy = ItemTurretBuilder.this.inaccuracy;
-                rotateSpeed = ItemTurretBuilder.this.rotateSpeed;
-                coolant = consumeCoolant(ItemTurretBuilder.this.consumeCoolant);
-                if(ItemTurretBuilder.this.isLimitRange) limitRange();
-                if(Objects.nonNull(ItemTurretBuilder.this.drawer)) drawer = ItemTurretBuilder.this.drawer;
-            }};
+            return new ItemTurret(name) {
+                {
+                    requirements(Category.turret, ItemTurretBuilder.this.requirements);
+                    health = ItemTurretBuilder.this.health;
+                    size = ItemTurretBuilder.this.size;
+                    ammo(ItemTurretBuilder.this.ammo);
+                    recoils = ItemTurretBuilder.this.recoils;
+                    recoil = ItemTurretBuilder.this.recoil;
+                    shootY = ItemTurretBuilder.this.shootY;
+                    reload = ItemTurretBuilder.this.reload;
+                    range = ItemTurretBuilder.this.range;
+                    shootCone = ItemTurretBuilder.this.shootCone;
+                    ammoUseEffect = ItemTurretBuilder.this.ammoUseEffect;
+                    shoot = ItemTurretBuilder.this.shoot;
+                    inaccuracy = ItemTurretBuilder.this.inaccuracy;
+                    rotateSpeed = ItemTurretBuilder.this.rotateSpeed;
+                    coolant = consumeCoolant(ItemTurretBuilder.this.consumeCoolant);
+                    if(ItemTurretBuilder.this.isLimitRange) limitRange();
+                    if(Objects.nonNull(ItemTurretBuilder.this.drawer)) drawer = ItemTurretBuilder.this.drawer;
+                }
+
+                @Override
+                public TextureRegion[] icons() {
+                    return Objects.nonNull(turret) ? turret.icons() : super.icons();
+                }
+            };
         }
     }
 }
