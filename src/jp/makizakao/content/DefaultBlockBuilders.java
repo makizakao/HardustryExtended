@@ -78,7 +78,8 @@ public class DefaultBlockBuilders {
             IShootConeBuilder<IInaccuracyBuilder<IRotateSpeedBuilder<IConsumeCoolantBuilder<ItemTurretBuilder>>>>,
             IInaccuracyBuilder<IRotateSpeedBuilder<IConsumeCoolantBuilder<ItemTurretBuilder>>>,
             IRotateSpeedBuilder<IConsumeCoolantBuilder<ItemTurretBuilder>>,
-            IConsumeCoolantBuilder<ItemTurretBuilder>, ILimitRangeBuilder<ItemTurretBuilder> {
+            IConsumeCoolantBuilder<ItemTurretBuilder>, ILimitRangeBuilder<ItemTurretBuilder>,
+            IPowerConsumeBuilder<ItemTurretBuilder> {
         private final String name;
         private final int health;
         private final int size;
@@ -98,6 +99,7 @@ public class DefaultBlockBuilders {
         private boolean isLimitRange = false;
         private DrawBlock drawer;
         private ItemTurret turret;
+        private float powerConsume;
 
         private ItemTurretBuilder(String name, int health, int size) {
             this.name = name;
@@ -199,6 +201,12 @@ public class DefaultBlockBuilders {
             return this;
         }
 
+        @Override
+        public ItemTurretBuilder powerConsume(float powerConsume) {
+            this.powerConsume = powerConsume;
+            return this;
+        }
+
         public ItemTurretBuilder drawer(DrawBlock drawer) {
             this.drawer = drawer;
             return this;
@@ -222,6 +230,7 @@ public class DefaultBlockBuilders {
                     inaccuracy = ItemTurretBuilder.this.inaccuracy;
                     rotateSpeed = ItemTurretBuilder.this.rotateSpeed;
                     coolant = consumeCoolant(ItemTurretBuilder.this.consumeCoolant);
+                    if(powerConsume > 0) consumePower(powerConsume);
                     if(ItemTurretBuilder.this.isLimitRange) limitRange();
                     if(Objects.nonNull(ItemTurretBuilder.this.drawer)) drawer = ItemTurretBuilder.this.drawer;
                 }

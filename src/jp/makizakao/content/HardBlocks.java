@@ -199,6 +199,7 @@ public class HardBlocks {
                 .inaccuracy(4f)
                 .rotateSpeed(7.5f)
                 .consumeCoolant(0)
+                .powerConsume(0.4f)
                 .drawer(DUO)
                 .build();
     }
