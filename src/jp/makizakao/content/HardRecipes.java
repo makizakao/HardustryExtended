@@ -2,6 +2,7 @@ package jp.makizakao.content;
 
 import arc.struct.Seq;
 import jp.makizakao.type.ResultRecipe;
+import mindustry.content.Items;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
@@ -65,6 +66,24 @@ public class HardRecipes {
                     .inputPower(0.8f)
                     .outputItems(HardItems.tinRing, 1)
                     .craftTime(180f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.copperIngot, 1)
+                    .inputPower(0.8f)
+                    .outputItems(HardItems.copperWire, 2)
+                    .craftTime(60f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.copperWire, 1)
+                    .inputPower(0.8f)
+                    .outputItems(HardItems.fineCopperWire, 4)
+                    .craftTime(60f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tinIngot, 1)
+                    .inputPower(0.8f)
+                    .outputItems(HardItems.tinWire, 2)
+                    .craftTime(60f)
                     .build()
     );
     // blast furnace
@@ -206,10 +225,22 @@ public class HardRecipes {
                     .craftTime(300f)
                     .build(),
             new Builder()
+                    .inputItems(HardItems.ironPlate, 10, HardItems.ironScrew, 20, HardItems.ironRod, 30)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.primitiveBlastFurnaceController, 1)
+                    .craftTime(1200f)
+                    .build(),
+            new Builder()
                     .inputItems(HardItems.bronzeIngot, 10, HardItems.bronzePlate, 5)
                     .inputPower(0.6f)
                     .outputItems(HardItems.bronzePiston, 1)
                     .craftTime(400f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.ironPlate, 10, HardItems.ironScrew, 20, HardItems.ironRod, 30)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.bronzePiston, 1)
+                    .craftTime(800f)
                     .build(),
             new Builder()
                     .inputItems(HardItems.ironPlate, 10, HardItems.ironScrew, 20, HardItems.ironRod, 30)
@@ -262,6 +293,71 @@ public class HardRecipes {
             new Builder()
                     .inputPower(0.2f)
                     .outputHeat(1f)
+                    .build()
+    );
+    // press
+    public static final Seq<Recipe> BRONZE_PRESS_TIER_1 = Seq.with(
+            new Builder()
+                    .inputItems(HardItems.bronzeIngot, 3)
+                    .inputPower(0.4f)
+                    .outputItems(HardItems.bronzePlate, 2)
+                    .craftTime(600f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.brassIngot, 3)
+                    .inputPower(0.4f)
+                    .outputItems(HardItems.brassPlate, 2)
+                    .craftTime(600f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tinIngot, 3)
+                    .inputPower(0.4f)
+                    .outputItems(HardItems.tinPlate, 2)
+                    .craftTime(600f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.copperIngot, 1)
+                    .inputPower(0.4f)
+                    .outputItems(HardItems.copperWire, 2)
+                    .craftTime(300f)
+                    .build()
+    );
+    public static final Seq<Recipe> BRONZE_PRESS_TIER_2 = Seq.with(
+            new Builder()
+                    .inputItems(HardItems.bronzeIngot, 3)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.bronzePlate, 2)
+                    .craftTime(400f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.brassIngot, 3)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.brassPlate, 2)
+                    .craftTime(400f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.tinIngot, 3)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.tinPlate, 2)
+                    .craftTime(400f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.bronzePlate, 3)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.compressedBronzePlate, 1)
+                    .craftTime(600f)
+                    .build(),
+            new Builder()
+                    .inputItems(Items.coal, 2)
+                    .inputPower(0.6f)
+                    .outputItems(Items.graphite, 1)
+                    .craftTime(600f)
+                    .build(),
+            new Builder()
+                    .inputItems(HardItems.copperIngot, 1)
+                    .inputPower(0.6f)
+                    .outputItems(HardItems.copperWire, 2)
+                    .craftTime(150f)
                     .build()
     );
 

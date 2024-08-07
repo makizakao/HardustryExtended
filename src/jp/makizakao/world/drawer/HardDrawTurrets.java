@@ -1,4 +1,4 @@
-package jp.makizakao.content.drawer;
+package jp.makizakao.world.drawer;
 
 import arc.graphics.g2d.TextureRegion;
 import mindustry.content.Blocks;

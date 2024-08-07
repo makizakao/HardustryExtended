@@ -2,9 +2,9 @@ package jp.makizakao.content;
 
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
-import jp.makizakao.content.drawer.HardDrawBlocks;
-import jp.makizakao.content.drawer.HardDrawMultis;
-import jp.makizakao.content.drawer.HardDrawTurrets;
+import jp.makizakao.world.drawer.HardDrawBlocks;
+import jp.makizakao.world.drawer.HardDrawMultis;
+import jp.makizakao.world.drawer.HardDrawTurrets;
 import jp.makizakao.type.SmeltStack;
 import jp.makizakao.world.block.distribution.*;
 import jp.makizakao.world.block.power.HardBattery;
@@ -44,13 +44,15 @@ public class HardBlocks {
     // production - crafter - crusher
     copperCrusher,
     // production - crafter - dustMixer
+    copperDustMixer,
     // production - crafter - factory
     advancedBronzeFactory, basicBronzeFactory, bronzeFactory,
-    copperDustMixer,
     // production - crafter - furnace
     copperFurnace,
     // production - crafter - heater
     basicElectricHeater,
+    // production - crafter - press
+    advancedBronzePress, bronzePress,
     // production - drill
     quarry,
     // turret
@@ -212,6 +214,23 @@ public class HardBlocks {
                 .resolveRecipes(HardRecipes.ELECTRIC_HEATER_TIER_1)
                 .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
+        // production - crafter - press
+        advancedBronzePress = RotateAnimatedCrafter.createRotate("advanced-bronze-press", 100, 2)
+                .rotateSpeed(-1.0f)
+                .rotateAngle(0, 60f)
+                .requirements(HardItems.bronzeHull, 1, HardItems.bronzePiston, 2, HardItems.copperIngot, 30,
+                        HardItems.leadIngot, 30)
+                .resolveRecipes(HardRecipes.BRONZE_PRESS_TIER_2)
+                .itemCapacity(10)
+                .build();
+        bronzePress = RotateAnimatedCrafter.createRotate("bronze-press", 100, 2)
+                .rotateSpeed(-1.0f)
+                .rotateAngle(0, 60f)
+                .requirements(HardItems.bronzeIngot, 60, HardItems.copperIngot, 20, HardItems.leadIngot, 30)
+                .resolveRecipes(HardRecipes.BRONZE_PRESS_TIER_1)
+                .itemCapacity(10)
+                .build();
+        // production - crafter - wire mill
         // production - drill
         quarry = TierDrill.create("quarry", 100, 2, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
@@ -220,7 +239,7 @@ public class HardBlocks {
                 .powerConsume(0.4f)
                 .build();
         // turret
-        duo = ItemTurretBuilder.create("duo", 500, 1)
+        duo = ItemTurretBuilder.create("duo", 200, 1)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
                 .ammo(HardAmmoTypes.DUO_TIER_1)
                 .shoot(new ShootAlternate(3.5f))
