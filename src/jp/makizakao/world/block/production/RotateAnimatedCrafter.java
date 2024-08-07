@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.production;
+package jp.makizakao.world.block.production;
 
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.TextureRegion;
@@ -26,6 +26,11 @@ public class RotateAnimatedCrafter extends HardMultiCrafter {
     public static IRotateSpeedBuilder<IRotateAngleBuilder<IRequirementsBuilder<IResolveRecipesBuilder<
             HardMultiCrafter.Builder>>>> createRotate(String name, int health, int size) {
         return new Builder(name, health, size);
+    }
+
+    public static IRequirementsBuilder<IResolveRecipesBuilder<HardMultiCrafter.Builder>> create(String name, int health, int size)
+    {
+        throw new RuntimeException("Use createRotate method instead of create.");
     }
 
     @Override

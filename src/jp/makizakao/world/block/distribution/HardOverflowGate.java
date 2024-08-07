@@ -1,22 +1,24 @@
-package jp.makizakao.world.blocks.distribution;
+package jp.makizakao.world.block.distribution;
 
 import jp.makizakao.world.builder.BaseBlockBuilder.*;
+import mindustry.gen.Building;
 import mindustry.type.Category;
+import mindustry.type.Item;
 import mindustry.type.ItemStack;
-import mindustry.world.blocks.distribution.Router;
+import mindustry.world.blocks.distribution.OverflowGate;
 
-public class HardRouter extends Router {
-    private HardRouter(String name) {
-        super(name);
-    }
+public class HardOverflowGate extends OverflowGate {
+    private HardOverflowGate(String name) { super(name); }
 
-    private HardRouter(Builder builder) {
+    private HardOverflowGate(Builder builder) {
         super(builder.name);
         requirements(Category.distribution, builder.requirements);
+        this.invert = builder.invert;
         health = builder.health;
         size = builder.size;
         buildCostMultiplier = builder.buildCostMultiplier;
         consumesPower = builder.powerConsume > 0f;
+        update = true;
         if(consumesPower) {
             consumePower(builder.powerConsume);
             outputsPower = false;
@@ -28,12 +30,17 @@ public class HardRouter extends Router {
         return new Builder(name, health, size);
     }
 
-    public class HardRouterBuild extends RouterBuild {
+    public class HardOverflowBuild extends OverflowGateBuild {
+
         @Override
-        public void updateTile() {
-            if(canConsume()) {
-                super.updateTile();
-            }
+        public boolean acceptItem(Building source, Item item) {
+            return canConsume() && super.acceptItem(source, item);
+        }
+
+        @Override
+        public void handleItem(Building source, Item item) {
+            if(canConsume()) consume();
+            super.handleItem(source, item);
         }
     }
 
@@ -43,6 +50,7 @@ public class HardRouter extends Router {
         private final int health;
         private final int size;
         private ItemStack[] requirements;
+        private boolean invert = false;
         private float buildCostMultiplier = 1f;
         private float powerConsume = -1f;
 
@@ -70,9 +78,14 @@ public class HardRouter extends Router {
             return this;
         }
 
+        public Builder invert() {
+            this.invert = true;
+            return this;
+        }
 
-        public HardRouter build() {
-            return new HardRouter(this);
+
+        public HardOverflowGate build() {
+            return new HardOverflowGate(this);
         }
     }
 }

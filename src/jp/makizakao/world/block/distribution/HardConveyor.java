@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.distribution;
+package jp.makizakao.world.block.distribution;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardBlocks;

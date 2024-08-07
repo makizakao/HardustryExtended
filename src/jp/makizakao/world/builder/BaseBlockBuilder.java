@@ -6,7 +6,7 @@ import jp.makizakao.type.SmeltStack;
 import mindustry.entities.Effect;
 import mindustry.entities.pattern.ShootPattern;
 import mindustry.type.UnitType;
-import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawBlock;
 import multicraft.Recipe;
 
 public final class BaseBlockBuilder {
@@ -71,7 +71,7 @@ public final class BaseBlockBuilder {
     }
 
     public interface IDrawerBuilder<T> {
-        T drawer(DrawMulti drawer);
+        T drawer(DrawBlock drawer);
     }
 
     public interface IAmbientSoundBuilder<T> {
@@ -128,5 +128,9 @@ public final class BaseBlockBuilder {
 
     public interface ILimitRangeBuilder<T> {
         T limitRange();
+    }
+
+    public interface IExplodeHeatBuilder<T> {
+        T explodeHeat(float explodeHeat, int damage, int radius);
     }
 }

@@ -1,21 +1,21 @@
-package jp.makizakao.world.blocks.distribution;
+package jp.makizakao.world.block.storage;
 
+import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
-import mindustry.world.blocks.distribution.Junction;
+import mindustry.world.blocks.storage.Unloader;
 
-import static jp.makizakao.world.builder.BaseBlockBuilder.*;
-
-public class HardJunction extends Junction {
-    private HardJunction(String name) {
+public class HardUnloader extends Unloader {
+    private HardUnloader(String name) {
         super(name);
     }
 
-    private HardJunction(Builder builder) {
+    private HardUnloader(Builder builder) {
         super(builder.name);
-        requirements(Category.distribution, builder.requirements);
+        requirements(Category.effect, builder.requirements);
         health = builder.health;
         size = builder.size;
+        speed = builder.speed;
         buildCostMultiplier = builder.buildCostMultiplier;
         consumesPower = builder.powerConsume > 0f;
         if(consumesPower) {
@@ -24,16 +24,15 @@ public class HardJunction extends Junction {
         }
     }
 
-    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(String name, int health, int size) {
-        return new Builder(name, health, size);
+    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
+            String name, int health, int size, float speed) {
+        return new Builder(name, health, size, speed);
     }
 
-    public class HardJunctionBuild extends JunctionBuild {
+    public class HardUnloaderBuild extends UnloaderBuild {
         @Override
         public void updateTile() {
-            if(canConsume()) {
-                super.updateTile();
-            }
+            if(canConsume()) super.updateTile();
         }
     }
 
@@ -42,14 +41,16 @@ public class HardJunction extends Junction {
         private final String name;
         private final int health;
         private final int size;
+        private final float speed;
         private ItemStack[] requirements;
         private float buildCostMultiplier = 1f;
         private float powerConsume = -1f;
 
-        private Builder(String name, int health, int size) {
+        private Builder(String name, int health, int size, float speed) {
             this.name = name;
             this.health = health;
             this.size = size;
+            this.speed = speed;
         }
 
         @Override
@@ -70,9 +71,9 @@ public class HardJunction extends Junction {
             return this;
         }
 
-
-        public HardJunction build() {
-            return new HardJunction(this);
+        public HardUnloader build() {
+            return new HardUnloader(this);
         }
     }
+
 }

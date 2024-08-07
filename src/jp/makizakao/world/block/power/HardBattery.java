@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.power;
+package jp.makizakao.world.block.power;
 
 import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;

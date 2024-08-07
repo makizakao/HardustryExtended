@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.production;
+package jp.makizakao.world.block.production;
 
 import arc.math.Mathf;
 import jp.makizakao.world.builder.BaseBlockBuilder.*;

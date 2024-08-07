@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.power;
+package jp.makizakao.world.block.power;
 
 import arc.graphics.g2d.TextureRegion;
 import mindustry.world.blocks.power.PowerGenerator;

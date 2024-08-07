@@ -1,31 +1,26 @@
 package jp.makizakao.content;
 
-import arc.util.Log;
 import arc.util.Time;
 import jp.makizakao.content.DefaultBlockBuilders.*;
+import jp.makizakao.content.drawer.HardDrawBlocks;
+import jp.makizakao.content.drawer.HardDrawMultis;
+import jp.makizakao.content.drawer.HardDrawTurrets;
 import jp.makizakao.type.SmeltStack;
-import jp.makizakao.world.blocks.distribution.*;
-import jp.makizakao.world.blocks.power.HardBattery;
-import jp.makizakao.world.blocks.power.HardPowerNode;
-import jp.makizakao.world.blocks.power.WindGenerator;
-import jp.makizakao.world.blocks.production.HardMultiCrafter;
-import jp.makizakao.world.blocks.production.RotateAnimatedCrafter;
-import jp.makizakao.world.blocks.production.TierDrill;
-import jp.makizakao.world.blocks.storage.HardCoreBlock;
-import jp.makizakao.world.blocks.storage.HardUnloader;
-import mindustry.content.Blocks;
+import jp.makizakao.world.block.distribution.*;
+import jp.makizakao.world.block.power.HardBattery;
+import jp.makizakao.world.block.power.HardPowerNode;
+import jp.makizakao.world.block.power.WindGenerator;
+import jp.makizakao.world.block.production.ExplodableFurnace;
+import jp.makizakao.world.block.production.HardMultiCrafter;
+import jp.makizakao.world.block.production.RotateAnimatedCrafter;
+import jp.makizakao.world.block.production.TierDrill;
+import jp.makizakao.world.block.storage.HardCoreBlock;
+import jp.makizakao.world.block.storage.HardUnloader;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
 import mindustry.world.Block;
-import mindustry.world.blocks.defense.turrets.ItemTurret;
-
-import java.util.Optional;
-
-import static jp.makizakao.content.drawer.HardDrawMultis.*;
-import static jp.makizakao.content.HardRecipes.*;
-import static jp.makizakao.content.drawer.HardDrawTurrets.DUO;
 
 public class HardBlocks {
     public static Block
@@ -42,9 +37,15 @@ public class HardBlocks {
     advancedWindTurbine, windTurbine,
     // power - node
     basicNode,
+    // production - crafter - bending machine
+    basicBendingMachine,
+    // production - crafter - blast furnace
+    primitiveBlastFurnace,
     // production - crafter - crusher
     copperCrusher,
     // production - crafter - dustMixer
+    // production - crafter - factory
+    advancedBronzeFactory, basicBronzeFactory, bronzeFactory,
     copperDustMixer,
     // production - crafter - furnace
     copperFurnace,
@@ -148,12 +149,31 @@ public class HardBlocks {
                 .maxNodes(4)
                 .powerConsume(0.02f)
                 .build();
+        // production - crafter - bending machine
+        basicBendingMachine = RotateAnimatedCrafter.createRotate("basic-bending-machine", 200, 2)
+                .rotateSpeed(-1.0f)
+                .rotateAngle(0, 60f)
+                .requirements(HardItems.lowElectricPiston, 10, HardItems.integratedLogicCircuit, 10,
+                        HardItems.lowElectricMachineHull, 1, HardItems.lowElectricMotor, 10, HardItems.tinWire, 10)
+                .resolveRecipes(HardRecipes.BENDING_MACHINE_TIER_1)
+                .itemCapacity(20)
+                .build();
+        // production - crafter - blast furnace
+        primitiveBlastFurnace = ExplodableFurnace.createExplodable("primitive-blast-furnace", 500, 3)
+                .explodeHeat(30, 100, 5)
+                .requirements(HardItems.primitiveBlastFurnaceBlock, 30,
+                        HardItems.primitiveBlastFurnaceController, 1)
+                .resolveRecipes(HardRecipes.BLAST_FURNACE_TIER_1)
+                .itemCapacity(8)
+                .ambientSound(Sounds.smelter, 0.6f)
+                .drawer(HardDrawMultis.SMELT_FLAME)
+                .build();
         // production - crafter - crusher
         copperCrusher = RotateAnimatedCrafter.createRotate("copper-crusher", 100, 2)
                 .rotateSpeed(1f)
                 .rotateAngle(0f, 360f)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
-                .resolveRecipes(CRUSHER_TIER_1)
+                .resolveRecipes(HardRecipes.CRUSHER_TIER_1)
                 .itemCapacity(10)
                 .build();
         // production - crafter - dustMixer
@@ -161,22 +181,36 @@ public class HardBlocks {
                 .rotateSpeed(1f)
                 .rotateAngle(0f, 360f)
                 .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 10)
-                .resolveRecipes(DUST_MIXER_TIER_1)
+                .resolveRecipes(HardRecipes.DUST_MIXER_TIER_1)
                 .itemCapacity(10)
+                .build();
+        // production - crafter - factory
+        basicBronzeFactory = HardMultiCrafter.create("basic-bronze-factory", 100, 2)
+                .requirements(HardItems.bronzeIngot, 60, HardItems.copperIngot, 30, HardItems.leadIngot, 30)
+                .resolveRecipes(HardRecipes.BRONZE_FACTORY_TIER_1)
+                .itemCapacity(40)
+                .drawer(HardDrawBlocks.ITEM_DISPLAY_DRAWER)
+                .build();
+        bronzeFactory = HardMultiCrafter.create("bronze-factory", 100, 2)
+                .requirements(HardItems.bronzeHull, 1, HardItems.copperWire, 20, HardItems.leadIngot, 30,
+                        HardItems.bronzeIngot, 20)
+                .resolveRecipes(HardRecipes.BRONZE_FACTORY_TIER_2)
+                .itemCapacity(100)
+                .drawer(HardDrawBlocks.ITEM_DISPLAY_DRAWER)
                 .build();
         // production - crafter - furnace
         copperFurnace = HardMultiCrafter.create("copper-furnace", 100, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
-                .resolveRecipes(FURNACE_TIER_1)
+                .resolveRecipes(HardRecipes.FURNACE_TIER_1)
                 .itemCapacity(12)
                 .ambientSound(Sounds.smelter, 0.4f)
-                .drawer(SMELT_FLAME)
+                .drawer(HardDrawMultis.SMELT_FLAME)
                 .build();
         // production - crafter - heater
         basicElectricHeater = HardMultiCrafter.create("basic-electric-heater", 30, 1)
                 .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 30)
-                .resolveRecipes(ELECTRIC_HEATER_TIER_1)
-                .drawer(HEAT_OUTPUT)
+                .resolveRecipes(HardRecipes.ELECTRIC_HEATER_TIER_1)
+                .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
         // production - drill
         quarry = TierDrill.create("quarry", 100, 2, 2)
@@ -200,7 +234,7 @@ public class HardBlocks {
                 .rotateSpeed(7.5f)
                 .consumeCoolant(0)
                 .powerConsume(0.4f)
-                .drawer(DUO)
+                .drawer(HardDrawTurrets.DUO)
                 .build();
     }
 }

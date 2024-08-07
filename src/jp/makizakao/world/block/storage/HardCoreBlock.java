@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.storage;
+package jp.makizakao.world.block.storage;
 
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;

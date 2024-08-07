@@ -1,4 +1,4 @@
-package jp.makizakao.world.blocks.power;
+package jp.makizakao.world.block.power;
 
 import arc.graphics.g2d.Draw;
 import arc.math.Mathf;

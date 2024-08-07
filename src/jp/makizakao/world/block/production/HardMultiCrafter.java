@@ -1,15 +1,14 @@
-package jp.makizakao.world.blocks.production;
+package jp.makizakao.world.block.production;
 
 import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import jp.makizakao.type.ResultRecipe;
 import jp.makizakao.world.builder.BaseBlockBuilder.*;
-import mindustry.Vars;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
-import mindustry.world.draw.DrawMulti;
+import mindustry.world.draw.DrawBlock;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
 
@@ -58,7 +57,7 @@ public class HardMultiCrafter extends MultiCrafter {
                 consume();
                 var items = cur.output.items;
                 if (cur.isOutputItem()) {
-                    Vars.ui.hudfrag.showToast(String.valueOf(cur.dropChances[0]));
+                    //Vars.ui.hudfrag.showToast(String.valueOf(cur.dropChances[0]));
                     for (int i = 0; i < items.size; i++) for (int j = 0; j < items.get(i).amount; j++) {
                         if(Mathf.random() <= cur.dropChances[i]) {
                             offload(items.get(i).item);
@@ -91,7 +90,7 @@ public class HardMultiCrafter extends MultiCrafter {
         private final int health;
         private ItemStack[] requirements;
         private Seq<Recipe> recipes;
-        private DrawMulti drawer;
+        private DrawBlock drawer;
         private Sound ambientSound = Sounds.none;
         private float ambientSoundVolume = 0f;
         private int itemCapacity = 10;
@@ -128,7 +127,7 @@ public class HardMultiCrafter extends MultiCrafter {
         }
 
         @Override
-        public Builder drawer(DrawMulti drawer) {
+        public Builder drawer(DrawBlock drawer) {
             this.drawer = drawer;
             return this;
         }

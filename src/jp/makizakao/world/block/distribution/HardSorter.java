@@ -1,16 +1,18 @@
-package jp.makizakao.world.blocks.distribution;
+package jp.makizakao.world.block.distribution;
 
 import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.gen.Building;
 import mindustry.type.Category;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
-import mindustry.world.blocks.distribution.OverflowGate;
+import mindustry.world.blocks.distribution.Sorter;
 
-public class HardOverflowGate extends OverflowGate {
-    private HardOverflowGate(String name) { super(name); }
+public class HardSorter extends Sorter {
+    private HardSorter(String name) {
+        super(name);
+    }
 
-    private HardOverflowGate(Builder builder) {
+    private HardSorter(Builder builder) {
         super(builder.name);
         requirements(Category.distribution, builder.requirements);
         this.invert = builder.invert;
@@ -30,8 +32,7 @@ public class HardOverflowGate extends OverflowGate {
         return new Builder(name, health, size);
     }
 
-    public class HardOverflowBuild extends OverflowGateBuild {
-
+    public class HardSorterBuild extends SorterBuild {
         @Override
         public boolean acceptItem(Building source, Item item) {
             return canConsume() && super.acceptItem(source, item);
@@ -84,8 +85,8 @@ public class HardOverflowGate extends OverflowGate {
         }
 
 
-        public HardOverflowGate build() {
-            return new HardOverflowGate(this);
+        public HardSorter build() {
+            return new HardSorter(this);
         }
     }
 }
