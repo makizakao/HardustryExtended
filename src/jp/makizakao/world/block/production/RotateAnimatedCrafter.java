@@ -78,7 +78,7 @@ public class RotateAnimatedCrafter extends HardMultiCrafter {
         private float startAngle = 0f;
         private Seq<Recipe> recipes;
         private ItemStack[] requirements;
-        private Sound ambientSound;
+        private Sound ambientSound = Sounds.none;
         private float ambientVolume;
         private DrawBlock drawer;
         private int itemCapacity;

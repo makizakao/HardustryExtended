@@ -231,9 +231,9 @@ public class HardBlocks {
                 .itemCapacity(10)
                 .build();
         // production - crafter - steam boiler
-        bronzeSteamBoiler = ExplodableCrafter.Builder.create("bronze-steam-boiler", 200, 2)
+        bronzeSteamBoiler = SteamBoiler.Builder.create("bronze-steam-boiler", 200, 2)
                 .requirements(HardItems.bronzePlate, 30, HardItems.copperIngot, 15, HardItems.leadIngot, 10)
-                .explodeTemperature(30, 100, 5)
+                .explodeTemperature(500, 100, 5)
                 .effect(Fx.reactorExplosion)
                 .resolveRecipes(SteamBoilerRecipes.STEAM_BOILER_TIER_1)
                 .ambientSound(Sounds.smelter, 0.6f)

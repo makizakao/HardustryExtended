@@ -1,6 +1,8 @@
 package jp.makizakao.world.block.production;
 
+import arc.Core;
 import arc.audio.Sound;
+import arc.graphics.Color;
 import arc.math.Mathf;
 import arc.struct.Seq;
 import arc.util.Time;
@@ -11,6 +13,7 @@ import jp.makizakao.world.type.entry.SmeltEntry;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
+import mindustry.ui.Bar;
 import mindustry.world.draw.DrawBlock;
 import multicraft.MultiCrafter;
 import multicraft.Recipe;
@@ -42,23 +45,36 @@ public class HardMultiCrafter extends MultiCrafter {
         if(builder.drawer != null) this.drawer = builder.drawer;
     }
 
+    @Override
+    public void setBars() {
+        super.setBars();
+        setTemperatureBar();
+    }
+
+    protected void setTemperatureBar() {
+        if(isConsumeHeat) {
+            this.addBar("temperature", b ->
+                    new Bar(((HardMultiCrafterBuild) b).getCurRecipe().input instanceof SmeltEntry s
+                            ? Core.bundle.format("bar.crafter-temperature-stats",
+                            (int) ((HardMultiCrafterBuild) b).temperature,
+                            (int) s.temperature)
+                            : "bar.temperature", Color.orange, ((HardMultiCrafterBuild) b)::temperatureFrac));
+        }
+    }
+
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
         protected float temperature = outsideTemperature;
+        protected float temperatureEfficiency = 0f;
 
         @Override
         public void updateTile() {
             Recipe cur = this.getCurRecipe();
             if(cur.isConsumeHeat()) {
                 this.heat = this.calculateHeat(this.sideHeat);
-                temperature = Math.min(
-                        temperature + this.heat * temperatureIncrementsMultiplier * delta() / Time.toSeconds,
-                        this.heat * temperaturePerHeat + outsideTemperature);
+                temperature = this.calcTemperature(cur);
                 if(heat < cur.maxHeat() / 2) craftingTime = 0;
                 Optional.of(cur).filter(r -> r.input instanceof SmeltEntry).map(r -> (SmeltEntry)r.input).ifPresent(
-                        e -> {
-                            efficiency = temperature < e.temperature
-                                    ? 0 : Math.min((temperature - e.temperature) / e.temperature + minEfficiency, 1f);
-                        });
+                        e -> temperatureEfficiency = this.calcTemperatureEfficiency(cur));
             }
             if(cur.isOutputHeat()) {
                 heat = Mathf.approachDelta(heat, cur.output.heat * efficiency
@@ -66,6 +82,25 @@ public class HardMultiCrafter extends MultiCrafter {
             }
 
             super.updateTile();
+        }
+
+        protected float calcTemperature(Recipe cur) {
+            return Math.min(temperature + this.heat * temperatureIncrementsMultiplier * delta() / Time.toSeconds,
+                    Math.max(temperature - delta() / Time.toSeconds,
+                            this.heat * temperaturePerHeat + outsideTemperature));
+        }
+
+        protected float calcTemperatureEfficiency(Recipe cur) {
+            return temperature < ((SmeltEntry)cur.input).temperature ? 0
+                    : Math.min((temperature - ((SmeltEntry)cur.input).temperature) / (
+                            (SmeltEntry)cur.input).temperature + minEfficiency, 1f);
+        }
+
+        public float temperatureFrac() {
+            return Optional.of(this.getCurRecipe()).map(r -> (SmeltEntry)r.input)
+                    .map(e -> e.temperature)
+                    .map(t -> Mathf.clamp(temperature / t, 0, 1f))
+                    .orElse(0f);
         }
 
         @Override
@@ -95,6 +130,18 @@ public class HardMultiCrafter extends MultiCrafter {
                 return super.getProgressIncrease(baseTime) * Math.min(1, this.heat / cur.maxHeat());
             }
             return super.getProgressIncrease(baseTime);
+        }
+
+        @Override
+        public float edelta() {
+            Recipe cur = this.getCurRecipe();
+            return super.edelta() * (cur.isConsumeHeat() ? temperatureEfficiency : 1f);
+        }
+
+        @Override
+        public void updateBars() {
+            HardMultiCrafter.this.barMap.clear();
+            HardMultiCrafter.this.setBars();
         }
 
         @Override

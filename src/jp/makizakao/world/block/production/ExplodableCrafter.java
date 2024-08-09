@@ -1,24 +1,29 @@
 package jp.makizakao.world.block.production;
 
+import arc.Core;
 import arc.audio.Sound;
+import arc.graphics.Color;
+import arc.math.Mathf;
 import arc.struct.Seq;
+import jp.makizakao.world.type.entry.SmeltEntry;
 import mindustry.content.Fx;
 import mindustry.entities.Damage;
 import mindustry.entities.Effect;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
+import mindustry.ui.Bar;
 import mindustry.world.draw.DrawBlock;
 import multicraft.Recipe;
 
 import java.util.Objects;
 
 public class ExplodableCrafter extends HardMultiCrafter {
-    private int explosionDamage;
-    private int explosionRadius;
-    private float explodeTemperature = 0;
-    private Effect explodeEffect = Fx.explosion;
-    private final Sound explodeSound = Sounds.none;
+    protected int explosionDamage;
+    protected int explosionRadius;
+    protected float explodeTemperature = 0;
+    protected Effect explodeEffect = Fx.explosion;
+    protected final Sound explodeSound = Sounds.none;
 
     protected ExplodableCrafter(String name) {
         super(name);
@@ -43,6 +48,19 @@ public class ExplodableCrafter extends HardMultiCrafter {
         if(Objects.nonNull(builder.effect)) this.explodeEffect = builder.effect;
     }
 
+    @Override
+    protected void setTemperatureBar() {
+        if(isConsumeHeat) {
+            this.addBar("temperature", b ->
+                    new Bar(((ExplodableCrafterBuild) b).getCurRecipe().input instanceof SmeltEntry s
+                            ? Core.bundle.format("bar.explodable-temperature-stats",
+                            (int) ((HardMultiCrafterBuild) b).temperature,
+                            (int) s.temperature,
+                            (int) explodeTemperature)
+                            : "bar.temperature", Color.orange, ((ExplodableCrafterBuild) b)::temperatureFrac));
+        }
+    }
+
     public class ExplodableCrafterBuild extends HardMultiCrafterBuild {
         @Override
         public void updateTile() {
@@ -51,6 +69,7 @@ public class ExplodableCrafter extends HardMultiCrafter {
                 createExplosion();
                 onDestroyed();
             }
+
         }
 
         public void createExplosion() {
@@ -60,6 +79,15 @@ public class ExplodableCrafter extends HardMultiCrafter {
 
             ExplodableCrafter.this.explodeEffect.at(this);
             ExplodableCrafter.this.explodeSound.at(this);
+        }
+
+        @Override
+        public float temperatureFrac() {
+            return Mathf.lerp(0, 1, temperature / explodeTemperature);
+        }
+
+        private float calcMaxEfficiencyTemp(float requiredTemp) {
+            return (2 - minEfficiency) * requiredTemp;
         }
     }
 
