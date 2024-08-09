@@ -4,7 +4,6 @@ import arc.audio.Sound;
 import arc.struct.Seq;
 import arc.util.Time;
 import jp.makizakao.world.type.entry.SmeltEntry;
-import mindustry.Vars;
 import mindustry.entities.Effect;
 import mindustry.gen.Sounds;
 import mindustry.type.Category;
@@ -35,6 +34,7 @@ public class SteamBoiler extends ExplodableCrafter {
         this.explodeTemperature= builder.explodeTemperature;
         this.explosionDamage = builder.damage;
         this.explosionRadius = builder.radius;
+        this.hasLiquids = true;
         if(Objects.nonNull(builder.effect)) this.explodeEffect = builder.effect;
     }
 

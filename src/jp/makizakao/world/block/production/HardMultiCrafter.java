@@ -62,6 +62,8 @@ public class HardMultiCrafter extends MultiCrafter {
         }
     }
 
+
+
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
         protected float temperature = outsideTemperature;
         protected float temperatureEfficiency = 0f;

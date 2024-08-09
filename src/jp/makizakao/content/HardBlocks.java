@@ -43,7 +43,7 @@ public class HardBlocks {
     // production - crafter - furnace
     copperFurnace,
     // production - crafter - heater
-    basicElectricHeater,
+    basicElectricHeater, basicCoalHeater,
     // production - crafter - press
     advancedBronzePress, bronzePress,
     // production - crafter - steam boiler
@@ -214,6 +214,11 @@ public class HardBlocks {
         basicElectricHeater = HardMultiCrafter.Builder.create("basic-electric-heater", 30, 1)
                 .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 30)
                 .resolveRecipes(HeaterRecipes.ELECTRIC_HEATER_TIER_1)
+                .drawer(HardDrawMultis.HEAT_OUTPUT)
+                .build();
+        basicCoalHeater = HardMultiCrafter.Builder.create("basic-coal-heater", 30, 1)
+                .requirements(HardItems.copperIngot, 60, HardItems.leadIngot, 20)
+                .resolveRecipes(HeaterRecipes.COAL_HEATER_TIER_1)
                 .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
         // production - crafter - press
