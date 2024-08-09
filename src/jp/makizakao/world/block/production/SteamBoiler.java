@@ -50,7 +50,6 @@ public class SteamBoiler extends ExplodableCrafter {
             if(((SmeltEntry) cur.input).temperature <= temperature
                     && liquids.get(cur.input.fluids.get(0).liquid) < cur.input.fluids.get(0).amount * 60) {
                 liquids.clear();
-                Vars.ui.hudfrag.showToast(String.valueOf(temperature));
             }
 
         }
