@@ -2,7 +2,6 @@ package jp.makizakao.world.block.distribution;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardBlocks;
-import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.Vars;
 import mindustry.gen.Building;
 import mindustry.type.Category;
@@ -29,11 +28,6 @@ public class HardConveyor extends Conveyor {
             consumePower(builder.powerConsume);
             outputsPower = false;
         }
-    }
-
-    public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
-            String name, int health, float speed, float displayedSpeed) {
-        return new Builder(name, health, speed, displayedSpeed);
     }
 
     @Override
@@ -84,36 +78,62 @@ public class HardConveyor extends Conveyor {
         }
     }
 
-    public static class Builder implements IRequirementsBuilder<IPowerConsumeBuilder<Builder>>,
-            IPowerConsumeBuilder<Builder>, IBuildCostMultiplierBuilder<Builder> {
-        private final String name;
-        private final int health;
-        private final float speed;
-        private final float displayedSpeed;
+    public static class Builder {
+        private String name;
+        private int health;
+        private float speed;
+        private float displayedSpeed;
         private ItemStack[] requirements;
         private float buildCostMultiplier = 1f;
         private float powerConsume = -1f;
 
-        private Builder(String name, int health, float speed, float displayedSpeed) {
-            this.name = name;
-            this.health = health;
-            this.speed = speed;
-            this.displayedSpeed = displayedSpeed;
+        private Builder() {}
+
+        private Builder(RequiredBuilder builder) {
+            this.name = builder.name;
+            this.health = builder.health;
+            this.speed = builder.speed;
+            this.displayedSpeed = builder.displayedSpeed;
+            this.requirements = builder.requirements;
+            this.powerConsume = builder.powerConsume;
+        }
+        public static IRequirementsBuilder<IPowerConsumeBuilder<Builder>> create(
+                String name, int health, float speed, float displayedSpeed) {
+            return new RequiredBuilder(name, health, speed, displayedSpeed);
         }
 
-        @Override
-        public IPowerConsumeBuilder<Builder> requirements(Object... stacks) {
-            this.requirements = ItemStack.with(stacks);
-            return this;
+        public static class RequiredBuilder implements
+                IRequirementsBuilder<IPowerConsumeBuilder<Builder>>,
+                IPowerConsumeBuilder<Builder> {
+            private String name;
+            private int health;
+            private float speed;
+            private float displayedSpeed;
+            private ItemStack[] requirements;
+            private float powerConsume = -1f;
+
+            private RequiredBuilder() {}
+
+            private RequiredBuilder(String name, int health, float speed, float displayedSpeed) {
+                this.name = name;
+                this.health = health;
+                this.speed = speed;
+                this.displayedSpeed = displayedSpeed;
+            }
+
+            @Override
+            public IPowerConsumeBuilder<Builder> requirements(Object... stacks) {
+                this.requirements = ItemStack.with(stacks);
+                return this;
+            }
+
+            @Override
+            public Builder powerConsume(float powerConsume) {
+                this.powerConsume = powerConsume;
+                return new Builder(this);
+            }
         }
 
-        @Override
-        public Builder powerConsume(float powerConsume) {
-            this.powerConsume = powerConsume;
-            return this;
-        }
-
-        @Override
         public Builder buildCostMultiplier(float buildCostMultiplier) {
             this.buildCostMultiplier = buildCostMultiplier;
             return this;
@@ -122,5 +142,14 @@ public class HardConveyor extends Conveyor {
         public HardConveyor build() {
             return new HardConveyor(this);
         }
+
+        public interface IRequirementsBuilder<T> {
+            T requirements(Object... stacks);
+        }
+
+        public interface IPowerConsumeBuilder<T> {
+            T powerConsume(float powerConsume);
+        }
+
     }
 }

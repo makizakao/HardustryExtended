@@ -1,4 +1,4 @@
-package jp.makizakao.type;
+package jp.makizakao.world.type;
 
 import arc.struct.Seq;
 import arc.util.Time;

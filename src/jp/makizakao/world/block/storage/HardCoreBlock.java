@@ -2,8 +2,7 @@ package jp.makizakao.world.block.storage;
 
 import arc.graphics.g2d.TextureRegion;
 import arc.struct.Seq;
-import jp.makizakao.type.SmeltStack;
-import jp.makizakao.world.builder.BaseBlockBuilder.*;
+import jp.makizakao.world.type.SmeltStack;
 import mindustry.game.Team;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
@@ -41,12 +40,6 @@ public class HardCoreBlock extends CoreBlock {
         size = builder.size;
         unitCapModifier = builder.unitCapModifier;
         smeltList = builder.smeltList;
-    }
-
-    // Builderを作成
-    public static IRequirementsBuilder<IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>> create(
-            String name, int health, int itemCapacity, int size) {
-        return new Builder(name, health, itemCapacity, size);
     }
 
     @Override
@@ -93,14 +86,11 @@ public class HardCoreBlock extends CoreBlock {
         }
     }
 
-    public static class Builder implements IRequirementsBuilder<
-            IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>>,
-            IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>,
-            IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>, ISmeltListBuilder<Builder> {
-        private final String name;
-        private final int health;
-        private final int itemCapacity;
-        private final int size;
+    public static class Builder {
+        private String name;
+        private int health;
+        private int itemCapacity;
+        private int size;
         private boolean buildVisibility = false;
         private ItemStack[] requirements;
         private boolean alwaysUnlocked = false;
@@ -109,35 +99,70 @@ public class HardCoreBlock extends CoreBlock {
         private int unitCapModifier = 1;
         private Seq<SmeltStack> smeltList;
 
-        private Builder(String name, int health, int itemCapacity, int size) {
-            this.name = name;
-            this.health = health;
-            this.itemCapacity = itemCapacity;
-            this.size = size;
+        private Builder() {}
+
+        private Builder(RequiredBuilder builder) {
+            this.name = builder.name;
+            this.health = builder.health;
+            this.itemCapacity = builder.itemCapacity;
+            this.size = builder.size;
+            this.requirements = builder.requirements;
+            this.unitType = builder.unitType;
+            this.unitCapModifier = builder.unitCapModifier;
+            this.smeltList = builder.smeltList;
         }
 
-        @Override
-        public IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>> requirements(Object... stacks) {
-            this.requirements = ItemStack.with(stacks);
-            return this;
+        public static IRequirementsBuilder<IUnitTypeBuilder<IUnitCapModifierBuilder<
+                ISmeltListBuilder<Builder>>>> create(String name, int health, int itemCapacity, int size) {
+            return new RequiredBuilder(name, health, itemCapacity, size);
         }
 
-        @Override
-        public IUnitCapModifierBuilder<ISmeltListBuilder<Builder>> unitType(UnitType unitType) {
-            this.unitType = unitType;
-            return this;
-        }
+        public static class RequiredBuilder implements
+                IRequirementsBuilder<IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>>,
+                IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>>,
+                IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>, ISmeltListBuilder<Builder> {
+            private String name;
+            private int health;
+            private int itemCapacity;
+            private int size;
+            private ItemStack[] requirements;
+            private UnitType unitType;
+            private int unitCapModifier = 1;
+            private Seq<SmeltStack> smeltList;
 
-        @Override
-        public ISmeltListBuilder<Builder> unitCapModifier(int unitCapModifier) {
-            this.unitCapModifier = unitCapModifier;
-            return this;
-        }
+            private RequiredBuilder() {}
 
-        @Override
-        public Builder smeltList(Seq<SmeltStack> smeltList) {
-            this.smeltList = smeltList;
-            return this;
+            private RequiredBuilder(String name, int health, int itemCapacity, int size) {
+                this.name = name;
+                this.health = health;
+                this.itemCapacity = itemCapacity;
+                this.size = size;
+            }
+
+            @Override
+            public IUnitTypeBuilder<IUnitCapModifierBuilder<ISmeltListBuilder<Builder>>> requirements(
+                    Object... stacks) {
+                this.requirements = ItemStack.with(stacks);
+                return this;
+            }
+
+            @Override
+            public IUnitCapModifierBuilder<ISmeltListBuilder<Builder>> unitType(UnitType unitType) {
+                this.unitType = unitType;
+                return this;
+            }
+
+            @Override
+            public ISmeltListBuilder<Builder> unitCapModifier(int unitCapModifier) {
+                this.unitCapModifier = unitCapModifier;
+                return this;
+            }
+
+            @Override
+            public Builder smeltList(Seq<SmeltStack> smeltList) {
+                this.smeltList = smeltList;
+                return new Builder(this);
+            }
         }
 
         public Builder editorOnlyVisible() {
@@ -159,6 +184,22 @@ public class HardCoreBlock extends CoreBlock {
 
         public HardCoreBlock build() {
             return new HardCoreBlock(this);
+        }
+
+        public interface IRequirementsBuilder<T> {
+            T requirements(Object... stacks);
+        }
+
+        public interface IUnitTypeBuilder<T> {
+            T unitType(UnitType unitType);
+        }
+
+        public interface IUnitCapModifierBuilder<T> {
+            T unitCapModifier(int unitCapModifier);
+        }
+
+        public interface ISmeltListBuilder<T> {
+            T smeltList(Seq<SmeltStack> smeltList);
         }
     }
 }

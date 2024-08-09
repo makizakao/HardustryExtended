@@ -23,6 +23,7 @@ public class HardustryEx extends Mod {
     public void loadContent(){
         Log.info("Loading content.");
         HardItems.load();
+        HardLiquids.load();
         HardTechTree.load();
         HardBlocks.load();
         DefaultBlocks.load();

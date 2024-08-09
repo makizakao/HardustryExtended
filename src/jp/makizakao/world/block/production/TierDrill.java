@@ -1,7 +1,6 @@
 package jp.makizakao.world.block.production;
 
 import arc.math.Mathf;
-import jp.makizakao.world.builder.BaseBlockBuilder.*;
 import mindustry.type.Category;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
@@ -26,56 +25,75 @@ public class TierDrill extends Drill {
         if(hasPower) consumePower(builder.powerConsumption);
     }
 
-    public static IRequirementsBuilder<IItemCapacityBuilder<IDrillTimeBuilder<IPowerConsumeBuilder<Builder>>>> create(
-            String name, int health, int size, int tier) {
-        return new Builder(name, health, size, tier);
-    }
-
     @Override
     public float getDrillTime(Item item) {
         return (drillTime * Mathf.pow(hardnessDrillMultiplier, item.hardness)) / drillMultipliers.get(item, 1f);
     }
 
-    public static class Builder implements IRequirementsBuilder<
-            IItemCapacityBuilder<IDrillTimeBuilder<IPowerConsumeBuilder<Builder>>>>,
-            IItemCapacityBuilder<IDrillTimeBuilder<IPowerConsumeBuilder<Builder>>>,
-            IDrillTimeBuilder<IPowerConsumeBuilder<Builder>>, IPowerConsumeBuilder<Builder> {
-        private final String name;
-        private final int health;
-        private final int size;
-        private final int tier;
+    public static class Builder {
+        private String name;
+        private int health;
+        private int size;
+        private int tier;
         private ItemStack[] requirements;
-        private int drillTime = 3600;
+        private int drillTime;
         private int itemCapacity = 10;
         private boolean hasPower = false;
         private float powerConsumption = 0;
 
-        private Builder(String name, int health, int size, int tier) {
-            this.name = name;
-            this.health = health;
-            this.size = size;
-            this.tier = tier;
+        private Builder() {}
+
+        private Builder(RequiredBuilder builder) {
+            this.name = builder.name;
+            this.health = builder.health;
+            this.size = builder.size;
+            this.tier = builder.tier;
+            this.requirements = builder.requirements;
+            this.drillTime = builder.drillTime;
         }
 
-        @Override
-        public IItemCapacityBuilder<IDrillTimeBuilder<IPowerConsumeBuilder<Builder>>> requirements(Object... stacks) {
-            this.requirements = ItemStack.with(stacks);
-            return this;
+        public static IRequirementsBuilder<IDrillTimeBuilder<Builder>> create(
+                String name, int health, int size, int tier) {
+            return new RequiredBuilder(name, health, size, tier);
         }
 
-        @Override
-        public IDrillTimeBuilder<IPowerConsumeBuilder<Builder>> itemCapacity(int itemCapacity) {
+        public static class RequiredBuilder implements
+                IRequirementsBuilder<IDrillTimeBuilder<Builder>>,
+                IDrillTimeBuilder<Builder> {
+            private String name;
+            private int health;
+            private int size;
+            private int tier;
+            private ItemStack[] requirements;
+            private int drillTime = 0;
+
+            private RequiredBuilder() {}
+
+            private RequiredBuilder(String name, int health, int size, int tier) {
+                this.name = name;
+                this.health = health;
+                this.size = size;
+                this.tier = tier;
+            }
+
+            @Override
+            public IDrillTimeBuilder<Builder> requirements(Object... stacks) {
+                this.requirements = ItemStack.with(stacks);
+                return this;
+            }
+
+            @Override
+            public Builder drillTime(int drillTime) {
+                this.drillTime = drillTime;
+                return new Builder(this);
+            }
+        }
+
+        public Builder itemCapacity(int itemCapacity) {
             this.itemCapacity = itemCapacity;
             return this;
         }
 
-        @Override
-        public IPowerConsumeBuilder<Builder> drillTime(int drillTime) {
-            this.drillTime = drillTime;
-            return this;
-        }
-
-        @Override
         public Builder powerConsume(float powerConsumption) {
             this.hasPower = true;
             this.powerConsumption = powerConsumption;
@@ -84,6 +102,14 @@ public class TierDrill extends Drill {
 
         public Drill build() {
             return new TierDrill(this);
+        }
+
+        public interface IRequirementsBuilder<T> {
+            T requirements(Object... stacks);
+        }
+
+        public interface IDrillTimeBuilder<T> {
+            T drillTime(int drillTime);
         }
     }
 }

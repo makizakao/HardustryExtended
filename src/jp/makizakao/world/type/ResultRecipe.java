@@ -1,4 +1,4 @@
-package jp.makizakao.type;
+package jp.makizakao.world.type;
 
 import multicraft.IOEntry;
 import multicraft.Recipe;
