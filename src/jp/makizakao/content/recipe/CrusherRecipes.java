@@ -2,7 +2,7 @@ package jp.makizakao.content.recipe;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardItems;
-import jp.makizakao.world.builder.ResultRecipeBuilder;
+import jp.makizakao.builder.ResultRecipeBuilder;
 import mindustry.content.Items;
 import multicraft.Recipe;
 

@@ -2,13 +2,13 @@ package jp.makizakao.content;
 
 import arc.util.Time;
 import jp.makizakao.content.recipe.*;
-import jp.makizakao.world.drawer.*;
-import jp.makizakao.world.type.SmeltStack;
-import jp.makizakao.world.block.distribution.*;
-import jp.makizakao.world.block.power.*;
-import jp.makizakao.world.block.production.*;
-import jp.makizakao.world.block.storage.*;
-import jp.makizakao.world.builder.mindustry.*;
+import jp.makizakao.content.drawer.*;
+import jp.makizakao.type.SmeltStack;
+import jp.makizakao.world.blocks.distribution.*;
+import jp.makizakao.world.blocks.power.*;
+import jp.makizakao.world.blocks.production.*;
+import jp.makizakao.world.blocks.storage.*;
+import jp.makizakao.builder.mindustry.*;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.entities.pattern.ShootAlternate;
@@ -248,7 +248,7 @@ public class HardBlocks {
         // production - drill
         quarry = TierDrill.Builder.create("quarry", 100, 2, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
-                .drillTime(3000)
+                .drillTime(3000f)
                 .itemCapacity(10)
                 .powerConsume(0.4f)
                 .build();

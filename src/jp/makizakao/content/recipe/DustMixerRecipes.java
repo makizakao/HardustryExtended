@@ -2,7 +2,7 @@ package jp.makizakao.content.recipe;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardItems;
-import jp.makizakao.world.builder.RecipeBuilder;
+import jp.makizakao.builder.RecipeBuilder;
 import multicraft.Recipe;
 
 public class DustMixerRecipes {

@@ -26,7 +26,6 @@ public class HardustryEx extends Mod {
         HardLiquids.load();
         HardTechTree.load();
         HardBlocks.load();
-        DefaultBlocks.load();
         TestBlocks.load();
     }
 }

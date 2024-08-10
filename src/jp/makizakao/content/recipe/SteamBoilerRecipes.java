@@ -2,7 +2,7 @@ package jp.makizakao.content.recipe;
 
 import arc.struct.Seq;
 import jp.makizakao.content.HardLiquids;
-import jp.makizakao.world.builder.SmeltRecipeBuilder;
+import jp.makizakao.builder.SmeltRecipeBuilder;
 import mindustry.content.Liquids;
 import multicraft.Recipe;
 
