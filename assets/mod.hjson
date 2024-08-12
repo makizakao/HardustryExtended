@@ -6,13 +6,13 @@ name: "hardustry-ex"
 author: "makizakao"
 
 # the fully qualified main class of the mod
-main: "jp.makizakao.HardustryEx"
+main: "jp.makizakao.hardustryex.HardustryEx"
 
 # the mod description as seen in the mod dialog
 description: "Hardustry Extended is a mod that adds new content to the mod Hardustry."
 
 # the mod version
-version: 0.1
+version: 0.2
 
 # the minimum game build required to run this mod
 minGameVersion: 146
