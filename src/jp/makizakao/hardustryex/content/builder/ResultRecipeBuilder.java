@@ -1,4 +1,4 @@
-package jp.makizakao.hardustryex.builder;
+package jp.makizakao.hardustryex.content.builder;
 
 import jp.makizakao.hardustryex.type.recipe.ResultRecipe;
 import multicraft.IOEntry;

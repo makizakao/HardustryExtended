@@ -1,4 +1,4 @@
-package jp.makizakao.hardustryex.builder;
+package jp.makizakao.hardustryex.content.builder;
 
 import arc.struct.Seq;
 import jp.makizakao.hardustryex.type.recipe.HardRecipe;

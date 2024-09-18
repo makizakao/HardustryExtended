@@ -2,7 +2,7 @@ package jp.makizakao.hardustryex.content.recipe;
 
 import arc.struct.Seq;
 import jp.makizakao.hardustryex.content.HardItems;
-import jp.makizakao.hardustryex.builder.RecipeBuilder;
+import jp.makizakao.hardustryex.content.builder.RecipeBuilder;
 import multicraft.Recipe;
 
 public class BendingMachineRecipes {

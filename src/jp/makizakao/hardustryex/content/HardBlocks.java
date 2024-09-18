@@ -1,6 +1,9 @@
 package jp.makizakao.hardustryex.content;
 
 import arc.util.Time;
+import jp.makizakao.hardustryex.content.builder.ItemTurretBuilder;
+import jp.makizakao.hardustryex.content.builder.OreBlockBuilder;
+import jp.makizakao.hardustryex.content.builder.Vein;
 import jp.makizakao.hardustryex.content.recipe.*;
 import jp.makizakao.hardustryex.content.drawer.*;
 import jp.makizakao.hardustryex.type.SmeltStack;
@@ -8,7 +11,6 @@ import jp.makizakao.hardustryex.world.blocks.distribution.*;
 import jp.makizakao.hardustryex.world.blocks.power.*;
 import jp.makizakao.hardustryex.world.blocks.production.*;
 import jp.makizakao.hardustryex.world.blocks.storage.*;
-import jp.makizakao.hardustryex.builder.mindustry.*;
 import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.entities.pattern.ShootAlternate;
@@ -22,8 +24,6 @@ public class HardBlocks {
     copperUnderflowGate,
     // effect
     coreBasic, coreBronze, copperUnloader,
-    // ore
-    galenaOre, sphaleriteOre, tealliteOre, tetrahedriteOre, tinyCopperOre, tinyLeadOre,
     // power - battery
     basicBattery,
     // power - generator
@@ -113,12 +113,7 @@ public class HardBlocks {
                 .buildCostMultiplier(2f)
                 .build();
         // ore
-        galenaOre = OreBlockBuilder.create("galena-ore", HardItems.galena).build();
-        sphaleriteOre = OreBlockBuilder.create("sphalerite-ore", HardItems.sphalerite).build();
-        tealliteOre = OreBlockBuilder.create("teallite-ore", HardItems.teallite).build();
-        tetrahedriteOre = OreBlockBuilder.create("tetrahedrite-ore", HardItems.tetrahedrite).build();
-        tinyCopperOre = OreBlockBuilder.create("tiny-copper-ore", HardItems.copperDust).build();
-        tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
+        OreBlockBuilder.load();
         // power - battery
         basicBattery = HardBattery.Builder.create("basic-battery", 80, 1)
                 .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 20)
