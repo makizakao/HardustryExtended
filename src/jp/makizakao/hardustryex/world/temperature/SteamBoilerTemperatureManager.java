@@ -1,30 +1,35 @@
 package jp.makizakao.hardustryex.world.temperature;
 
 import jp.makizakao.hardustryex.type.entry.SmeltEntry;
+import mindustry.world.modules.LiquidModule;
 import multicraft.Recipe;
 
+import java.util.Objects;
+
 public class SteamBoilerTemperatureManager extends ExplodableTemperatureManager {
-    private float liquidAmount = 0;
+    private final LiquidModule liquids;
 
-    public SteamBoilerTemperatureManager(float minEfficiency, float explodeTemperature) {
+    public SteamBoilerTemperatureManager(float minEfficiency, float explodeTemperature, LiquidModule liquids) {
         super(minEfficiency, explodeTemperature);
+        this.liquids = liquids;
     }
 
     @Override
-    public float calcTemperature(Recipe cur, float heat, float delta) {
-        var smeltEntry = (SmeltEntry) cur.input;
-        if(liquidAmount <= smeltEntry.fluids.get(0).amount) {
-            return super.calcTemperature(cur, heat, delta);
-        }
-        return Math.min(super.calcTemperature(cur, heat, delta), smeltEntry.temperature);
+    public float calcTemperature(Recipe recipe, float heat, float delta) {
+        if(!(recipe.input instanceof SmeltEntry smeltEntry)) return super.calcTemperature(recipe, heat, delta);
+        if(Objects.isNull(recipe.input.fluids.get(0))) return super.calcTemperature(recipe, heat, delta);
+
+        float liquidAmount = liquids.get(recipe.input.fluids.get(0).liquid);
+
+        if(liquidAmount < smeltEntry.fluids.get(0).amount) return super.calcTemperature(recipe, heat, delta);
+
+        return Math.min(super.calcTemperature(recipe, heat, delta), smeltEntry.temperature);
     }
 
     @Override
-    public float calcTemperatureEfficiency(Recipe cur) {
-        return ((SmeltEntry) cur.input).temperature <= getTemperature() ? 1f : 0f;
-    }
+    public float calcEfficiency(Recipe cur) {
+        if(!(cur.input instanceof SmeltEntry smeltEntry)) return 1f;
 
-    public void setLiquidAmount(float liquidAmount) {
-        this.liquidAmount = liquidAmount;
+        return smeltEntry.temperature <= temperature() ? 1f : 0f;
     }
 }

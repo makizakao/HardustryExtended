@@ -17,6 +17,8 @@ import mindustry.world.Block;
 
 public class HardBlocks {
     public static Block
+    // defence - wall
+    copperWall, bronzeWall,
     // distribution
     copperConveyor, copperInvertedSorter, copperJunction, copperOverflowGate, copperRouter, copperSorter,
     copperUnderflowGate,
@@ -55,6 +57,10 @@ public class HardBlocks {
 
 
     public static void load() {
+        // defence - wall
+        copperWall = WallBuilder.create("copper-wall", 300, 1)
+                .requirements(HardItems.copperIngot, 30)
+                .build();
         // distribution
         copperConveyor = HardConveyor.Builder.create("copper-conveyor", 30, 0.02f, 3f)
                 .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 1)
@@ -147,12 +153,12 @@ public class HardBlocks {
                 .maxNodes(4)
                 .build();
         // production - crafter - bending machine
-        basicBendingMachine = RotateAnimatedCrafter.Builder.create("basic-bending-machine", 200, 2)
+        basicBendingMachine = HardMultiCrafter.Builder.create("basic-bending-machine", 200, 2)
                 .requirements(HardItems.lowElectricPiston, 10, HardItems.integratedLogicCircuit, 10,
                         HardItems.lowElectricMachineHull, 1, HardItems.lowElectricMotor, 10, HardItems.tinWire, 10)
-                .rotate(0, 60f, -1.0f)
                 .resolveRecipes(BendingMachineRecipes.BENDING_MACHINE_TIER_1)
                 .itemCapacity(20)
+                .drawer(HardDrawMultis.PRESS_HUMMER.get())
                 .build();
         // production - crafter - blast furnace
         primitiveBlastFurnace = ExplodableCrafter.Builder.create("primitive-blast-furnace", 500, 3)
@@ -166,24 +172,24 @@ public class HardBlocks {
                 .drawer(HardDrawMultis.SMELT_FLAME)
                 .build();
         // production - crafter - crusher
-        copperCrusher = RotateAnimatedCrafter.Builder.create("copper-crusher", 100, 2)
+        copperCrusher = HardMultiCrafter.Builder.create("copper-crusher", 100, 2)
                 .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
-                .rotate(0f, 360f, 1.0f)
                 .resolveRecipes(CrusherRecipes.CRUSHER_TIER_1)
+                .drawer(HardDrawMultis.SPIN_ROTATOR.get())
                 .itemCapacity(10)
                 .build();
-        bronzeCrusher = RotateAnimatedCrafter.Builder.create("bronze-crusher", 150, 2)
+        bronzeCrusher = HardMultiCrafter.Builder.create("bronze-crusher", 150, 2)
                 .requirements(HardItems.bronzeHull, 1, HardItems.bronzePiston, 2, HardItems.copperWire, 10,
                         HardItems.leadIngot, 30)
-                .rotate(0f, 360f, 1.0f)
                 .resolveRecipes(CrusherRecipes.CRUSHER_TIER_2)
+                .drawer(HardDrawMultis.SPIN_ROTATOR.get())
                 .itemCapacity(10)
                 .build();
         // production - crafter - dustMixer
-        copperDustMixer = RotateAnimatedCrafter.Builder.create("copper-dust-mixer", 100, 2)
+        copperDustMixer = HardMultiCrafter.Builder.create("copper-dust-mixer", 100, 2)
                 .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 10)
-                .rotate(0f, 360f, 1.0f)
                 .resolveRecipes(DustMixerRecipes.DUST_MIXER_TIER_1)
+                .drawer(HardDrawMultis.SPIN_ROTATOR.get())
                 .itemCapacity(10)
                 .build();
         // production - crafter - factory
@@ -191,14 +197,14 @@ public class HardBlocks {
                 .requirements(HardItems.bronzeIngot, 60, HardItems.copperIngot, 30, HardItems.leadIngot, 30)
                 .resolveRecipes(HardFactoryRecipe.BRONZE_FACTORY_TIER_1)
                 .itemCapacity(40)
-                .drawer(HardDrawBlocks.ITEM_DISPLAY_DRAWER)
+                .drawer(HardDrawMultis.DISPLAY_ITEM)
                 .build();
         bronzeFactory = HardMultiCrafter.Builder.create("bronze-factory", 100, 2)
                 .requirements(HardItems.bronzeHull, 1, HardItems.copperWire, 20, HardItems.leadIngot, 30,
                         HardItems.bronzeIngot, 20)
                 .resolveRecipes(HardFactoryRecipe.BRONZE_FACTORY_TIER_2)
                 .itemCapacity(100)
-                .drawer(HardDrawBlocks.ITEM_DISPLAY_DRAWER)
+                .drawer(HardDrawMultis.DISPLAY_ITEM)
                 .build();
         // production - crafter - furnace
         copperFurnace = ExplodableCrafter.Builder.create("copper-furnace", 100, 2)
@@ -222,17 +228,17 @@ public class HardBlocks {
                 .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
         // production - crafter - press
-        advancedBronzePress = RotateAnimatedCrafter.Builder.create("advanced-bronze-press", 100, 2)
+        advancedBronzePress = HardMultiCrafter.Builder.create("advanced-bronze-press", 100, 2)
                 .requirements(HardItems.bronzeHull, 1, HardItems.bronzePiston, 2, HardItems.copperIngot, 30,
                         HardItems.leadIngot, 30)
-                .rotate(0, 60f, -1.0f)
                 .resolveRecipes(PressRecipes.BRONZE_PRESS_TIER_2)
+                .drawer(HardDrawMultis.PRESS_HUMMER.get())
                 .itemCapacity(10)
                 .build();
-        bronzePress = RotateAnimatedCrafter.Builder.create("bronze-press", 100, 2)
+        bronzePress = HardMultiCrafter.Builder.create("bronze-press", 100, 2)
                 .requirements(HardItems.bronzeIngot, 60, HardItems.copperIngot, 20, HardItems.leadIngot, 30)
-                .rotate(0, 60f, -1.0f)
                 .resolveRecipes(PressRecipes.BRONZE_PRESS_TIER_1)
+                .drawer(HardDrawMultis.PRESS_HUMMER.get())
                 .itemCapacity(10)
                 .build();
         // production - crafter - steam boiler

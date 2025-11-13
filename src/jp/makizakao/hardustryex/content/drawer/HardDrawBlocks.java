@@ -4,38 +4,14 @@ import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
 import arc.math.Mathf;
-import arc.util.Eachable;
 import arc.util.Time;
-import jp.makizakao.hardustryex.world.blocks.production.HardMultiCrafter;
-import mindustry.entities.units.BuildPlan;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
-import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawFlame;
-import multicraft.MultiCrafter;
-
-import java.util.Optional;
 
 public class HardDrawBlocks {
-    public static final DrawBlock ITEM_DISPLAY_DRAWER = new DrawBlock() {
-        @Override
-        public void draw(Building build) {
-            Draw.rect(build.block.region, build.x, build.y, build.drawrot());
-            Optional.of(build)
-                    .map(b -> (HardMultiCrafter.HardMultiCrafterBuild)b)
-                    .map(MultiCrafter.MultiCrafterBuild::getCurRecipe)
-                    .map(r -> r.output.items.get(0))
-                    .map(s -> s.item.fullIcon)
-                    .ifPresent(i -> Draw.rect(i, build.x, build.y, build.drawrot()));
-        }
-
-        @Override
-        public void drawPlan(Block block, BuildPlan plan, Eachable<BuildPlan> list) {
-            block.drawDefaultPlanRegion(plan, list);
-        }
-    };
 
     public static DrawBlock getMovedDrawDefault(float moveX, float moveY) {
         return new DrawDefault() {

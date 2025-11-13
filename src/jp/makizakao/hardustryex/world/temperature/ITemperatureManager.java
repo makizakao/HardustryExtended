@@ -3,9 +3,9 @@ package jp.makizakao.hardustryex.world.temperature;
 import multicraft.Recipe;
 
 public interface ITemperatureManager {
-    float calcTemperature(Recipe cur, float heat, float delta);
-    float calcTemperatureEfficiency(Recipe cur);
+    void updateTemperature(Recipe cur, float heat, float delta);
+    float calcEfficiency(Recipe cur);
     float calcTemperatureFrac(Recipe cur);
-    float getTemperature();
+    float temperature();
     void setTemperature(float temperature);
 }

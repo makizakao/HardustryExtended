@@ -1,6 +1,7 @@
 package jp.makizakao.hardustryex.world.bar;
 
 import arc.Core;
+import arc.func.Prov;
 import arc.graphics.Color;
 import jp.makizakao.hardustryex.HardustryEx;
 import jp.makizakao.hardustryex.type.entry.SmeltEntry;
@@ -12,7 +13,8 @@ import mindustry.ui.Bar;
 
 public class ExplodableCrafterBarManager extends CrafterBarManager {
     @Override
-    public void setBars(HardMultiCrafter block) {
+    public void addBars(HardMultiCrafter block) {
+        super.addBars(block);
         if (block.isConsumeHeat()) block.addBar("temperature", this::createTemperatureBar);
         if (block.isConsumeHeat() || block.isOutputHeat()) block.addBar("heat", this::createHeatBar);
     }
@@ -21,15 +23,17 @@ public class ExplodableCrafterBarManager extends CrafterBarManager {
     protected Bar createTemperatureBar(Building building) {
         var recipe = ((ExplodableCrafterBuild) building).getCurRecipe();
         var temp = ((ExplodableCrafterBuild) building).getTemperatureManager();
-        String name;
-        if (recipe.input instanceof SmeltEntry smeltEntry
-                && temp instanceof ExplodableTemperatureManager explodableTemp) {
-            name = Core.bundle.format(
+        Prov<CharSequence> name = () -> {
+            if (!(recipe.input instanceof SmeltEntry smeltEntry)
+                    || !(temp instanceof ExplodableTemperatureManager explodableTemp)) {
+                return "bar.temperature";
+            }
+            return Core.bundle.format(
                     String.format("bar.%s-explodable-temperature-stats", HardustryEx.MOD_NAME),
-                    (int) explodableTemp.getTemperature(),
+                    (int) explodableTemp.temperature(),
                     (int) smeltEntry.temperature,
-                    (int) explodableTemp.getExplodeTemperature());
-        } else name = "bar.temperature";
-        return new Bar(name, Color.orange, () -> temp.calcTemperatureFrac(recipe));
+                    (int) explodableTemp.explodeTemperature());
+        };
+        return new Bar(name, () -> Color.orange, () -> temp.calcTemperatureFrac(recipe));
     }
 }

@@ -1,16 +1,24 @@
 package jp.makizakao.hardustryex.world.blocks.production;
 
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.struct.Seq;
+import arc.util.Eachable;
+import jp.makizakao.hardustryex.content.drawer.HardDrawMultis;
 import jp.makizakao.hardustryex.world.bar.DrillBarManager;
 import jp.makizakao.hardustryex.world.bar.IBarManager;
+import mindustry.entities.units.BuildPlan;
 import mindustry.type.Category;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 import mindustry.world.blocks.production.Drill;
+import mindustry.world.draw.DrawBlock;
+import multicraft.MultiCrafter;
 
 public class TierDrill extends Drill {
     protected float hardnessDrillMultiplier = 1.5f;
-    private IBarManager<TierDrill> barManager = new DrillBarManager();
+    private final IBarManager<TierDrill> barManager = new DrillBarManager();
+    private final DrawBlock drawer = HardDrawMultis.DRILL.get();
 
     private TierDrill(Builder builder) {
         super(builder.name);
@@ -35,18 +43,51 @@ public class TierDrill extends Drill {
         barManager.setBars(this);
     }
 
+    @Override
+    public void load() {
+        super.load();
+        this.drawer.load(this);
+    }
+
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+        this.drawer.drawPlan(this, plan, list);
+    }
+
+    @Override
+    public TextureRegion[] icons() {
+        return this.drawer.finalIcons(this);
+    }
+
+    @Override
+    public void getRegionsToOutline(Seq<TextureRegion> out) {
+        this.drawer.getRegionsToOutline(this, out);
+    }
+
+    public class TierDrillBuild extends DrillBuild {
+        @Override
+        public void draw() {
+            TierDrill.this.drawer.draw(this);
+        }
+
+        @Override
+        public void drawLight() {
+            super.drawLight();
+            TierDrill.this.drawer.drawLight(this);
+        }
+    }
+
     public static class Builder {
-        private String name;
-        private int health;
-        private int size;
-        private int tier;
-        private ItemStack[] requirements;
-        private float drillTime;
+        private final String name;
+        private final int health;
+        private final int size;
+        private final int tier;
+        private final ItemStack[] requirements;
+        private final float drillTime;
         private int itemCapacity = 10;
         private boolean hasPower = false;
         private float powerConsumption = 0;
 
-        private Builder() {}
 
         private Builder(RequiredBuilder builder) {
             this.name = builder.name;
@@ -65,14 +106,13 @@ public class TierDrill extends Drill {
         public static class RequiredBuilder implements
                 IRequirementsBuilder<IDrillTimeBuilder<Builder>>,
                 IDrillTimeBuilder<Builder> {
-            private String name;
-            private int health;
-            private int size;
-            private int tier;
+            private final String name;
+            private final int health;
+            private final int size;
+            private final int tier;
             private ItemStack[] requirements;
             private float drillTime = 0;
 
-            private RequiredBuilder() {}
 
             private RequiredBuilder(String name, int health, int size, int tier) {
                 this.name = name;

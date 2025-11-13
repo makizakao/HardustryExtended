@@ -6,6 +6,7 @@ import multicraft.Recipe;
 public class ExplodableTemperatureManager extends BasicTemperatureManager {
     private final float explodeTemperature;
 
+
     public ExplodableTemperatureManager(float minEfficiency, float explodeTemperature) {
         super(minEfficiency);
         this.explodeTemperature = explodeTemperature;
@@ -13,14 +14,14 @@ public class ExplodableTemperatureManager extends BasicTemperatureManager {
 
     @Override
     public float calcTemperatureFrac(Recipe cur) {
-        return Mathf.lerp(0, 1, getTemperature() / explodeTemperature);
+        return Mathf.lerp(0, 1, temperature() / explodeTemperature);
     }
 
     public boolean shouldExplode() {
-        return explodeTemperature < getTemperature();
+        return explodeTemperature < temperature();
     }
 
-    public float getExplodeTemperature() {
+    public float explodeTemperature() {
         return explodeTemperature;
     }
 }

@@ -45,21 +45,18 @@ public class SteamBoiler extends ExplodableCrafter {
         @Override
         public void updateTile() {
             var cur = getCurRecipe();
-            if (temperatureManager instanceof SteamBoilerTemperatureManager steamTemp) {
-                steamTemp.setLiquidAmount(this.liquids.get(cur.input.fluids.get(0).liquid));
-            }
             super.updateTile();
             count += Time.delta;
             if(count < Time.toSeconds * 3) return;
             count = 0;
-            if(((SmeltEntry) cur.input).temperature <= temperatureManager.getTemperature()
+            if(((SmeltEntry) cur.input).temperature <= temperatureManager.temperature()
                     && liquids.get(cur.input.fluids.get(0).liquid) < cur.input.fluids.get(0).amount * 60) {
                 liquids.clear();
             }
         }
 
         {
-            temperatureManager = new SteamBoilerTemperatureManager(0.1f, explodeTemperature);
+            temperatureManager = new SteamBoilerTemperatureManager(0.1f, explodeTemperature, this.liquids);
         }
     }
 

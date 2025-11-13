@@ -4,11 +4,13 @@ import arc.audio.Sound;
 import arc.math.Mathf;
 import arc.scene.ui.layout.Table;
 import arc.struct.Seq;
+import arc.util.Log;
 import arc.util.io.Reads;
 import arc.util.io.Writes;
+import jp.makizakao.hardustryex.type.entry.SmeltEntry;
 import jp.makizakao.hardustryex.type.recipe.IRecipeCraft;
 import jp.makizakao.hardustryex.world.bar.CrafterBarManager;
-import jp.makizakao.hardustryex.world.bar.IBarManager;
+import jp.makizakao.hardustryex.world.bar.ICrafterBarManager;
 import jp.makizakao.hardustryex.world.stat.CrafterStatsManager;
 import jp.makizakao.hardustryex.world.stat.IMultiStatsManager;
 import jp.makizakao.hardustryex.world.temperature.BasicTemperatureManager;
@@ -22,7 +24,7 @@ import multicraft.Recipe;
 
 public class HardMultiCrafter extends MultiCrafter {
     protected final float minEfficiency = 0.1f;
-    protected IBarManager<HardMultiCrafter> barManager = new CrafterBarManager();
+    protected ICrafterBarManager<HardMultiCrafter> barManager = new CrafterBarManager();
     protected IMultiStatsManager<HardMultiCrafter> statsManager = new CrafterStatsManager();
 
     protected HardMultiCrafter(String name) {
@@ -32,6 +34,8 @@ public class HardMultiCrafter extends MultiCrafter {
     protected HardMultiCrafter(Builder builder) {
         super(builder.name);
         requirements(Category.crafting, builder.requirements);
+        this.isConsumeHeat = false;
+        this.isOutputHeat = false;
         this.health = builder.health;
         this.size = builder.size;
         this.itemCapacity = builder.itemCapacity;
@@ -46,7 +50,6 @@ public class HardMultiCrafter extends MultiCrafter {
 
     @Override
     public void setBars() {
-        super.setBars();
         barManager.setBars(this);
     }
 
@@ -78,8 +81,6 @@ public class HardMultiCrafter extends MultiCrafter {
         return showNameTooltip;
     }
 
-
-
     public class HardMultiCrafterBuild extends MultiCrafterBuild {
         protected ITemperatureManager temperatureManager = new BasicTemperatureManager(minEfficiency);
         protected float temperatureEfficiency = 0f;
@@ -89,15 +90,17 @@ public class HardMultiCrafter extends MultiCrafter {
             Recipe cur = this.getCurRecipe();
             if(cur.isConsumeHeat()) {
                 this.heat = this.calculateHeat(this.sideHeat);
-                temperatureManager.setTemperature(temperatureManager.calcTemperature(cur, heat, delta()));
-                if(heat < cur.maxHeat() / 2) craftingTime = 0;
-                temperatureEfficiency = temperatureManager.calcTemperatureEfficiency(cur);
+                temperatureManager.updateTemperature(cur, this.heat, delta());
+                temperatureEfficiency = temperatureManager.calcEfficiency(cur);
+                if(cur.input instanceof SmeltEntry smeltEntry
+                        && temperatureManager.temperature() < smeltEntry.temperature) {
+                    craftingTime = 0;
+                }
             }
             if(cur.isOutputHeat()) {
                 heat = Mathf.approachDelta(heat, cur.output.heat * efficiency
                         + (isConsumeHeat ? this.calculateHeat(this.sideHeat) : 0), warmupRate * delta());
             }
-
             super.updateTile();
         }
 
@@ -123,21 +126,34 @@ public class HardMultiCrafter extends MultiCrafter {
         }
 
         @Override
-        public void updateBars() {
-            HardMultiCrafter.this.barMap.clear();
-            HardMultiCrafter.this.setBars();
-        }
-
-        @Override
         public void write(Writes write) {
             super.write(write);
-            write.f(temperatureManager.getTemperature());
+            write.f(temperatureManager.temperature());
         }
 
         @Override
         public void read(Reads read, byte revision) {
             super.read(read, revision);
             temperatureManager.setTemperature(read.f());
+        }
+
+        @Override
+        public float warmupTarget() {
+            Recipe cur = this.getCurRecipe();
+            if(cur.input instanceof SmeltEntry smeltEntry
+                    && temperatureManager.temperature() < smeltEntry.temperature) {
+                return 0.0F;
+            }
+            return 1.0F;
+        }
+
+        @Override
+        public void updateEfficiencyMultiplier() {
+        }
+
+        @Override
+        public float efficiencyScale() {
+            return 1F;
         }
 
         public ITemperatureManager getTemperatureManager() {

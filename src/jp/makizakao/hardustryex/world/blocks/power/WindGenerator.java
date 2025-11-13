@@ -1,22 +1,28 @@
 package jp.makizakao.hardustryex.world.blocks.power;
 
-import arc.graphics.g2d.Draw;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
+import arc.struct.Seq;
+import arc.util.Eachable;
 import arc.util.Time;
+import jp.makizakao.hardustryex.content.drawer.HardDrawMultis;
 import jp.makizakao.hardustryex.world.stat.WindGeneratorStatsManager;
+import mindustry.entities.units.BuildPlan;
 import mindustry.type.Category;
 import mindustry.type.ItemStack;
+import mindustry.world.draw.DrawBlock;
 
 /**
  * 風力発電機のクラスの定義
  */
-public class WindGenerator extends RotateGenerator {
+public class WindGenerator extends HardGenerator {
     /** ランダムに発電量を決めるときの最小値、最大値 */
     private float minEfficiency = 1f;
     private float maxEfficiency = 1f;
     /** 現在の発電量が維持される時間の最小値、最大値 */
     private float minPowerDuration = Time.toMinutes;
     private float maxPowerDuration = Time.toMinutes * 5;
+    protected DrawBlock drawer = HardDrawMultis.SPIN_ROTATOR.get();
     protected WindGeneratorStatsManager statsManager = new WindGeneratorStatsManager();
 
     /**
@@ -32,7 +38,6 @@ public class WindGenerator extends RotateGenerator {
         maxEfficiency = builder.maxEfficiency;
         minPowerDuration = builder.minPowerDuration;
         maxPowerDuration = builder.maxPowerDuration;
-        rotateSpeed = builder.rotateSpeed;
     }
 
     @Override
@@ -52,6 +57,22 @@ public class WindGenerator extends RotateGenerator {
     @Override
     public void load() {
         super.load();
+        drawer.load(this);
+    }
+
+    @Override
+    public TextureRegion[] icons() {
+        return drawer.icons(this);
+    }
+
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+        this.drawer.drawPlan(this, plan, list);
+    }
+
+    @Override
+    public void getRegionsToOutline(Seq<TextureRegion> out) {
+        this.drawer.getRegionsToOutline(this, out);
     }
 
     /** ゲーム内で生成されたブロックのクラス */
@@ -70,14 +91,12 @@ public class WindGenerator extends RotateGenerator {
             // 発電量の継続時間を更新
             powerDuration -= delta();
             // 描画時の回転角度を更新
-            progress = (progress + rotateSpeed * productionEfficiency * delta()) % 360;
+            progress = 1f < progress() ? 0f : progress() + productionEfficiency * delta() / 60f;
         }
 
-        /** ブロックの描画処理 */
         @Override
-        public void draw() {
-            super.draw();
-            Draw.rect(rotatorRegion, x, y, progress);
+        public float progress() {
+            return progress;
         }
     }
 

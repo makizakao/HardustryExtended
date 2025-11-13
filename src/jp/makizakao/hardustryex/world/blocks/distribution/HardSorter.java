@@ -92,8 +92,6 @@ public class HardSorter extends Sorter implements IConnectable {
         private float buildCostMultiplier = 1f;
         private float powerConsume = -1f;
 
-        private Builder() {}
-
         private Builder(RequiredBuilder builder) {
             this.name = builder.name;
             this.health = builder.health;
