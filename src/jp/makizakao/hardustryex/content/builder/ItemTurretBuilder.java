@@ -1,4 +1,4 @@
-package jp.makizakao.hardustryex.builder.mindustry;
+package jp.makizakao.hardustryex.content.builder;
 
 import mindustry.content.Fx;
 import mindustry.entities.Effect;
@@ -27,7 +27,7 @@ public class ItemTurretBuilder {
         private ItemStack[] requirements;
         private Object[] ammo;
         private ShootPattern shoot;
-        private float shootY;
+        private float shootStartPosY;
 
         private RequiredBuilder() {}
 
@@ -52,7 +52,7 @@ public class ItemTurretBuilder {
         @Override
         public OptionalBuilder shoot(ShootPattern shoot, float shootY) {
             this.shoot = shoot;
-            this.shootY = shootY;
+            this.shootStartPosY = shootY;
             return new OptionalBuilder(this);
         }
     }
@@ -140,9 +140,10 @@ public class ItemTurretBuilder {
                     requirements(Category.turret, requiredBuilder.requirements);
                     health = requiredBuilder.health;
                     size = requiredBuilder.size;
+                    /*
                     ammo(requiredBuilder.ammo);
                     shoot = requiredBuilder.shoot;
-                    shootY = requiredBuilder.shootY;
+                    shootY = requiredBuilder.shootStartPosY;
                     recoils = OptionalBuilder.this.recoils;
                     recoil = OptionalBuilder.this.recoil;
                     reload = OptionalBuilder.this.reload;
@@ -150,6 +151,7 @@ public class ItemTurretBuilder {
                     shootCone = OptionalBuilder.this.shootCone;
                     ammoUseEffect = OptionalBuilder.this.ammoUseEffect;
                     inaccuracy = OptionalBuilder.this.inaccuracy;
+                     */
                     rotateSpeed = OptionalBuilder.this.rotateSpeed;
                     coolant = consumeCoolant(OptionalBuilder.this.consumeCoolant);
                     if(powerConsume > 0) consumePower(powerConsume);

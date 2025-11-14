@@ -1,6 +1,6 @@
 package jp.makizakao.hardustryex.content;
 
-import jp.makizakao.hardustryex.builder.BaseBulletTypeBuilder.*;
+import jp.makizakao.hardustryex.content.builder.BaseBulletTypeBuilder.*;
 import mindustry.entities.bullet.BasicBulletType;
 
 public class HardAmmoTypes {

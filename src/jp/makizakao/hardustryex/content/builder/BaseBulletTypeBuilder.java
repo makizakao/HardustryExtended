@@ -1,4 +1,4 @@
-package jp.makizakao.hardustryex.builder;
+package jp.makizakao.hardustryex.content.builder;
 
 public class BaseBulletTypeBuilder {
     public interface IDimensionsBuilder<T> {
