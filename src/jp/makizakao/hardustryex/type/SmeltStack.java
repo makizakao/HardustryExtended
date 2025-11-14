@@ -3,12 +3,15 @@ package jp.makizakao.hardustryex.type;
 import arc.struct.Seq;
 import arc.util.Time;
 import jp.makizakao.hardustryex.content.HardItems;
+import lombok.Builder;
+import lombok.experimental.SuperBuilder;
 import mindustry.type.Item;
 import mindustry.type.ItemStack;
 
 import java.util.Objects;
 
 // SmeltStack class for smelting items.
+@SuperBuilder(builderMethodName = "of")
 public class SmeltStack {
     public static final SmeltStack[] empty = {};
     public ItemStack[] material;
@@ -35,57 +38,24 @@ public class SmeltStack {
         return false;
     }
 
-    // SmeltStack List
-    public static final Seq<SmeltStack> SMELT_TIER_1 = Seq.with(
-            new Builder().material(HardItems.copperDust, 2)
-                    .product(HardItems.copperIngot, 1)
-                    .smeltTime(Time.toSeconds * 1)
-                    .build(),
-            new Builder().material(HardItems.leadDust, 2)
-                    .product(HardItems.leadIngot, 1)
-                    .smeltTime(Time.toSeconds * 1)
-                    .build());
-    public static final Seq<SmeltStack> SMELT_TIER_2 = Seq.with(
-            new Builder().material(HardItems.copperDust, 2)
-                    .product(HardItems.copperIngot, 1)
-                    .smeltTime(Time.toSeconds / 2)
-                    .build(),
-            new Builder().material(HardItems.leadDust, 2)
-                    .product(HardItems.leadIngot, 1)
-                    .smeltTime(Time.toSeconds / 2)
-                    .build());
-
-    private static class Builder {
+    public abstract static class SmeltStackBuilder<C extends SmeltStack, B extends SmeltStackBuilder<C, B>> {
         private ItemStack[] material;
         private ItemStack[] product;
-        private float smeltTime = 0;
 
-        public Builder material(Object... items) {
+        public B material(Object... items) {
             material = new ItemStack[items.length / 2];
             for(int i = 0; i < items.length; i += 2){
                 material[i / 2] = new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue());
             }
-            return this;
+            return self();
         }
 
-        public Builder product(Object... items) {
+        public B product(Object... items) {
             product = new ItemStack[items.length / 2];
             for(int i = 0; i < items.length; i += 2){
                 product[i / 2] = new ItemStack((Item)items[i], ((Number)items[i + 1]).intValue());
             }
-            return this;
-        }
-
-        public Builder smeltTime(float smeltTime) {
-            this.smeltTime = smeltTime;
-            return this;
-        }
-
-        public SmeltStack build() {
-            if(Objects.isNull(material)) throw new IllegalStateException("Material must be set.");
-            if(Objects.isNull(product)) throw new IllegalStateException("Product must be set.");
-            if(smeltTime <= 0) throw new IllegalStateException("Smelt time must be greater than 0.");
-            return new SmeltStack(material, product, smeltTime);
+            return self();
         }
     }
 }

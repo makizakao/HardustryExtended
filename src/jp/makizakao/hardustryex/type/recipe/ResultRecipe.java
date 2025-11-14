@@ -2,24 +2,15 @@ package jp.makizakao.hardustryex.type.recipe;
 
 import arc.math.Mathf;
 import jp.makizakao.hardustryex.world.blocks.production.HardMultiCrafter.*;
-import multicraft.IOEntry;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
+@NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
+@SuperBuilder(builderMethodName = "of")
 public class ResultRecipe extends HardRecipe {
+    @Getter
     private float[] dropChances;
-
-    public ResultRecipe(IOEntry input, IOEntry output, float craftTime) {
-        super(input, output, craftTime);
-    }
-
-    public ResultRecipe() {}
-
-    public float[] getDropChances() {
-        return dropChances;
-    }
-
-    public void setDropChances(float[] dropChances) {
-        this.dropChances = dropChances;
-    }
 
     @Override
     public void craft(HardMultiCrafterBuild building) {
@@ -35,5 +26,12 @@ public class ResultRecipe extends HardRecipe {
         if (building.wasVisible) building.createCraftEffect();
         if (this.craftTime > 0f) building.craftingTime %= this.craftTime;
         else building.craftingTime = 0f;
+    }
+
+    public abstract static class ResultRecipeBuilder<C extends ResultRecipe, B extends ResultRecipeBuilder<C, B>> extends HardRecipeBuilder<C, B> {
+        public B dropChances(float... chances) {
+            this.dropChances = chances;
+            return self();
+        }
     }
 }

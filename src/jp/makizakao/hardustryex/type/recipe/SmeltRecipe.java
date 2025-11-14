@@ -1,48 +1,21 @@
 package jp.makizakao.hardustryex.type.recipe;
 
-
 import arc.struct.Seq;
-import jp.makizakao.hardustryex.world.blocks.production.HardMultiCrafter.*;
-import lombok.*;
-import lombok.Builder;
+import jp.makizakao.hardustryex.type.entry.SmeltEntry;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 import mindustry.type.ItemStack;
 import mindustry.type.LiquidStack;
 import multicraft.IOEntry;
-import multicraft.Recipe;
-
-import java.util.Objects;
-
 
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE)
 @SuperBuilder(builderMethodName = "of")
-public class HardRecipe extends Recipe implements IRecipeCraft {
+public class SmeltRecipe extends HardRecipe {
+    private SmeltEntry input;
+    private SmeltEntry output;
 
-    @Override
-    public void craft(HardMultiCrafterBuild building) {
-        building.consume();
-        if (this.isOutputItem()) {
-
-            for (ItemStack output : this.output.items) {
-                for (int i = 0; i < output.amount; ++i) {
-                    building.offload(output.item);
-                }
-            }
-        }
-
-        if (building.wasVisible) {
-            building.createCraftEffect();
-        }
-
-        if (this.craftTime > 0.0F) {
-            building.craftingTime %= this.craftTime;
-        } else {
-            building.craftingTime = 0.0F;
-        }
-    }
-
-    public abstract static class HardRecipeBuilder<C extends HardRecipe, B extends HardRecipeBuilder<C, B>> {
-        IOEntry input;
+    public abstract static class SmeltRecipeBuilder<C extends SmeltRecipe, B extends SmeltRecipeBuilder<C, B>> {
+        SmeltEntry input;
         IOEntry output;
         private float craftTime;
 
@@ -59,30 +32,38 @@ public class HardRecipe extends Recipe implements IRecipeCraft {
             return self();
         }
 
-        public class InputStep extends Step {
+        public class InputStep extends Step<InputStep> {
+            protected float temperature;
+
             InputStep(B parent) {
                 super(parent);
             }
 
+            public InputStep temperature(float temperature) {
+                this.temperature = temperature;
+                return InputStep.this;
+            }
+
             public B complete() {
-                parent.input = new IOEntry() {{
+                parent.input = new SmeltEntry() {{
                     if (InputStep.this.items != null) items = InputStep.this.items;
                     if (InputStep.this.fluids != null) fluids = InputStep.this.fluids;
                     if (0 < InputStep.this.power) power = InputStep.this.power;
                     if (0 < InputStep.this.heat)  heat = InputStep.this.heat;
+                    temperature = InputStep.this.temperature;
                 }};
                 return parent;
             }
         }
 
-        public class OutputStep extends Step {
+        public class OutputStep extends Step<OutputStep> {
             OutputStep(B parent) {
                 super(parent);
             }
 
             public B complete() {
                 parent.output = new IOEntry() {{
-                    if (OutputStep.this.items != null) items = OutputStep.this.items;
+                    if (this.items != null) items = OutputStep.this.items;
                     if (OutputStep.this.fluids != null) fluids = OutputStep.this.fluids;
                     if (0 < OutputStep.this.power) power = OutputStep.this.power;
                     if (0 < OutputStep.this.heat)  heat = OutputStep.this.heat;
@@ -91,7 +72,7 @@ public class HardRecipe extends Recipe implements IRecipeCraft {
             }
         }
 
-        public abstract class Step {
+        public abstract class Step<T extends Step<T>> {
             protected final B parent;
             protected Seq<ItemStack> items;
             protected Seq<LiquidStack> fluids;
@@ -102,24 +83,24 @@ public class HardRecipe extends Recipe implements IRecipeCraft {
                 this.parent = parent;
             }
 
-            public Step items(Object... stacks) {
+            public T items(Object... stacks) {
                 this.items = Seq.with(ItemStack.with(stacks));
-                return Step.this;
+                return (T) this;
             }
 
-            public Step fluids(Object... stacks) {
+            public T fluids(Object... stacks) {
                 fluids = Seq.with(LiquidStack.with(stacks));
-                return Step.this;
+                return (T) this;
             }
 
-            public Step power(float power) {
+            public T power(float power) {
                 this.power = power;
-                return Step.this;
+                return (T) this;
             }
 
-            public Step heat(float heat) {
+            public T heat(float heat) {
                 this.heat = heat;
-                return Step.this;
+                return (T) this;
             }
 
             public abstract B complete();

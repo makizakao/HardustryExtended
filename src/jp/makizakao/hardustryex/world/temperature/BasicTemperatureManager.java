@@ -10,7 +10,7 @@ public class BasicTemperatureManager implements ITemperatureManager {
     private static final float OUTSIDE_TEMPERATURE = 20f;
     private static final float TEMPERATURE_PER_HEAT = 50f;
     private static final float TEMPERATURE_INCREMENTS_MULTIPLIER = 0.5f;
-    private static final float TEMPERATURE_DECREASE_MULTIPLIER = 4f;
+    private static final float TEMPERATURE_DECREASE_MULTIPLIER = 2f;
     private final float minEfficiency;
     private float temperature;
 

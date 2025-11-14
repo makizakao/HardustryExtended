@@ -3,15 +3,30 @@ package jp.makizakao.hardustryex.content.drawer;
 import arc.graphics.Color;
 import arc.graphics.g2d.Draw;
 import arc.graphics.g2d.Fill;
+import arc.graphics.g2d.TextureRegion;
 import arc.math.Mathf;
 import arc.util.Time;
+import mindustry.content.Blocks;
 import mindustry.gen.Building;
 import mindustry.graphics.Drawf;
+import mindustry.world.Block;
 import mindustry.world.draw.DrawBlock;
 import mindustry.world.draw.DrawDefault;
 import mindustry.world.draw.DrawFlame;
+import mindustry.world.draw.DrawRegion;
 
 public class HardDrawBlocks {
+    public static final DrawBlock COPPER_WALL =
+            new DrawRegion() {
+                @Override
+                public TextureRegion[] icons(Block block) {
+                    return super.icons(Blocks.duo);
+                }
+                @Override
+                public void load(Block block) {
+                    super.load(Blocks.duo);
+                }
+            };
 
     public static DrawBlock getMovedDrawDefault(float moveX, float moveY) {
         return new DrawDefault() {

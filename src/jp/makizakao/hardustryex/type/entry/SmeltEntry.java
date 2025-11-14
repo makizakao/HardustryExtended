@@ -1,10 +1,11 @@
 package jp.makizakao.hardustryex.type.entry;
 
+import lombok.NoArgsConstructor;
 import multicraft.IOEntry;
 
+@NoArgsConstructor(force = true)
 public class SmeltEntry extends IOEntry {
     public float temperature = 20f;
-    public SmeltEntry() {}
 
     @Override
     public String toString() {

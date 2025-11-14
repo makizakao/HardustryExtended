@@ -4,6 +4,7 @@ import arc.util.Time;
 import jp.makizakao.hardustryex.content.recipe.*;
 import jp.makizakao.hardustryex.content.drawer.*;
 import jp.makizakao.hardustryex.type.SmeltStack;
+import jp.makizakao.hardustryex.world.blocks.defence.DrawerWall;
 import jp.makizakao.hardustryex.world.blocks.distribution.*;
 import jp.makizakao.hardustryex.world.blocks.power.*;
 import jp.makizakao.hardustryex.world.blocks.production.*;
@@ -13,7 +14,9 @@ import mindustry.content.Fx;
 import mindustry.content.UnitTypes;
 import mindustry.entities.pattern.ShootAlternate;
 import mindustry.gen.Sounds;
+import mindustry.type.Category;
 import mindustry.world.Block;
+import mindustry.world.blocks.defense.Wall;
 
 public class HardBlocks {
     public static Block
@@ -58,8 +61,14 @@ public class HardBlocks {
 
     public static void load() {
         // defence - wall
+        copperWall = DrawerWall.of().drawer(HardDrawBlocks.COPPER_WALL)
+                .name("copper-wall")
+                .health(300)
+                .size(1)
+                .requirements(HardItems.copperIngot, 6)
+                .build();
         copperWall = WallBuilder.create("copper-wall", 300, 1)
-                .requirements(HardItems.copperIngot, 30)
+                .requirements(HardItems.copperIngot, 6)
                 .build();
         // distribution
         copperConveyor = HardConveyor.Builder.create("copper-conveyor", 30, 0.02f, 3f)
@@ -104,14 +113,14 @@ public class HardBlocks {
                 .requirements(HardItems.copperIngot, 1000)
                 .unitType(UnitTypes.alpha)
                 .unitCapModifier(1)
-                .smeltList(SmeltStack.SMELT_TIER_1)
+                .smeltList(SmeltStacks.SMELT_TIER_1)
                 .firstTier()
                 .build();
         coreBronze = HardCoreBlock.Builder.create("core-bronze", 700, 2000, 3)
                 .requirements(HardItems.bronzeIngot, 1000)
                 .unitType(UnitTypes.alpha)
                 .unitCapModifier(3)
-                .smeltList(SmeltStack.SMELT_TIER_2)
+                .smeltList(SmeltStacks.SMELT_TIER_2)
                 .build();
         copperUnloader = HardUnloader.Builder.create("copper-unloader", 30, 1, 3f)
                 .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 1)
@@ -127,7 +136,7 @@ public class HardBlocks {
         tinyLeadOre = OreBlockBuilder.create("tiny-lead-ore", HardItems.leadDust).build();
         // power - battery
         basicBattery = HardBattery.Builder.create("basic-battery", 80, 1)
-                .requirements(HardItems.copperIngot, 10, HardItems.leadIngot, 20)
+                .requirements(HardItems.copperIngot, 5, HardItems.leadIngot, 20)
                 .capacity(1000f)
                 .build();
         // power - generator
@@ -147,9 +156,9 @@ public class HardBlocks {
                 .build();
         // power - node
         basicNode = HardPowerNode.Builder.create("basic-node", 30, 1)
-                .requirements(HardItems.copperIngot, 2, HardItems.leadIngot, 3)
+                .requirements(HardItems.copperIngot, 1, HardItems.leadIngot, 3)
                 .laserRange(4f)
-                .powerConsume(0.02f)
+                .powerConsume(0.01f)
                 .maxNodes(4)
                 .build();
         // production - crafter - bending machine
@@ -208,7 +217,7 @@ public class HardBlocks {
                 .build();
         // production - crafter - furnace
         copperFurnace = ExplodableCrafter.Builder.create("copper-furnace", 100, 2)
-                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 30, HardItems.leadIngot, 20)
                 .explodeTemperature(300f, 10, 5)
                 .effect(Fx.explosion)
                 .resolveRecipes(FurnaceRecipes.FURNACE_TIER_1)
@@ -218,12 +227,12 @@ public class HardBlocks {
                 .build();
         // production - crafter - heater
         basicElectricHeater = HardMultiCrafter.Builder.create("basic-electric-heater", 30, 1)
-                .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 15, HardItems.leadIngot, 20)
                 .resolveRecipes(HeaterRecipes.ELECTRIC_HEATER_TIER_1)
                 .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
         basicCoalHeater = HardMultiCrafter.Builder.create("basic-coal-heater", 30, 1)
-                .requirements(HardItems.copperIngot, 60, HardItems.leadIngot, 20)
+                .requirements(HardItems.copperIngot, 20, HardItems.leadIngot, 20)
                 .resolveRecipes(HeaterRecipes.COAL_HEATER_TIER_1)
                 .drawer(HardDrawMultis.HEAT_OUTPUT)
                 .build();
@@ -253,14 +262,14 @@ public class HardBlocks {
                 .build();
         // production - drill
         quarry = TierDrill.Builder.create("quarry", 100, 2, 2)
-                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 12, HardItems.leadIngot, 10)
                 .drillTime(3000f)
                 .itemCapacity(10)
-                .powerConsume(0.4f)
+                .powerConsume(0.2f)
                 .build();
         // turret
         duo = ItemTurretBuilder.create("duo", 200, 1)
-                .requirements(HardItems.copperIngot, 50, HardItems.leadIngot, 30)
+                .requirements(HardItems.copperIngot, 35, HardItems.leadIngot, 10)
                 .ammo(HardAmmoTypes.DUO_TIER_1)
                 .shoot(new ShootAlternate(3.5f), 3f)
                 .ammoUseEffect(Fx.casing1)
@@ -271,7 +280,7 @@ public class HardBlocks {
                 .inaccuracy(4f)
                 .rotateSpeed(7.5f)
                 .consumeCoolant(0)
-                .powerConsume(0.4f)
+                .powerConsume(0.2f)
                 .drawer(HardDrawTurrets.DUO)
                 .build();
     }
